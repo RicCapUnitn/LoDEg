@@ -1,15 +1,8 @@
 # LoDEg
-Log analytics for the LODE platform
+Log analytics for the LODE platform. Further details will be added later.
 
 ## pythonML
 pythonML is the name of the library on which the project runs. It exposes an facade API through the class LodegSystem. Please refer to the library [documentation](/docs/html/index.html).
-
-## WebApp
-To deploy the WebApp run the following command in the folder lodeg_website:
-
-    $ python manage.py runserver [port_number]
-
-The port number is not mandatory, defaults to 8000.
 
 ## Requirements
 
@@ -31,3 +24,10 @@ Now you must activate this environment. You will need to run this command every 
 Next, use pip to install the required python packages. If you are not using virtualenv, you should add the `--user` option (alternatively you could install the libraries system-wide, but this will probably require administrator rights, e.g. using `sudo pip3` instead of `pip3` on Linux).
 
     $ pip3 install --upgrade -r requirements.txt
+
+## WebApp
+To deploy the WebApp run the following command in the folder lodeg_website:
+
+    $ python manage.py runserver [port_number]
+
+The port number is not mandatory, defaults to 8000.
