@@ -1,0 +1,1273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pythonML package &#8212; pythonML 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pythonML" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pythonml-package">
+<h1>pythonML package<a class="headerlink" href="#pythonml-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pythonML.auto_plot">
+<span id="pythonml-auto-plot-module"></span><h2>pythonML.auto_plot module<a class="headerlink" href="#module-pythonML.auto_plot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pythonML.auto_plot.printLessonCoverage">
+<code class="descclassname">pythonML.auto_plot.</code><code class="descname">printLessonCoverage</code><span class="sig-paren">(</span><em>coverage: list</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.auto_plot.printLessonCoverage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pythonML.auto_plot.printLessonUserCorrelationGraph">
+<code class="descclassname">pythonML.auto_plot.</code><code class="descname">printLessonUserCorrelationGraph</code><span class="sig-paren">(</span><em>lessons_visualization: dict</em>, <em>registration_dates: dict</em>, <em>time_format: str = 'abs'</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.auto_plot.printLessonUserCorrelationGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a 3d graph of users lesson visualization.</p>
+<p>The graph plots a function of the number of users against time and lessons: for every lesson,
+a curve is plotted to show when and how many users have watched the lessons.</p>
+<p>Time has two formats: abs and rel. It expresses wheter each lesson curve is plotted agains its registration date (rel)
+or against the registration date of the first lesson (abs).</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd>lessons_visualization (dict): the dictionary of type {&#8216;lesson_id&#8217;:Counter(datetime)}.
+registration_dates (dict): the dates of registration of every lesson.
+time_format (str): the time format (abs or rel). Defaults to abs.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.auto_plot.printLessonsHistogram">
+<code class="descclassname">pythonML.auto_plot.</code><code class="descname">printLessonsHistogram</code><span class="sig-paren">(</span><em>histogram: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.auto_plot.printLessonsHistogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>The histogram is of type {&#8216;lesson&#8217;:&#8217;number_of_users&#8217;}</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.auto_plot.printNotesBarChart">
+<code class="descclassname">pythonML.auto_plot.</code><code class="descname">printNotesBarChart</code><span class="sig-paren">(</span><em>notes_types: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.auto_plot.printNotesBarChart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pythonML.auto_plot.printNotesPolarChart">
+<code class="descclassname">pythonML.auto_plot.</code><code class="descname">printNotesPolarChart</code><span class="sig-paren">(</span><em>notes_types: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.auto_plot.printNotesPolarChart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pythonML.auto_plot.printSessionCoverage">
+<code class="descclassname">pythonML.auto_plot.</code><code class="descname">printSessionCoverage</code><span class="sig-paren">(</span><em>sessionInfo: dict</em>, <em>lesson_duration: float</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.auto_plot.printSessionCoverage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pythonML.cache">
+<span id="pythonml-cache-module"></span><h2>pythonML.cache module<a class="headerlink" href="#module-pythonML.cache" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pythonML.cache.Cache">
+<em class="property">class </em><code class="descclassname">pythonML.cache.</code><code class="descname">Cache</code><a class="headerlink" href="#pythonML.cache.Cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This class gives a black box for a generic caching system for the system</p>
+<p>Two implementations are provided at hte moment:
+- SQLite: the system work with the Django SQLite to cache data
+- MongoDB: the system works with a generic MongoDB implementation (not ready for production!!)</p>
+<dl class="method">
+<dt id="pythonML.cache.Cache.collectDataFromDb">
+<code class="descname">collectDataFromDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#pythonML.cache.Cache.collectDataFromDb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queries the db for already computed information.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the user is defined we query only the userInfo. Otherwise, it means
+that the user is an administrator of the system: in this case we query
+the cache for the whole systemInfo.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; The id of the user whose userInfo we are quering the db.</li>
+<li><strong>systemInfo</strong> (<em>dict</em>) &#8211; The dictionary where the information will be stored.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated SystemInfo dictionary.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.cache.Cache.saveDataToDb">
+<code class="descname">saveDataToDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.cache.Cache.saveDataToDb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the current information into the database.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the user is defined we save only the userInfo. Otherwise, it means
+that the user is an administrator of the system: in this case we save
+the whole systemInfo in the cache.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; The id of the user whose userInfo we are saving. Defaults to None.</li>
+<li><strong>systemInfo</strong> (<em>dict</em>) &#8211; The dictionary that contains the information we want to store.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythonML.cache.CacheMongoDb">
+<em class="property">class </em><code class="descclassname">pythonML.cache.</code><code class="descname">CacheMongoDb</code><span class="sig-paren">(</span><em>collection</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.cache.CacheMongoDb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pythonML.cache.Cache" title="pythonML.cache.Cache"><code class="xref py py-class docutils literal"><span class="pre">pythonML.cache.Cache</span></code></a></p>
+<p>A MongoDb implementation of the cache</p>
+<p>Note: Not ready for production: at the moment the implementation does not support huge data structures; use GridFS to break the structure or a relational DB instead</p>
+<dl class="method">
+<dt id="pythonML.cache.CacheMongoDb.collectDataFromDb">
+<code class="descname">collectDataFromDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.cache.CacheMongoDb.collectDataFromDb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pythonML.cache.CacheMongoDb.saveDataToDb">
+<code class="descname">saveDataToDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.cache.CacheMongoDb.saveDataToDb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythonML.cache.CacheSQLite">
+<em class="property">class </em><code class="descclassname">pythonML.cache.</code><code class="descname">CacheSQLite</code><a class="headerlink" href="#pythonML.cache.CacheSQLite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pythonML.cache.Cache" title="pythonML.cache.Cache"><code class="xref py py-class docutils literal"><span class="pre">pythonML.cache.Cache</span></code></a></p>
+<p>A SQLite implementation of the cache</p>
+<dl class="method">
+<dt id="pythonML.cache.CacheSQLite.collectDataFromDb">
+<code class="descname">collectDataFromDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.cache.CacheSQLite.collectDataFromDb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pythonML.cache.CacheSQLite.saveDataToDb">
+<code class="descname">saveDataToDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.cache.CacheSQLite.saveDataToDb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pythonML.connection_to_mongo">
+<span id="pythonml-connection-to-mongo-module"></span><h2>pythonML.connection_to_mongo module<a class="headerlink" href="#module-pythonML.connection_to_mongo" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pythonML.connection_to_mongo.connect_to_mongo">
+<code class="descclassname">pythonML.connection_to_mongo.</code><code class="descname">connect_to_mongo</code><span class="sig-paren">(</span><em>url='mongodb://127.0.0.1:27017'</em>, <em>db_name='lodeg'</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.connection_to_mongo.connect_to_mongo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the mongoDB instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; url to the database (optional, default=&#8221;mongodb://127.0.0.1:27017&#8221;).</li>
+<li><strong>db_name</strong> &#8211; the name of the MongoDb (otional, default=&#8221;lodeg&#8221;).</li>
+<li><strong>user</strong> &#8211; the username used to connect to the database (optional, not implemented yet).</li>
+<li><strong>password</strong> &#8211; the password used to connect to the database (otional, not implemented yet)  .</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the connection to the database</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">db</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pythonML.data_extraction">
+<span id="pythonml-data-extraction-module"></span><h2>pythonML.data_extraction module<a class="headerlink" href="#module-pythonML.data_extraction" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pythonML.data_extraction.add_lesson_id_to_session">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">add_lesson_id_to_session</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.add_lesson_id_to_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds the lesson_id to the sessionInfo dictionary</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It requires a valid session.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.add_session_date">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">add_session_date</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.add_session_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds the session_date to the sessionInfo dictionary</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It requires a valid session.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.check_session_validity">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">check_session_validity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.check_session_validity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the session meets the basic requirements in order not to raise exceptions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.compute_course_global_coverage">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">compute_course_global_coverage</code><span class="sig-paren">(</span><em>courseInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.compute_course_global_coverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes the global coverage and the users histogram for a single course.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.compute_lessons_coverage_for_single_user">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">compute_lessons_coverage_for_single_user</code><span class="sig-paren">(</span><em>userInfo: dict</em>, <em>lessons_durations: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.compute_lessons_coverage_for_single_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes the lesson coverage for all lessons of a user.</p>
+<p>Note: It computes the coverage_histogram as well</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>userInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistic.</li>
+<li><strong>lessons_durations</strong> (<em>dict</em>) &#8211; The systemInfo dictionary {&#8216;lesson_id&#8217;:&#8217;lesson_duration&#8217;}.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.compute_session_duration">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">compute_session_duration</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.compute_session_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a session and calculates the session duration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.course_lessons_visualization_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">course_lessons_visualization_extraction</code><span class="sig-paren">(</span><em>courseInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.course_lessons_visualization_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract for each course when the users watched the lessons.</p>
+<p>This function adds to the courseInfo a Counter of datetimes; the Counter is called called &#8216;lessons_visualization&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<em>dict</em>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.course_notes_info_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">course_notes_info_extraction</code><span class="sig-paren">(</span><em>courseInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.course_notes_info_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information of notes for the system.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><ul class="first last simple">
+<li>number of notes</li>
+<li>number of notes/type (click_or_drag,keyframe,note)</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It requires the user notes_info_extraction to be executed first.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.execute_complete_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">execute_complete_extraction</code><span class="sig-paren">(</span><em>logs_collection</em>, <em>lessons_collection</em>, <em>systemInfo</em>, <em>keep_session_data=False</em>, <em>keep_user_info=True</em>, <em>query_mem_opt=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.execute_complete_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a complete extraction of the whole system.</p>
+<p>This function extracts all the data from the collection, extracts the
+features we want, deletes the raw data and returns a dict of courseInfo, with
+one key(course_id) for each course in the database.</p>
+<dl class="docutils">
+<dt>Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.</dt>
+<dd>We have left the possibility of setting query_mem_opt to False though in practice we see
+that there is no relevant speed improvement with big datasets (might have with small ones).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
+<li><strong>lessons_collection</strong> &#8211; The MongoDb collection that containes the uploaded lessons logs.</li>
+<li><strong>systemInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>keep_session_data</strong> (<em>bool</em>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>keep_user_info</strong> (<em>bool</em>) &#8211; Keep the statistics computed at the userInfo level. Defaults to True.</li>
+<li><strong>query_mem_opt</strong> (<em>bool</em>) &#8211; Do only partial queries to keep memory usage low. Defaults to True.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.execute_courseInfo_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">execute_courseInfo_extraction</code><span class="sig-paren">(</span><em>logs_collection</em>, <em>lessons_collection</em>, <em>course: str</em>, <em>courseInfo: dict</em>, <em>keep_session_data=False</em>, <em>keep_user_info=True</em>, <em>query_mem_opt=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.execute_courseInfo_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a complete extraction for a single course.</p>
+<dl class="docutils">
+<dt>Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.</dt>
+<dd>We have left the possibility of setting query_mem_opt to False though in practice we see
+that there is no relevant speed improvement with big datasets (might have with small ones).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
+<li><strong>lessons_collection</strong> &#8211; The MongoDb collection that containes the uploaded lessons logs.</li>
+<li><strong>course</strong> &#8211; The id of the course whose information we are extracting.</li>
+<li><strong>courseInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>keep_session_data</strong> (<em>bool</em>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>keep_user_info</strong> (<em>bool</em>) &#8211; Keep the statistics computed at the userInfo level. Defaults to True.</li>
+<li><strong>query_mem_opt</strong> (<em>bool</em>) &#8211; Do only partial queries to keep memory usage low. Defaults to True.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.execute_sessionInfo_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">execute_sessionInfo_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em>, <em>logs_collection=None</em>, <em>session=None</em>, <em>data_provided=False</em>, <em>keep_session_data=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.execute_sessionInfo_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a complete extraction for a single session.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If data_provided = True, than the only required parameter is sessionInfo.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sessionInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
+<li><strong>session</strong> (<em>str</em>) &#8211; The id of the session we are interested in.</li>
+<li><strong>data_provided</strong> (<em>bool</em>) &#8211; Set to True if the sessionInfo has already been populated with the raw data. Defaults to False.</li>
+<li><strong>keep_session_data</strong> (<em>bool</em>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.execute_userInfo_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">execute_userInfo_extraction</code><span class="sig-paren">(</span><em>logs_collection</em>, <em>lessons_durations: dict</em>, <em>course: str</em>, <em>user: str</em>, <em>userInfo: dict</em>, <em>keep_session_data=False</em>, <em>sessionInfo_provided=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.execute_userInfo_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a complete extraction for a single user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
+<li><strong>lessons_durations</strong> (<em>dict</em>) &#8211; The systemInfo dictionary {&#8216;lesson_id&#8217;:&#8217;lesson_duration&#8217;}.</li>
+<li><strong>course</strong> (<em>str</em>) &#8211; Used if sessionInfo_provided = False (as default)</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; The id of the user whose userInfo we are extracting.</li>
+<li><strong>userInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>keep_session_data</strong> (<em>bool</em>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>sessionInfo_provided</strong> (<em>bool</em>) &#8211; Set to true if the sessionInfo has already been computed. Defaults to False.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.jumps_info_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">jumps_info_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.jumps_info_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information of jumps for the session.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><blockquote class="first">
+<div><ul class="simple">
+<li>average jump length</li>
+<li>number of jumps</li>
+<li>number of jumps/type (click_or_drag,keyframe,note)</li>
+</ul>
+</div></blockquote>
+<dl class="last docutils">
+<dt>Args:</dt>
+<dd>sessionInfo (dict): The dictionary that will be populated with the computed statistic.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.notes_info_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">notes_info_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.notes_info_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information of notes for the session.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><ul class="first last simple">
+<li>number of notes</li>
+<li>number of notes/type (click_or_drag,keyframe,note)</li>
+<li>notes / session_duration</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It requires the session_duration to be computed first.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.play_pause_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">play_pause_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.play_pause_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information about of play and pauses.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><blockquote class="first">
+<div><ul class="simple">
+<li>plays intervals</li>
+<li>pauses intervals</li>
+<li>play/pause ration</li>
+</ul>
+</div></blockquote>
+<dl class="last docutils">
+<dt>Args:</dt>
+<dd>sessionInfo (dict): The dictionary that will be populated with the computed statistic.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.session_coverage_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">session_coverage_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.session_coverage_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts the video coverage of the session.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.user_lessons_visualization_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">user_lessons_visualization_extraction</code><span class="sig-paren">(</span><em>userInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.user_lessons_visualization_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract for each lesson when the user watched the lesson.</p>
+<p>This function adds to the userInfo a Counter of datetimes; the Counter is called called &#8216;lessons_visualization&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<em>dict</em>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.data_extraction.user_notes_info_extraction">
+<code class="descclassname">pythonML.data_extraction.</code><code class="descname">user_notes_info_extraction</code><span class="sig-paren">(</span><em>userInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.data_extraction.user_notes_info_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information of notes for the user.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><ul class="first last simple">
+<li>number of notes</li>
+<li>number of notes/type (click_or_drag,keyframe,note)</li>
+<li>notes / total_duration</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It requires the notes_info_extraction to be executed first.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<em>dict</em>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pythonML.system">
+<span id="pythonml-system-module"></span><h2>pythonML.system module<a class="headerlink" href="#module-pythonML.system" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pythonML.system.LodegSystem">
+<em class="property">class </em><code class="descclassname">pythonML.system.</code><code class="descname">LodegSystem</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The class that represents the system.</p>
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.collectDataFromDb">
+<code class="descname">collectDataFromDb</code><span class="sig-paren">(</span><em>user: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.collectDataFromDb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queries the db for already computed information.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the user is defined we query only the userInfo. Otherwise, it means
+that the user is an administrator of the system: in this case we query
+the cache for the whole systemInfo.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>str</em>) &#8211; The id of the user whose userInfo we are quering the db.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.executeCompleteExtraction">
+<code class="descname">executeCompleteExtraction</code><span class="sig-paren">(</span><em>keep_session_data=False</em>, <em>keep_user_info=True</em>, <em>query_mem_opt=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.executeCompleteExtraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the data and compute all the statistics.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>keep_session_data</strong> (<em>bool</em>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>keep_user_info</strong> (<em>bool</em>) &#8211; Keep all computed userInfos in the system. Defaults to False.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.extractUserData">
+<code class="descname">extractUserData</code><span class="sig-paren">(</span><em>course: str</em>, <em>user: str</em>, <em>keep_session_data=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.extractUserData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts thte statistics for the target user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>course</strong> (<em>str</em>) &#8211; The id of the course we are interested in.</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; The id of the user whose userInfo we are extracting.</li>
+<li><strong>keep_session_data</strong> (<em>bool</em>) &#8211; Keep the raw session data in the system. Defaults to config.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getCSV">
+<code class="descname">getCSV</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; django.http.response.HttpResponse<a class="headerlink" href="#pythonML.system.LodegSystem.getCSV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an HttpResponse containing the sytem information formatted as CSV</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An HttpResponse with content MIME text/csv</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getCourses">
+<code class="descname">getCourses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.getCourses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the courses present in the system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the courses.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getData">
+<code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.getData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the systemInfo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getLastUpdate">
+<code class="descname">getLastUpdate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.getLastUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the local time representation of the last data extraction</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getLessonsHeaders">
+<code class="descname">getLessonsHeaders</code><span class="sig-paren">(</span><em>course: str</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.getLessonsHeaders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the lessons headers of all uploaded lessons.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Args:</dt>
+<dd>course (str): The id of the course we are interested in.</dd>
+</dl>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the headers of the session if known by the system; otherwise, the empty list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getNumberOfLessons">
+<code class="descname">getNumberOfLessons</code><span class="sig-paren">(</span><em>course: str</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.getNumberOfLessons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of lessons for a specific course.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<em>str</em>) &#8211; the id of the course whose information we are interested in.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The total number of lessons if the information is known by the system; otherwise, the string &#8216;Unknown&#8217;.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getNumberOfSessions">
+<code class="descname">getNumberOfSessions</code><span class="sig-paren">(</span><em>course: str = None</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.getNumberOfSessions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of sessions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<em>str</em>) &#8211; If set we are asking for courseLevel or userLevel info; otherwise, systemLevel info will be provided.</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; If both course and user are set we are asking for userLevel info; otherwise, courseLevel or systemLevel.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The appropriate number of sessions if the information is known by the system; otherwise, the string &#8216;Unknown&#8217;.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getNumberOfUsers">
+<code class="descname">getNumberOfUsers</code><span class="sig-paren">(</span><em>course: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.getNumberOfUsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of users saved in the system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<em>str</em>) &#8211; if specified, we are asking for course level info; otherwise, system level.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The total number of users if the information is known by the system.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getUserCoveragePercentage">
+<code class="descname">getUserCoveragePercentage</code><span class="sig-paren">(</span><em>course: str</em>, <em>user: str</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.getUserCoveragePercentage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the coverage percentage of lessons that the user have watched over the lessons of the course.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<em>Str</em>) &#8211; The id of the course we are inspecting.</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; The id of the user whose coverage percentage we are asking for.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the coverage percentage if the information is known by the system; otherwise, the string &#8216;Unknown&#8217;.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getUserSessionsHeaders">
+<code class="descname">getUserSessionsHeaders</code><span class="sig-paren">(</span><em>course: str</em>, <em>user: str</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.getUserSessionsHeaders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of string headers (lesson_title:date) of the user sessions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<em>str</em>) &#8211; The id of the course we are interested in.</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; The id of the user whose sessions dates we are asking for.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the headers of the session if known by the system; otherwise, the empty list</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.getUsers">
+<code class="descname">getUsers</code><span class="sig-paren">(</span><em>course: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.getUsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of users</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<em>str</em>) &#8211; The id of the course we are interested in. If none we get all the users.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the users ids if the course is present in the system; otherwise, the empty list</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.modify_class_settings">
+<code class="descname">modify_class_settings</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.modify_class_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tweak class params</p>
+<dl class="docutils">
+<dt>Note: default values for all parameters has already been provided before this function can be called;</dt>
+<dd>Only params that already exist can be modified (type checking is implemented to avoid inappropriate use).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> &#8211; keep_session_data (bool): Keep the raw session data in the system. Defaults to False.
+keep_user_info (bool): Keep the statistics computed at the userInfo level. Defaults to True.
+query_mem_opt (bool): Do only partial queries to keep memory usage low. Defaults to True.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.printLessonCoverage">
+<code class="descname">printLessonCoverage</code><span class="sig-paren">(</span><em>lesson: str</em>, <em>course: str</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.printLessonCoverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an image of the session coverage as html string.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method requires the coverage to be already computed.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lesson</strong> (<em>str</em>) &#8211; The id of the lesson whose coverage we are asking for.</li>
+<li><strong>course</strong> (<em>str</em>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; If set, we are asking for the lesson coverage of a specific user;
+otherwise, courseLevel lesson coverage will be plotted.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the image representation of the session coverage</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.printLessonUserCorrelationGraph">
+<code class="descname">printLessonUserCorrelationGraph</code><span class="sig-paren">(</span><em>course: str</em>, <em>time_format: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.printLessonUserCorrelationGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a 3d graph of users lesson visualization.</p>
+<p>The graph plots a function of the number of users against time and lessons: for every lesson,
+a curve is plotted to show when and how many users have watched the lessons.</p>
+<p>Time has two formats: abs and rel. It expresses whether each lesson curve is plotted agains its registration date (rel)
+or against the registration date of the first lesson (abs).</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd>lessons_visualization (dict): the dictionary of type {&#8216;lesson_id&#8217;:ordered_list(datetime)}
+time_format (str): the time format (abs or rel). None == abs.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.printLessonsHistogram">
+<code class="descname">printLessonsHistogram</code><span class="sig-paren">(</span><em>course: str</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.printLessonsHistogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the histogram that plots the number of users that have watched each lesson if level = system;
+if level = user it plots the number of sessions that the user has spent watching the video</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<em>str</em>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; If set we are plotting the user histogram; otherwise, the course histogram.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the histogram</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.printNotesBarChart">
+<code class="descname">printNotesBarChart</code><span class="sig-paren">(</span><em>course: str</em>, <em>user=None</em>, <em>session=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.printNotesBarChart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a bar chart of the notes types distribution as html string.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Three charts can be plotted with this function, depending on the level (system, user, session).</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<em>str</em>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; If set level &lt; course (user or session)</li>
+<li><strong>session</strong> (<em>str</em>) &#8211; If set level = session, otherwise level = user</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the pie chart of the notes types distribution</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.printSessionCoverage">
+<code class="descname">printSessionCoverage</code><span class="sig-paren">(</span><em>course: str</em>, <em>user: str</em>, <em>session: str</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.printSessionCoverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an image of the session coverage as html string</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method requires the user (_systemInfo[&#8216;users&#8217;][user][&#8216;sessions&#8217;]) to be already initialized.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<em>str</em>) &#8211; The id of the course whose user session coverage we are asking for.</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; The id of the user whose session coverage we are asking for.</li>
+<li><strong>session</strong> (<em>str</em>) &#8211; The demanded session.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the image representation of the session coverage</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythonML.system.LodegSystem.saveDataToDb">
+<code class="descname">saveDataToDb</code><span class="sig-paren">(</span><em>user: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.system.LodegSystem.saveDataToDb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the current information into the database.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the user is defined we save only the userInfo. Otherwise, it means
+that the user is an administrator of the system: in this case we save
+the whole systemInfo in the cache.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>str</em>) &#8211; The id of the user whose userInfo we are saving. Defaults to None.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pythonML.test_utils">
+<span id="pythonml-test-utils-module"></span><h2>pythonML.test_utils module<a class="headerlink" href="#module-pythonML.test_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pythonML.test_utils.correlation_graph_lessons_test">
+<code class="descclassname">pythonML.test_utils.</code><code class="descname">correlation_graph_lessons_test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.test_utils.correlation_graph_lessons_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pythonML.test_utils.get_lessons">
+<code class="descclassname">pythonML.test_utils.</code><code class="descname">get_lessons</code><span class="sig-paren">(</span><em>collection</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.test_utils.get_lessons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pythonML.test_utils.get_play_and_pauses_test">
+<code class="descclassname">pythonML.test_utils.</code><code class="descname">get_play_and_pauses_test</code><span class="sig-paren">(</span><em>collection</em>, <em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.test_utils.get_play_and_pauses_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pythonML.test_utils.jumps_info_test">
+<code class="descclassname">pythonML.test_utils.</code><code class="descname">jumps_info_test</code><span class="sig-paren">(</span><em>collection</em>, <em>test_session_id</em>, <em>sessionInfo</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.test_utils.jumps_info_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pythonML.test_utils.session_coverage_extraction_test">
+<code class="descclassname">pythonML.test_utils.</code><code class="descname">session_coverage_extraction_test</code><span class="sig-paren">(</span><em>collection</em>, <em>test_session_id</em>, <em>sessionInfo</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.test_utils.session_coverage_extraction_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pythonML.utility_queries">
+<span id="pythonml-utility-queries-module"></span><h2>pythonML.utility_queries module<a class="headerlink" href="#module-pythonML.utility_queries" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pythonML.utility_queries.add_interval">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">add_interval</code><span class="sig-paren">(</span><em>intervals: list</em>, <em>interval: list</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.add_interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an interval to a list of disjoint intervals.</p>
+<p>It guarantees disjunction between intervals (substituting the intersections with a new interval),
+the order intervals[i][end] &lt; intervals[i+1][start] and itervals[i][start] &lt; intervals[i][end].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>intervals</strong> (<em>list</em>) &#8211; The list of intervals to whom we have to add the interval;</li>
+<li><strong>interval</strong> (<em>list</em>) &#8211; the interval to add in the format [start,end].</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.getDateTimeFromISO8601String">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">getDateTimeFromISO8601String</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.getDateTimeFromISO8601String" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert ISO8601 to datetime.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.getTimeFromObjectId">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">getTimeFromObjectId</code><span class="sig-paren">(</span><em>oid: str</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.getTimeFromObjectId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the generation time from a MongoDB objcetId.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>oid</strong> (<em>str</em>) &#8211; the object id.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.get_all_courses">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">get_all_courses</code><span class="sig-paren">(</span><em>lessons_collection</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.get_all_courses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the course_ids that have been registered</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.get_all_records_for_session">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">get_all_records_for_session</code><span class="sig-paren">(</span><em>collection</em>, <em>session: str</em>, <em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.get_all_records_for_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate the specified sessionInfo with data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.get_all_records_for_user_and_course">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">get_all_records_for_user_and_course</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em>, <em>user: str</em>, <em>userInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.get_all_records_for_user_and_course" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate the specified userInfo with data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.get_all_sessions_for_course">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">get_all_sessions_for_course</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.get_all_sessions_for_course" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the session_ids for the specified course</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>collection</strong> &#8211; the collection of log records</li>
+<li><strong>course</strong> (<em>str</em>) &#8211; the course_id</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.get_all_sessions_for_user_and_course">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">get_all_sessions_for_user_and_course</code><span class="sig-paren">(</span><em>collection</em>, <em>user: str</em>, <em>course: str</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.get_all_sessions_for_user_and_course" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the session_ids of the course for the specified user</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.get_all_users_for_course">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">get_all_users_for_course</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.get_all_users_for_course" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the user_ids for the specified course.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>collection</strong> &#8211; the collection of log records;</li>
+<li><strong>course</strong> (<em>str</em>) &#8211; the course_id.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.get_all_users_records">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">get_all_users_records</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em>, <em>courseInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.get_all_users_records" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve courseInfo data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>collection</strong> &#8211; the collection of log records</li>
+<li><strong>course</strong> (<em>str</em>) &#8211; the course_id we are interested in</li>
+<li><strong>courseInfo</strong> (<em>str</em>) &#8211; the dictionary that will be populated with the data</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.get_lessons_durations_and_registration_dates">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">get_lessons_durations_and_registration_dates</code><span class="sig-paren">(</span><em>lessons_collection</em>, <em>course: str</em>, <em>courseInfo: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.get_lessons_durations_and_registration_dates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set for a course the course lessons and their durations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lessons_collection</strong> &#8211; the MongoDB collection that contains the lessons records;</li>
+<li><strong>course</strong> (<em>str</em>) &#8211; the target course;</li>
+<li><strong>courseInfo</strong> (<em>dict</em>) &#8211; the dictionary to be populated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.purify_list">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">purify_list</code><span class="sig-paren">(</span><em>data: list</em>, <em>filter_types: list</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.purify_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function purifies a list of records, keeeping only the desired types of records.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>list</em>) &#8211; the raw data to filter as a list of records</li>
+<li><strong>filter_types</strong> (<em>list</em>) &#8211; the types of records we want to keep from the list</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The filtered list.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pythonML.utility_queries.utc_to_local_time">
+<code class="descclassname">pythonML.utility_queries.</code><code class="descname">utc_to_local_time</code><span class="sig-paren">(</span><em>utc: datetime.datetime</em><span class="sig-paren">)</span><a class="headerlink" href="#pythonML.utility_queries.utc_to_local_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pythonML">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pythonML" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pythonML package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pythonML.auto_plot">pythonML.auto_plot module</a></li>
+<li><a class="reference internal" href="#module-pythonML.cache">pythonML.cache module</a></li>
+<li><a class="reference internal" href="#module-pythonML.connection_to_mongo">pythonML.connection_to_mongo module</a></li>
+<li><a class="reference internal" href="#module-pythonML.data_extraction">pythonML.data_extraction module</a></li>
+<li><a class="reference internal" href="#module-pythonML.system">pythonML.system module</a></li>
+<li><a class="reference internal" href="#module-pythonML.test_utils">pythonML.test_utils module</a></li>
+<li><a class="reference internal" href="#module-pythonML.utility_queries">pythonML.utility_queries module</a></li>
+<li><a class="reference internal" href="#module-pythonML">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">pythonML</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">pythonML</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pythonML.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Riccardo Capraro.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pythonML.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

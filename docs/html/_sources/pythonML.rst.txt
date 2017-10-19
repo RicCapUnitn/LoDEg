@@ -1,0 +1,70 @@
+pythonML package
+================
+
+Submodules
+----------
+
+pythonML\.auto\_plot module
+---------------------------
+
+.. automodule:: pythonML.auto_plot
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pythonML\.cache module
+----------------------
+
+.. automodule:: pythonML.cache
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pythonML\.connection\_to\_mongo module
+--------------------------------------
+
+.. automodule:: pythonML.connection_to_mongo
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pythonML\.data\_extraction module
+---------------------------------
+
+.. automodule:: pythonML.data_extraction
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pythonML\.system module
+-----------------------
+
+.. automodule:: pythonML.system
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pythonML\.test\_utils module
+----------------------------
+
+.. automodule:: pythonML.test_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pythonML\.utility\_queries module
+---------------------------------
+
+.. automodule:: pythonML.utility_queries
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: pythonML
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,6 @@
+numpy
+pandas
+matplotlib
+sklearn
+pymongo > 2.2
+django > 1.11.13
