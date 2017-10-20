@@ -108,7 +108,6 @@ def printDaySessionDistribution(distribution: list):
     if len(distribution) == 24:
         # Compute pie slices
         theta = np.linspace(0.0, 2 * np.pi, 24, endpoint=False)
-        #radii = distribution[4:] + distribution[:4] #<--------------------
         radii = distribution
         width =  2 * np.pi / 24.0 
 
