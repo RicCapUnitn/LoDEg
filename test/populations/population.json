@@ -1,0 +1,4943 @@
+{
+    "user_id": "play_pause_test",
+    "session_id": "play_pause_test",
+    "type": "play",
+    "value2": 0.0
+}{
+    "user_id": "play_pause_test",
+    "session_id": "play_pause_test",
+    "type": "pause",
+    "value2": 15.0
+}{
+    "user_id": "play_pause_test",
+    "session_id": "play_pause_test",
+    "type": "play",
+    "value2": 15.13
+}{
+    "user_id": "play_pause_test",
+    "session_id": "play_pause_test",
+    "type": "pause",
+    "value2": 17.0
+}{
+    "user_id": "play_pause_test",
+    "session_id": "play_pause_test",
+    "type": "play",
+    "value2": 19.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test1",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test1",
+    "type": "pause",
+    "value1": 30.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test1",
+    "type": "play",
+    "value1": 30.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test1",
+    "type": "pause",
+    "value1": 50.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test2",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test2",
+    "type": "pause",
+    "value1": 130.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test2",
+    "type": "play",
+    "value1": 130.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test2",
+    "type": "alive",
+    "value1": 180.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test3",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test3",
+    "type": "jump",
+    "value1": 30.0,
+    "value2": 50.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test3",
+    "type": "pause",
+    "value1": 70.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test3",
+    "type": "jump",
+    "value1": 70.0,
+    "value2": 90.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test3",
+    "type": "play",
+    "value1": 90.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test3",
+    "type": "pause",
+    "value1": 120.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test4",
+    "type": "play",
+    "value1": 100.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test4",
+    "type": "jump",
+    "value1": 120.0,
+    "value2": 80.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test4",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test4",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 40.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test4",
+    "type": "play",
+    "value1": 40.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test4",
+    "type": "pause",
+    "value1": 60.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test5",
+    "type": "play",
+    "value1": 100.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test5",
+    "type": "jump",
+    "value1": 120.0,
+    "value2": 80.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test5",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test5",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 10.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test5",
+    "type": "play",
+    "value1": 10.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test5",
+    "type": "alive",
+    "value1": 60.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test6",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test6",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test6",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test6",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test6",
+    "type": "play",
+    "value1": 130.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test6",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test6",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test6",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 20.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test6",
+    "type": "play",
+    "value1": 20.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test6",
+    "type": "pause",
+    "value1": 40.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 10.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
+    "type": "play",
+    "value1": 10.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
+    "type": "alive",
+    "value1": 60.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "speed",
+    "value1": 10.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "jump",
+    "value1": 20.0,
+    "value2": 70.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 10.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "play",
+    "value1": 10.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "speed",
+    "value1": 20.0
+}{
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
+    "type": "alive",
+    "value1": 60.0
+}{
+    "user_id": "jumps_info_test",
+    "session_id": "jumps_info_test",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "jumps_info_test",
+    "session_id": "jumps_info_test",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0,
+    "value3": "click_or_drag"
+}{
+    "user_id": "jumps_info_test",
+    "session_id": "jumps_info_test",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "jumps_info_test",
+    "session_id": "jumps_info_test",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0,
+    "value3": "click_or_drag"
+}{
+    "user_id": "jumps_info_test",
+    "session_id": "jumps_info_test",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0,
+    "value3": "click_or_drag"
+}{
+    "user_id": "jumps_info_test",
+    "session_id": "jumps_info_test",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "jumps_info_test",
+    "session_id": "jumps_info_test",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 10.0,
+    "value3": "keyframe"
+}{
+    "user_id": "jumps_info_test",
+    "session_id": "jumps_info_test",
+    "type": "play",
+    "value1": 10.0
+}{
+    "user_id": "jumps_info_test",
+    "session_id": "jumps_info_test",
+    "type": "alive",
+    "value1": 60.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session1",
+    "type": "title",
+    "value1": "lesson1",
+    "value2": "course1"
+}{
+    "user_id": "user1",
+    "session_id": "user1-session1",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session1",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session1",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session1",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session1",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session1",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session1",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 10.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session1",
+    "type": "play",
+    "value1": 10.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session1",
+    "type": "alive",
+    "value1": 60.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "title",
+    "value1": "lesson2",
+    "value2": "course1"
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "play",
+    "value1": 130.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 20.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "play",
+    "value1": 20.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session2",
+    "type": "pause",
+    "value1": 40.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session3",
+    "type": "title",
+    "value1": "lesson3",
+    "value2": "course1"
+}{
+    "user_id": "user1",
+    "session_id": "user1-session3",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session3",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session3",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session3",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session3",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session3",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session3",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 10.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session3",
+    "type": "play",
+    "value1": 10.0
+}{
+    "user_id": "user1",
+    "session_id": "user1-session3",
+    "type": "alive",
+    "value1": 60.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session1",
+    "type": "title",
+    "value1": "lesson1",
+    "value2": "course1"
+}{
+    "user_id": "user2",
+    "session_id": "user2-session1",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session1",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session1",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session1",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session1",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session1",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session1",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 10.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session1",
+    "type": "play",
+    "value1": 10.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session1",
+    "type": "alive",
+    "value1": 60.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "title",
+    "value1": "lesson2",
+    "value2": "course1"
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "play",
+    "value1": 130.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 20.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "play",
+    "value1": 20.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session2",
+    "type": "pause",
+    "value1": 40.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session3",
+    "type": "title",
+    "value1": "lesson3",
+    "value2": "course1"
+}{
+    "user_id": "user2",
+    "session_id": "user2-session3",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session3",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session3",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session3",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session3",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session3",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session3",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 10.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session3",
+    "type": "play",
+    "value1": 10.0
+}{
+    "user_id": "user2",
+    "session_id": "user2-session3",
+    "type": "alive",
+    "value1": 60.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session1",
+    "type": "title",
+    "value1": "lesson1",
+    "value2": "course1"
+}{
+    "user_id": "user3",
+    "session_id": "user3-session1",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session1",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session1",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session1",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session1",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session1",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session1",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 10.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session1",
+    "type": "play",
+    "value1": 10.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session1",
+    "type": "alive",
+    "value1": 60.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "title",
+    "value1": "lesson2",
+    "value2": "course1"
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "play",
+    "value1": 130.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 20.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "play",
+    "value1": 20.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session2",
+    "type": "pause",
+    "value1": 40.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session3",
+    "type": "title",
+    "value1": "lesson3",
+    "value2": "course1"
+}{
+    "user_id": "user3",
+    "session_id": "user3-session3",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session3",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session3",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session3",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session3",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session3",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session3",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 10.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session3",
+    "type": "play",
+    "value1": 10.0
+}{
+    "user_id": "user3",
+    "session_id": "user3-session3",
+    "type": "alive",
+    "value1": 60.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "title",
+    "value1": "lesson1",
+    "value2": "course1"
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 20.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 20.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 40.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 310.0,
+    "value2": 370.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 390.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 390.0,
+    "value2": 430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 450.0,
+    "value2": 380.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 400.0,
+    "value2": 320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 340.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 610.0,
+    "value2": 670.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 690.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 690.0,
+    "value2": 730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 750.0,
+    "value2": 680.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 700.0,
+    "value2": 620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 640.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 910.0,
+    "value2": 970.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 990.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 990.0,
+    "value2": 1030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 1030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1050.0,
+    "value2": 980.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 1000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1000.0,
+    "value2": 920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 940.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 1200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1210.0,
+    "value2": 1270.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 1290.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1290.0,
+    "value2": 1330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 1330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1350.0,
+    "value2": 1280.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 1300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1300.0,
+    "value2": 1220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 1220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 1240.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 1500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1510.0,
+    "value2": 1570.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 1590.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1590.0,
+    "value2": 1630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 1630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1650.0,
+    "value2": 1580.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 1600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1600.0,
+    "value2": 1520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 1520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 1540.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 1800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1810.0,
+    "value2": 1870.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 1890.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1890.0,
+    "value2": 1930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 1930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1950.0,
+    "value2": 1880.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 1900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 1900.0,
+    "value2": 1820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 1820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 1840.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 2100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2110.0,
+    "value2": 2170.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 2190.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2190.0,
+    "value2": 2230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 2230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2250.0,
+    "value2": 2180.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 2200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2200.0,
+    "value2": 2120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 2120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 2140.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 2400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2410.0,
+    "value2": 2470.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 2490.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2490.0,
+    "value2": 2530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 2530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2550.0,
+    "value2": 2480.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 2500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2500.0,
+    "value2": 2420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 2420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 2440.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 2700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2710.0,
+    "value2": 2770.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 2790.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2790.0,
+    "value2": 2830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 2830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2850.0,
+    "value2": 2780.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 2800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 2800.0,
+    "value2": 2720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 2720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 2740.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3010.0,
+    "value2": 3070.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3090.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3090.0,
+    "value2": 3130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3150.0,
+    "value2": 3080.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3100.0,
+    "value2": 3020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3040.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3310.0,
+    "value2": 3370.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3390.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3390.0,
+    "value2": 3430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3450.0,
+    "value2": 3380.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3400.0,
+    "value2": 3320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3340.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3610.0,
+    "value2": 3670.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3690.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3690.0,
+    "value2": 3730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3750.0,
+    "value2": 3680.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3700.0,
+    "value2": 3620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3640.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3910.0,
+    "value2": 3970.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3990.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 3990.0,
+    "value2": 4030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 4030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4050.0,
+    "value2": 3980.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 4000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4000.0,
+    "value2": 3920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 3920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 3940.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 4200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4210.0,
+    "value2": 4270.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 4290.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4290.0,
+    "value2": 4330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 4330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4350.0,
+    "value2": 4280.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 4300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4300.0,
+    "value2": 4220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 4220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 4240.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 4500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4510.0,
+    "value2": 4570.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 4590.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4590.0,
+    "value2": 4630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 4630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4650.0,
+    "value2": 4580.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 4600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4600.0,
+    "value2": 4520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 4520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 4540.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 4800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4810.0,
+    "value2": 4870.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 4890.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4890.0,
+    "value2": 4930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 4930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4950.0,
+    "value2": 4880.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 4900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 4900.0,
+    "value2": 4820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 4820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 4840.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 5100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5110.0,
+    "value2": 5170.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 5190.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5190.0,
+    "value2": 5230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 5230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5250.0,
+    "value2": 5180.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 5200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5200.0,
+    "value2": 5120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 5120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 5140.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 5400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5410.0,
+    "value2": 5470.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 5490.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5490.0,
+    "value2": 5530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 5530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5550.0,
+    "value2": 5480.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 5500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5500.0,
+    "value2": 5420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 5420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 5440.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 5700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5710.0,
+    "value2": 5770.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 5790.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5790.0,
+    "value2": 5830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 5830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5850.0,
+    "value2": 5780.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 5800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 5800.0,
+    "value2": 5720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 5720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 5740.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6010.0,
+    "value2": 6070.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6090.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6090.0,
+    "value2": 6130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6150.0,
+    "value2": 6080.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6100.0,
+    "value2": 6020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6040.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6310.0,
+    "value2": 6370.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6390.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6390.0,
+    "value2": 6430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6450.0,
+    "value2": 6380.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6400.0,
+    "value2": 6320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6340.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6610.0,
+    "value2": 6670.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6690.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6690.0,
+    "value2": 6730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6750.0,
+    "value2": 6680.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6700.0,
+    "value2": 6620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6640.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6910.0,
+    "value2": 6970.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6990.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 6990.0,
+    "value2": 7030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 7030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 7050.0,
+    "value2": 6980.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 7000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "jump",
+    "value1": 7000.0,
+    "value2": 6920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "play",
+    "value1": 6920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session12",
+    "type": "pause",
+    "value1": 6940.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "title",
+    "value1": "lesson1",
+    "value2": "course1"
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 20.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 20.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 40.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 310.0,
+    "value2": 370.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 390.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 390.0,
+    "value2": 430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 450.0,
+    "value2": 380.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 400.0,
+    "value2": 320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 340.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 610.0,
+    "value2": 670.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 690.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 690.0,
+    "value2": 730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 750.0,
+    "value2": 680.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 700.0,
+    "value2": 620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 640.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 910.0,
+    "value2": 970.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 990.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 990.0,
+    "value2": 1030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 1030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1050.0,
+    "value2": 980.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 1000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1000.0,
+    "value2": 920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 940.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 1200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1210.0,
+    "value2": 1270.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 1290.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1290.0,
+    "value2": 1330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 1330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1350.0,
+    "value2": 1280.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 1300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1300.0,
+    "value2": 1220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 1220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 1240.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 1500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1510.0,
+    "value2": 1570.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 1590.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1590.0,
+    "value2": 1630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 1630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1650.0,
+    "value2": 1580.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 1600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1600.0,
+    "value2": 1520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 1520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 1540.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 1800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1810.0,
+    "value2": 1870.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 1890.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1890.0,
+    "value2": 1930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 1930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1950.0,
+    "value2": 1880.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 1900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 1900.0,
+    "value2": 1820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 1820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 1840.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 2100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2110.0,
+    "value2": 2170.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 2190.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2190.0,
+    "value2": 2230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 2230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2250.0,
+    "value2": 2180.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 2200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2200.0,
+    "value2": 2120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 2120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 2140.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 2400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2410.0,
+    "value2": 2470.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 2490.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2490.0,
+    "value2": 2530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 2530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2550.0,
+    "value2": 2480.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 2500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2500.0,
+    "value2": 2420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 2420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 2440.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 2700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2710.0,
+    "value2": 2770.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 2790.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2790.0,
+    "value2": 2830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 2830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2850.0,
+    "value2": 2780.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 2800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 2800.0,
+    "value2": 2720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 2720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 2740.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3010.0,
+    "value2": 3070.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3090.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3090.0,
+    "value2": 3130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3150.0,
+    "value2": 3080.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3100.0,
+    "value2": 3020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3040.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3310.0,
+    "value2": 3370.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3390.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3390.0,
+    "value2": 3430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3450.0,
+    "value2": 3380.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3400.0,
+    "value2": 3320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3340.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3610.0,
+    "value2": 3670.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3690.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3690.0,
+    "value2": 3730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3750.0,
+    "value2": 3680.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3700.0,
+    "value2": 3620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3640.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3910.0,
+    "value2": 3970.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3990.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 3990.0,
+    "value2": 4030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 4030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4050.0,
+    "value2": 3980.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 4000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4000.0,
+    "value2": 3920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 3920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 3940.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 4200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4210.0,
+    "value2": 4270.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 4290.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4290.0,
+    "value2": 4330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 4330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4350.0,
+    "value2": 4280.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 4300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4300.0,
+    "value2": 4220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 4220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 4240.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 4500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4510.0,
+    "value2": 4570.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 4590.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4590.0,
+    "value2": 4630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 4630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4650.0,
+    "value2": 4580.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 4600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4600.0,
+    "value2": 4520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 4520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 4540.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 4800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4810.0,
+    "value2": 4870.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 4890.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4890.0,
+    "value2": 4930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 4930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4950.0,
+    "value2": 4880.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 4900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 4900.0,
+    "value2": 4820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 4820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 4840.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 5100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5110.0,
+    "value2": 5170.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 5190.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5190.0,
+    "value2": 5230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 5230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5250.0,
+    "value2": 5180.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 5200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5200.0,
+    "value2": 5120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 5120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 5140.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 5400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5410.0,
+    "value2": 5470.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 5490.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5490.0,
+    "value2": 5530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 5530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5550.0,
+    "value2": 5480.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 5500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5500.0,
+    "value2": 5420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 5420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 5440.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 5700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5710.0,
+    "value2": 5770.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 5790.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5790.0,
+    "value2": 5830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 5830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5850.0,
+    "value2": 5780.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 5800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 5800.0,
+    "value2": 5720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 5720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 5740.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6010.0,
+    "value2": 6070.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6090.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6090.0,
+    "value2": 6130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6150.0,
+    "value2": 6080.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6100.0,
+    "value2": 6020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6040.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6310.0,
+    "value2": 6370.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6390.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6390.0,
+    "value2": 6430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6450.0,
+    "value2": 6380.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6400.0,
+    "value2": 6320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6340.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6610.0,
+    "value2": 6670.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6690.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6690.0,
+    "value2": 6730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6750.0,
+    "value2": 6680.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6700.0,
+    "value2": 6620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6640.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6910.0,
+    "value2": 6970.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6990.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 6990.0,
+    "value2": 7030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 7030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 7050.0,
+    "value2": 6980.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 7000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "jump",
+    "value1": 7000.0,
+    "value2": 6920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "play",
+    "value1": 6920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session22",
+    "type": "pause",
+    "value1": 6940.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "title",
+    "value1": "lesson1",
+    "value2": "course1"
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 0.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 10.0,
+    "value2": 70.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 90.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 90.0,
+    "value2": 130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 150.0,
+    "value2": 80.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 100.0,
+    "value2": 20.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 20.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 40.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 310.0,
+    "value2": 370.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 390.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 390.0,
+    "value2": 430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 450.0,
+    "value2": 380.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 400.0,
+    "value2": 320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 340.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 610.0,
+    "value2": 670.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 690.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 690.0,
+    "value2": 730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 750.0,
+    "value2": 680.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 700.0,
+    "value2": 620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 640.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 910.0,
+    "value2": 970.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 990.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 990.0,
+    "value2": 1030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 1030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1050.0,
+    "value2": 980.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 1000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1000.0,
+    "value2": 920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 940.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 1200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1210.0,
+    "value2": 1270.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 1290.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1290.0,
+    "value2": 1330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 1330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1350.0,
+    "value2": 1280.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 1300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1300.0,
+    "value2": 1220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 1220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 1240.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 1500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1510.0,
+    "value2": 1570.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 1590.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1590.0,
+    "value2": 1630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 1630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1650.0,
+    "value2": 1580.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 1600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1600.0,
+    "value2": 1520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 1520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 1540.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 1800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1810.0,
+    "value2": 1870.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 1890.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1890.0,
+    "value2": 1930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 1930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1950.0,
+    "value2": 1880.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 1900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 1900.0,
+    "value2": 1820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 1820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 1840.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 2100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2110.0,
+    "value2": 2170.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 2190.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2190.0,
+    "value2": 2230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 2230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2250.0,
+    "value2": 2180.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 2200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2200.0,
+    "value2": 2120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 2120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 2140.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 2400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2410.0,
+    "value2": 2470.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 2490.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2490.0,
+    "value2": 2530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 2530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2550.0,
+    "value2": 2480.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 2500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2500.0,
+    "value2": 2420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 2420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 2440.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 2700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2710.0,
+    "value2": 2770.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 2790.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2790.0,
+    "value2": 2830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 2830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2850.0,
+    "value2": 2780.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 2800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 2800.0,
+    "value2": 2720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 2720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 2740.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3010.0,
+    "value2": 3070.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3090.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3090.0,
+    "value2": 3130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3150.0,
+    "value2": 3080.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3100.0,
+    "value2": 3020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3040.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3310.0,
+    "value2": 3370.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3390.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3390.0,
+    "value2": 3430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3450.0,
+    "value2": 3380.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3400.0,
+    "value2": 3320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3340.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3610.0,
+    "value2": 3670.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3690.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3690.0,
+    "value2": 3730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3750.0,
+    "value2": 3680.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3700.0,
+    "value2": 3620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3640.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3910.0,
+    "value2": 3970.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3990.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 3990.0,
+    "value2": 4030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 4030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4050.0,
+    "value2": 3980.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 4000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4000.0,
+    "value2": 3920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 3920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 3940.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 4200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4210.0,
+    "value2": 4270.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 4290.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4290.0,
+    "value2": 4330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 4330.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4350.0,
+    "value2": 4280.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 4300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4300.0,
+    "value2": 4220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 4220.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 4240.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 4500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4510.0,
+    "value2": 4570.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 4590.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4590.0,
+    "value2": 4630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 4630.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4650.0,
+    "value2": 4580.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 4600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4600.0,
+    "value2": 4520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 4520.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 4540.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 4800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4810.0,
+    "value2": 4870.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 4890.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4890.0,
+    "value2": 4930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 4930.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4950.0,
+    "value2": 4880.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 4900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 4900.0,
+    "value2": 4820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 4820.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 4840.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 5100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5110.0,
+    "value2": 5170.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 5190.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5190.0,
+    "value2": 5230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 5230.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5250.0,
+    "value2": 5180.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 5200.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5200.0,
+    "value2": 5120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 5120.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 5140.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 5400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5410.0,
+    "value2": 5470.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 5490.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5490.0,
+    "value2": 5530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 5530.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5550.0,
+    "value2": 5480.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 5500.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5500.0,
+    "value2": 5420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 5420.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 5440.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 5700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5710.0,
+    "value2": 5770.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 5790.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5790.0,
+    "value2": 5830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 5830.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5850.0,
+    "value2": 5780.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 5800.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 5800.0,
+    "value2": 5720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 5720.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 5740.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6010.0,
+    "value2": 6070.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6090.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6090.0,
+    "value2": 6130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6130.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6150.0,
+    "value2": 6080.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6100.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6100.0,
+    "value2": 6020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6020.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6040.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6300.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6310.0,
+    "value2": 6370.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6390.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6390.0,
+    "value2": 6430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6430.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6450.0,
+    "value2": 6380.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6400.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6400.0,
+    "value2": 6320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6320.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6340.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6600.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6610.0,
+    "value2": 6670.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6690.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6690.0,
+    "value2": 6730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6730.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6750.0,
+    "value2": 6680.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6700.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6700.0,
+    "value2": 6620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6620.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6640.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6900.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6910.0,
+    "value2": 6970.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6990.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 6990.0,
+    "value2": 7030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 7030.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 7050.0,
+    "value2": 6980.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 7000.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "jump",
+    "value1": 7000.0,
+    "value2": 6920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "play",
+    "value1": 6920.0
+}{
+    "user_id": "user2",
+    "session_id": "user3-session32",
+    "type": "pause",
+    "value1": 6940.0
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session1",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session1",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session1",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session1",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session1",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session2",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session2",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session2",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session2",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session2",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session3",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session3",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session3",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session3",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user4",
+    "session_id": "user4-session3",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session1",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session1",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session1",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session1",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session1",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session2",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session2",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session2",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session2",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session2",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session3",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session3",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session3",
+    "value1": "handwritten"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session3",
+    "value1": "text"
+}{
+    "type": "note",
+    "user_id": "user5",
+    "session_id": "user5-session3",
+    "value1": "text"
+}
