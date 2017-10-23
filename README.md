@@ -1,8 +1,8 @@
 # LoDEg
 Log analytics for the LODE platform. Further details will be added later.
 
-## pythonML
-pythonML is the name of the library on which the project runs. It exposes an facade API through the class LodegSystem. Please refer to the library [documentation](/docs/html/index.html).
+## lodegML
+lodegML is the name of the library on which the project runs. It exposes an facade API through the class LodegSystem. Please refer to the library [documentation](/docs/html/index.html).
 
 ## Requirements
 
