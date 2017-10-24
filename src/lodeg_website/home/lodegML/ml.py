@@ -13,10 +13,13 @@ import numpy as np
 
 class DataFrameSelector(BaseEstimator, TransformerMixin):
     """Selector used in pipelines along with dataframes"""
+
     def __init__(self, attribute_names):
         self.attribute_names = attribute_names
+
     def fit(self, X, y=None):
         return self
+
     def transform(self, X):
         return X[self.attribute_names].values
 
@@ -26,18 +29,19 @@ _stats_whitelist = [
     'number_of_jumps',
     'average_jumps_length',
     'total_jumps_length'
-]   
+]
 
 _num_attribs = _stats_whitelist
 _cat_attribs = []
 
+
 def migrateStatsToDataFrames(courseInfo: dict, mem_opt=True):
     """Migrate user stats to course level dataframe.
-    
+
     Args:
         courseInfo (dict):  The dictionary that will be populated with the computed statistic;
         mem_opt (bool): If set, user level statistics are discarded during the migration to the dataframe.
-    """    
+    """
     series_dict = {}
     for user, userInfo in courseInfo['users'].items():
         # Populate a dataframe with the required statistics
@@ -47,7 +51,7 @@ def migrateStatsToDataFrames(courseInfo: dict, mem_opt=True):
             if key in _stats_whitelist:
                 keys.append(key)
                 values.append(value)
-        series = pd.Series(values, index = keys)
+        series = pd.Series(values, index=keys)
         series = series.T
         series_dict[user] = series
         # Delete userInfo stats if mem_opt is True
@@ -56,47 +60,48 @@ def migrateStatsToDataFrames(courseInfo: dict, mem_opt=True):
                 if stat in userInfo:
                     del userInfo[stat]
     courseInfo['stats_dframe'] = pd.DataFrame(series_dict).T
-    
-            
+
+
 def executeUserClustering(courseInfo: dict):
     """This function executes the clustering algorithm on the course users
-    
+
     Note:
         In order to allow this funtion to work, it has to be already populated with the stats_dframe (see migrateStatToDataFrate())
-        
+
     Args:
         courseInfo (dict):  The dictionary that will be populated with the computed statistic;
     """
-    
+
     if len(courseInfo['users']) < 2:
         return
-    
+
     # Create pipeline for numerics values
-    num_pipeline = Pipeline([        
-        ('selector', DataFrameSelector(_num_attribs)), # Select numeric data        
-        ('imputer', Imputer(strategy="median")), # Fill missing data
-        ('std_scaler', StandardScaler()) # Scale data (required by the clustering algorithms)
+    num_pipeline = Pipeline([
+        ('selector', DataFrameSelector(_num_attribs)),  # Select numeric data
+        ('imputer', Imputer(strategy="median")),  # Fill missing data
+        # Scale data (required by the clustering algorithms)
+        ('std_scaler', StandardScaler())
     ])
-    
+
     # Create pipeline for categorical attributes (not needed at the moment)
     cat_pipeline = Pipeline([
         ('selector', DataFrameSelector(_cat_attribs)),
         ('label_binarizer', LabelBinarizer()),
     ])
-        
+
     # Create full pipeline
     full_pipeline = FeatureUnion(transformer_list=[
         ("num_pipeline", num_pipeline),
         ("cat_pipeline", cat_pipeline)
     ])
-    
+
     # Get the data
-    dataframe = courseInfo['stats_dframe'] 
-    
+    dataframe = courseInfo['stats_dframe']
+
     # Add noise for testing
     #noise = np.random.normal(100,10, dataframe.shape)
     #dataframe += noise
-    
+
     # Run pipeline
     if _num_attribs != [] and _cat_attribs != []:
         X = full_pipeline.fit_transform(dataframe)
@@ -104,48 +109,52 @@ def executeUserClustering(courseInfo: dict):
         X = num_pipeline.fit_transform(dataframe)
     elif _cat_attribs != []:
         X = cat_pipeline.fit_transform(dataframe)
-        
+
     # ============
     # Set up cluster parameters
     # ============
-    params = {  'quantile': .3,
-                'eps': .3, # This can be modified
-                'damping': .9,
-                'preference': -200,
-                'n_neighbors': 1,
-                'n_clusters': 3    
-    }
-    
+    params = {'quantile': .3,
+              'eps': .3,  # This can be modified
+              'damping': .9,
+              'preference': -200,
+              'n_neighbors': 1,
+              'n_clusters': 3
+              }
+
     # ============
     # Set up GridSearch parameters
     # ============
-    
+
     param_grid = [{
         'n_neighbors': np.arange(2, 10),
-        'n_clusters': np.arange(2, 5)      
+        'n_clusters': np.arange(2, 5)
     }]
-    
 
-    
     # estimate bandwidth for mean shift
     #bandwidth = cluster.estimate_bandwidth(X, quantile=params['quantile'])
     # connectivity matrix for structured Ward
-    connectivity = kneighbors_graph(X, n_neighbors=params['n_neighbors'], include_self=False)
+    connectivity = kneighbors_graph(
+        X, n_neighbors=params['n_neighbors'], include_self=False)
     # make connectivity symmetric
-    connectivity = 0.5 * (connectivity + connectivity.T)  
+    connectivity = 0.5 * (connectivity + connectivity.T)
 
     # ============
     # Create algorithms
     # ============
     #ms = cluster.MeanShift(bandwidth=bandwidth, bin_seeding=True)
     two_means = cluster.MiniBatchKMeans(n_clusters=params['n_clusters'])
-    ward = cluster.AgglomerativeClustering(n_clusters=params['n_clusters'], linkage='ward', connectivity=connectivity)
-    spectral = cluster.SpectralClustering(n_clusters=params['n_clusters'], eigen_solver='arpack', affinity="nearest_neighbors")
+    ward = cluster.AgglomerativeClustering(
+        n_clusters=params['n_clusters'], linkage='ward', connectivity=connectivity)
+    spectral = cluster.SpectralClustering(n_clusters=params[
+                                          'n_clusters'], eigen_solver='arpack', affinity="nearest_neighbors")
     dbscan = cluster.DBSCAN(eps=params['eps'])
-    affinity_propagation = cluster.AffinityPropagation(damping=params['damping'], preference=params['preference'])
-    average_linkage = cluster.AgglomerativeClustering(linkage="average", affinity="cityblock", n_clusters=params['n_clusters'],         connectivity=connectivity)
+    affinity_propagation = cluster.AffinityPropagation(
+        damping=params['damping'], preference=params['preference'])
+    average_linkage = cluster.AgglomerativeClustering(linkage="average", affinity="cityblock", n_clusters=params[
+                                                      'n_clusters'],         connectivity=connectivity)
     birch = cluster.Birch(n_clusters=params['n_clusters'])
-    gmm = mixture.GaussianMixture(n_components=params['n_clusters'], covariance_type='full')  
+    gmm = mixture.GaussianMixture(
+        n_components=params['n_clusters'], covariance_type='full')
 
     clustering_algorithms = (
         ('MiniBatchKMeans', two_means),
@@ -166,10 +175,9 @@ def executeUserClustering(courseInfo: dict):
     algorithm_execution_time = {}
     clustering_results = {}
 
-   
     for name, algorithm in clustering_algorithms:
         t0 = time.time()
-        
+
         # catch warnings related to kneighbors_graph
         with warnings.catch_warnings():
             warnings.filterwarnings(
@@ -199,7 +207,6 @@ def executeUserClustering(courseInfo: dict):
         # Save execution time for debugging purposes
         algorithm_execution_time[name] = t1 - t0
 
-
     # ============
     # Save results
     # ============
@@ -208,4 +215,3 @@ def executeUserClustering(courseInfo: dict):
         'clustering_results': clustering_results,
         'execution_time': algorithm_execution_time
     }
-    

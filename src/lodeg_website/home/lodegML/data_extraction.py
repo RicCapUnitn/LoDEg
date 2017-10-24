@@ -4,7 +4,7 @@ from collections import Counter
 import dateutil.tz
 from bson.objectid import ObjectId
 
-from ..lodegML import utility_queries as utils
+from ..lodegML import utility_queries as utils  # migrate
 
 ############################
 # Session level extraction #
@@ -52,7 +52,7 @@ def play_pause_extraction(sessionInfo: dict):
 
 def session_coverage_extraction(sessionInfo: dict):
     """This function extracts the video coverage of the session.
-    
+
     Note: it adds the session_coverage and the total_time_watched to the sessionInfo
 
      Args:
@@ -116,12 +116,12 @@ def session_coverage_extraction(sessionInfo: dict):
     total_time_watched = 0.
     for interval in intervals:
         total_time_watched += interval[1] - interval[0]
-        
+
     # Add the video coverage
-    sessionInfo['session_coverage'] = intervals    
+    sessionInfo['session_coverage'] = intervals
     # Add the total_time_watched
     sessionInfo['total_time_watched'] = total_time_watched
-    
+
 
 def jumps_info_extraction(sessionInfo: dict):
     """This function extracts information of jumps for the session.
@@ -290,8 +290,8 @@ def user_notes_info_extraction(userInfo: dict):
     userInfo['notes_per_type'] = notes_per_type
     userInfo['notes_over_session_duration'] = number_of_notes / \
         total_duration
-        
-        
+
+
 def user_jump_info_extraction(userInfo: dict):
     """This function extracts information of jumps for the user.
 
@@ -300,30 +300,31 @@ def user_jump_info_extraction(userInfo: dict):
         - number of jumps/type (click_or_drag,keyframe,note)
         - total jumps length
         - average jumps length
-        
+
      Args:
         userSession (dict): The dictionary that will be populated with the computed statistic.
     """
-    
+
     number_of_jumps = 0
     jumps_per_type = {'click_or_drag': 0, 'keyframe': 0, 'note': 0}
     total_duration = 0
     total_jumps_length = 0
     average_jumps_length = 0
-    
+
     for sessionInfo in userInfo['sessions'].values():
         number_of_jumps += sessionInfo['number_of_jumps']
-        jumps_per_type['click_or_drag'] += sessionInfo['jumps_per_type']['click_or_drag']
+        jumps_per_type[
+            'click_or_drag'] += sessionInfo['jumps_per_type']['click_or_drag']
         jumps_per_type['keyframe'] += sessionInfo['jumps_per_type']['keyframe']
         jumps_per_type['note'] += sessionInfo['jumps_per_type']['note']
         total_jumps_length += sessionInfo['total_jumps_length']
         total_duration += sessionInfo['session_duration']
-        
+
     userInfo['number_of_jumps'] = number_of_jumps
     userInfo['jumps_per_type'] = jumps_per_type
     userInfo['total_jumps_length'] = total_jumps_length
     userInfo['average_jumps_length'] = total_jumps_length / total_duration
-    
+
 
 def user_lessons_visualization_extraction(userInfo: dict):
     """Extract for each lesson when the user watched the lesson.
@@ -346,11 +347,11 @@ def user_lessons_visualization_extraction(userInfo: dict):
     except KeyError:
         # Some statistics are missing (dates or sessionInfo)
         userInfo['lessons_visualization'] = {}
-        
-        
+
+
 def day_session_distribution_extraction(userInfo: dict):
     """Extract the number of sessions for each hour of the day.
-    
+
     Args:
         userInfo (dict): The dictionaty that will be populated with the computed statistic. 
     """
@@ -359,8 +360,8 @@ def day_session_distribution_extraction(userInfo: dict):
         hour = sessionInfo['date'].hour
         day_distribution[hour] += 1
     userInfo['day_distribution'] = day_distribution
-    
-    
+
+
 ###########################
 # Course level extraction #
 ###########################
@@ -446,10 +447,11 @@ def course_lessons_visualization_extraction(courseInfo: dict):
     except KeyError:
         # Some statistics are missing
         courseInfo['lessons_visualization'] = {}
-        
+
+
 def course_day_distribution_extraction(courseInfo: dict):
     """Extract the number of sessions for each hour of the day.
-    
+
     Args:
         courseInfo (dict): The dictionaty that will be populated with the computed statistic. 
     """
@@ -459,7 +461,7 @@ def course_day_distribution_extraction(courseInfo: dict):
         day_distribution = np.add(day_distribution, user_distribution)
     courseInfo['day_distribution'] = day_distribution
 
-    
+
 ###########################
 # System level extraction #
 ###########################
@@ -530,10 +532,11 @@ def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course
             # Add coverage percentage
             try:
                 duration = lessons_durations[sessionInfo['lesson_id']]
-                sessionInfo['coverage_percentage'] = sessionInfo['total_time_watched'] / duration
+                sessionInfo['coverage_percentage'] = sessionInfo[
+                    'total_time_watched'] / duration
             except KeyError:
                 sessionInfo['coverage_percentage'] = 'unknown'
-                
+
     # Extract userInfo level statistics
     # user_lessons_coverage
     compute_lessons_coverage_for_single_user(userInfo, lessons_durations)
@@ -607,7 +610,7 @@ def execute_courseInfo_extraction(logs_collection, lessons_collection, course: s
     # Execute notes info extraction
     course_notes_info_extraction(courseInfo)
     # Lessons_visualization extraction
-    course_lessons_visualization_extraction(courseInfo)    
+    course_lessons_visualization_extraction(courseInfo)
     # Get sessions day distribution
     course_day_distribution_extraction(courseInfo)
     # Add update time

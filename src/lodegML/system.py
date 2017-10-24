@@ -1,9 +1,9 @@
-from pythonML import utility_queries as utils
-from pythonML import auto_plot
-from pythonML import data_extraction
-from pythonML import connection_to_mongo
-from pythonML import cache
-from pythonML import ml
+import utility_queries as utils  # migrate
+import auto_plot  # migrate
+import data_extraction  # migrate
+import connection_to_mongo  # migrate
+import ml  # migrate
+
 
 from django.http import HttpResponse
 import pandas as pd

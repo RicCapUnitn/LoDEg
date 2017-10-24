@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Move to the parent folder
-cd ..
+# Create a backup
+mv -f src/lodeg_website/home/lodegML/*.py tools/migration_backups
 
-# Migrate
-sed -e 's/lodegML/..lodegML/g' *.py > *_test.py
-find . -type f -exec sed -i_test.py "s/foo/bar/g" {} \;
-find . -type f -name "*.txt" -print0 | xargs -0 sed -i "s/foo/bar/g"
+# Copy the library
+cp -f src/lodegML/*.py src/lodeg_website/home/lodegML
 
-find src/lodegML/ -type f -name "*.py" -print0 | xargs -0 sed -i "s/from ./from ..lodegMl/g"
+# Run the migration
+find src/lodeg_website/home/lodegML -type f -name "*.py" -print0 | xargs -0 sed -i "s/import\(.*migrate\)/from ..lodegML import\1/g" 
