@@ -4,7 +4,6 @@ from ..lodegML import data_extraction  # migrate
 from ..lodegML import connection_to_mongo  # migrate
 from ..lodegML import ml  # migrate
 
-
 from django.http import HttpResponse
 import pandas as pd
 import csv
@@ -26,7 +25,7 @@ class LodegSystem:
         'keep_session_data': False,
         'ml_mem_opt': False,  # Keep data both in dataframes and dictionaries
         'ml_autorun': True,  # Autorun the clustering algorith
-        'cache': 'sqlite'  # Default should be set to None or be always available
+        'cache': None  # Default should be set to None or be always available
     }
 
     # Low memory configuration
@@ -36,7 +35,7 @@ class LodegSystem:
         'keep_session_data': False,
         'ml_mem_opt': True,
         'ml_autorun': False,
-        'cache': 'sqlite'  # Default should be set to None or be always available
+        'cache': None  # Default should be set to None or be always available
     }
 
     # Web default configuration
@@ -49,6 +48,8 @@ class LodegSystem:
         'cache': 'sqlite'  # Default should be set to None or be always available
     }
 
+    _config = _config_default.copy()
+
     ##############
     # DECORATORS #
     ##############
@@ -56,18 +57,44 @@ class LodegSystem:
     def _cache_needed(func):
         def func_wrapper(self, *args, **kwargs):
             if self._config['cache']:
-                func(self, args, kwargs)
+                func(self, *args, **kwargs)
             else:
                 return 'You need to initialize a cache to run this method.'
         return func_wrapper
 
-    _config = _config_default.copy()
+    def _takes_config(pos_params: int, params: list):
+        """
+        Args:
+            pos_params (int): the number of position parameters (self included)
+        """
+        def func_decorator(func):
+            def func_wrapper(self, *args, **kwargs):
+                if len(args) > pos_params:
+                    return ('Wrong params call; config params should be set explicitly: param = value')
+                config_params = {}
+
+                # No config param has been provided
+                if kwargs is None:
+                    return func(self, *args, **{param: self._config[param] for param in params})
+
+                # There is at least one config param in the function call
+                for param in params:
+                    if param not in kwargs:
+                        config_params[param] = self._config[param]
+                    else:
+                        if kwargs[param] is None:
+                            config_params[param] = self._config[param]
+                        else:
+                            config_params[param] = kwargs[param]
+                return func(self, *args, **config_params)
+            return func_wrapper
+        return func_decorator
 
     #################
     # CLASS METHODS #
     #################
 
-    def __init__(self, modality: str = None, **kwargs,):
+    def __init__(self, modality: str = None, **kwargs):
         """ Object constructur, accepts config dictionary.
 
         Args:
@@ -98,9 +125,10 @@ class LodegSystem:
         # Get appropriate cache (or set default one if available)
         requested_cache = self._config['cache']
         if requested_cache is not None:
+            from ..lodegML import cache  # migrate
             # self.check_available_caches()
             # if requested_cache in available_caches:
-                # pass # get the appropriate cache somehow
+            # pass # get the appropriate cache somehow
             if requested_cache == 'sqlite':
                 self._cache = cache.CacheSQLite()
             else:
@@ -155,7 +183,8 @@ class LodegSystem:
         else:
             return 'never'
 
-    def extractUserData(self, course: str, user: str, keep_session_data=_config['keep_session_data']):
+    @_takes_config(3, ['keep_session_data'])
+    def extractUserData(self, course: str, user: str, keep_session_data: bool = None):
         """Extracts the statistics for the target user.
 
         Args:
@@ -169,7 +198,8 @@ class LodegSystem:
         courseInfo = self._systemInfo['courses'][course]
         # Check if the lessons_durations have already been computed
         if ('lessons_durations' not in courseInfo.keys()):
-            utils.get_lessons_durations(self._lessons, course, courseInfo)
+            utils.get_lessons_durations_and_registration_dates(
+                self._lessons, course, courseInfo)
         lessons_durations = courseInfo['lessons_durations']
         # Extract user data
         userInfo = {}
@@ -178,12 +208,12 @@ class LodegSystem:
         # Save the user in the system
         courseInfo['users'][user] = userInfo
 
+    @_takes_config(1, ['keep_session_data', 'keep_user_info', 'query_mem_opt', 'ml_autorun'])
     def executeCompleteExtraction(self,
-                                  keep_session_data=_config[
-                                      'keep_session_data'],
-                                  keep_user_info=_config['keep_user_info'],
-                                  query_mem_opt=_config['query_mem_opt'],
-                                  ml_autorun=_config['ml_autorun']):
+                                  keep_session_data: bool = None,
+                                  keep_user_info: bool = None,
+                                  query_mem_opt: bool = None,
+                                  ml_autorun: bool = None):
         """Extract the data and compute all the statistics.
 
         Args:
@@ -198,6 +228,7 @@ class LodegSystem:
         if ml_autorun:
             self.runMl()
 
+    @_cache_needed
     def collectDataFromDb(self, user: str = None):
         """Queries the db for already computed information.
 
@@ -212,6 +243,7 @@ class LodegSystem:
         self._systemInfo = self._cache.collectDataFromDb(
             self._systemInfo, user)
 
+    @_cache_needed
     def saveDataToDb(self, user: str = None):
         """Saves the current information into the database.
 
@@ -580,7 +612,7 @@ class LodegSystem:
             # complete extraction for this session
             sessionInfo = {}
             data_extraction.execute_sessionInfo_extraction(sessionInfo,
-                                                           logs_collection=self._logs, session=session, keep_session_data=_config['keep_session_data'])
+                                                           logs_collection=self._logs, session=session, keep_session_data=self._config['keep_session_data'])
             self._systemInfo['courses'][course]['users'][
                 user]['sessions'][session] = sessionInfo
 
@@ -747,10 +779,11 @@ class LodegSystem:
         for courseInfo in self._systemInfo['courses'].values():
             ml.executeUserClustering(courseInfo)
 
-    def migrateStatsToDataFrames(self, config=_config):
+    @_takes_config(1, ['ml_mem_opt'])
+    def migrateStatsToDataFrames(self, ml_mem_opt: bool = True):
         """Create a new dataframe for each course with a row for each user and set courseInfo['stats_dframe'] = DataFrame()
         """
         # if we are asked to keep memory low we discard statistics in dicts and
         # keep dataframes only
         for courseInfo in self._systemInfo['courses'].values():
-            ml.migrateStatsToDataFrames(courseInfo, config['ml_mem_opt'])
+            ml.migrateStatsToDataFrames(courseInfo, ml_mem_opt)

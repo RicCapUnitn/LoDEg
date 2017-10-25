@@ -145,7 +145,7 @@ def jumps_info_extraction(sessionInfo: dict):
         jumps_per_type[jump['value3']] = jumps_per_type[jump['value3']] + 1
 
     number_of_jumps = len(jump_list)
-    average_jumps_length = total_jumps_length / number_of_jumps
+    average_jumps_length = (total_jumps_length / number_of_jumps) if number_of_jumps > 0 else 0
 
     # Add values to sessionInfo
     sessionInfo['number_of_jumps'] = number_of_jumps
@@ -191,7 +191,7 @@ def compute_session_duration(sessionInfo: dict):
     first_timestamp = sessionInfo['data'][0]['_id'].generation_time
     last_timestamp = sessionInfo['data'][-1]['_id'].generation_time
     session_duration = (last_timestamp - first_timestamp).seconds
-    if (session_duration == 0):
+    if session_duration == 0:
         sessionInfo['session_duration'] = 1
     else:
         sessionInfo['session_duration'] = session_duration
@@ -319,11 +319,12 @@ def user_jump_info_extraction(userInfo: dict):
         jumps_per_type['note'] += sessionInfo['jumps_per_type']['note']
         total_jumps_length += sessionInfo['total_jumps_length']
         total_duration += sessionInfo['session_duration']
-
+        
     userInfo['number_of_jumps'] = number_of_jumps
     userInfo['jumps_per_type'] = jumps_per_type
     userInfo['total_jumps_length'] = total_jumps_length
-    userInfo['average_jumps_length'] = total_jumps_length / total_duration
+    userInfo['average_jumps_length'] = (total_jumps_length / number_of_jumps ) if number_of_jumps > 0 else 0
+    userInfo['jumps_over_total_duration'] = number_of_jumps / total_duration
 
 
 def user_lessons_visualization_extraction(userInfo: dict):
