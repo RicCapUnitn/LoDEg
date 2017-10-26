@@ -225,7 +225,7 @@ class LodegSystem:
             self._logs, self._lessons, systemInfo, keep_session_data, keep_user_info, query_mem_opt)
         self._systemInfo = systemInfo
         # If ml_autorun is run the ml algorithms
-        if ml_autorun:
+        if ml_autorun: 
             self.runMl()
 
     @_cache_needed
@@ -319,6 +319,8 @@ class LodegSystem:
                 # SystemInfo
                 title = 'system'
                 data = self._systemInfo
+                insertion_position = 'system'
+                insertion_key = ''
 
             # Select only requested keys
             if selected_keys:
@@ -338,12 +340,12 @@ class LodegSystem:
                     json.dump({
                         'insertion_position': insertion_position,
                         'insertion_key': insertion_key,
-                        'data': data}, fp, indent=4)
+                        'data': data}, fp, indent=4, skipkeys=True, cls = utils.BetterEncoder)
                 else:
                     json.dump({
                         'insertion_position': insertion_position,
                         'insertion_key': insertion_key,
-                        'data': data}, fp)
+                        'data': data}, fp, skipkeys=True, cls = utils.BetterEncoder)
 
         # Binary file
         elif export_type == 'bytes':
@@ -372,6 +374,8 @@ class LodegSystem:
             elif filename.endswith('.p'):
                 with open(filename, 'rb') as fp:
                     data = pickle.load(fp)
+            else:s
+                return 'File format not supported'
 
             try:
                 insertion_position = data['insertion_position']
@@ -381,7 +385,7 @@ class LodegSystem:
                 return 'The file is corrupted and does not contain the appropriate metadata'
 
         except FileNotFoundError:
-            return filename + ' not found'
+            return 'File not found: {}'.format(filename)
 
         # Try to see if the system can accept the data; if a key error is
         # rised, do nothing.
@@ -390,14 +394,14 @@ class LodegSystem:
 
         try:
             if insertion_position == 'session':
-                inserting_position = self._systemInfo['courses'][
+                insertion_position = self._systemInfo['courses'][
                     tokens[0]]['users'][tokens[1]]['sessions']
                 insertion_key = tokens[2]
             elif insertion_position == 'user':
-                inserting_position = self._systemInfo[
+                insertion_position = self._systemInfo[
                     'courses'][tokens[0]]['users']
                 insertion_key = tokens[1]
-            elif inserting_position == 'course':
+            elif insertion_position == 'course':
                 insertion_position = self._systemInfo['courses']
                 insertion_key = tokens[0]
             elif insertion_position == 'system':
@@ -417,7 +421,7 @@ class LodegSystem:
             if overwrite == False:
                 if insertion_key in inserting_position.keys():
                     return 'Import has overwrite conflict; try to launch with overwrite = True'
-            inserting_position[insertion_key] = data
+            insertion_position[insertion_key] = data
 
         # Everything worked nominally
         return 'Done'

@@ -1,9 +1,17 @@
-import datetime
+from datetime import datetime, date
 from dateutil import tz
 import dateutil.parser
 from bson.objectid import ObjectId
+import json
+    
+class BetterEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (datetime, date)):
+            return obj.isoformat()
+        # Let the base class default method raise the TypeError
+        return json.JSONEncoder.default(self, obj)    
 
-
+    
 def getTimeFromObjectId(oid: str):
     """Get the generation time from a MongoDB objcetId.
     
@@ -15,11 +23,11 @@ def getTimeFromObjectId(oid: str):
 
 def getDateTimeFromISO8601String(string):
     """Convert ISO8601 to datetime."""
-    datetime = dateutil.parser.parse(string)
-    return datetime
+    dt = dateutil.parser.parse(string)
+    return dt
 
 
-def utc_to_local_time(utc: datetime.datetime):  # <-------------Not working
+def utc_to_local_time(utc: datetime):  # <-------------Not working
     return utc.strftime('%Y-%m-%d %H:%M:%S %Z')
 
 

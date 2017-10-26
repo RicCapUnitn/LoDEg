@@ -1,5 +1,8 @@
 SHELL=/bin/sh #Shell da utilizzare per l'esecuzione dei comandi
 
+clean:
+	./tools/clean.sh
+
 to_web:
 	./tools/lib_to_web.sh
 
