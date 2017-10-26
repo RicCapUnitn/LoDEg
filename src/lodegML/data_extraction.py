@@ -537,6 +537,7 @@ def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course
                     'total_time_watched'] / duration
             except KeyError:
                 sessionInfo['coverage_percentage'] = 'unknown'
+                
 
     # Extract userInfo level statistics
     # user_lessons_coverage

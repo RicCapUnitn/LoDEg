@@ -280,9 +280,19 @@ class LodegSystem:
 
         return response
 
-    def export_data(self, export_type: str, pretty_printing: bool = False, course: str = None, user: str = None, session: str = None,
-                    selected_keys: list = None):
-        """Export the whole system or a part of it
+    def export_data(self, export_type: str, course: str = None, user: str = None, session: str = None,
+                    selected_keys: list = None, pretty_printing: bool = False):
+        """Export the whole system or a part of it.
+        
+        The json and the binary .p formats are supported.
+        
+        Args:
+            export_type (str): 'json' or 'bytes' export types are supported;
+            course (str): if set the target CourseInfo is exported;
+            user (str): if both course and user are set, the target UserInfo is exported;
+            session (str): if all course, user and session are set, the target SessionInfo is exported;
+            selected_keys (list of str): the keys (stats) that you want to export. Defaults to all;
+            pretty_printing (bool): if True json will be formatted with 4-spaces indentation. Defaults to False.        
         """
 
         data = None
@@ -357,7 +367,10 @@ class LodegSystem:
 
     def import_data(self, filename: str, overwrite: bool = False) -> str:
         """Import the whole system or a part of it
-
+        
+        Args:
+            filename (str): the filename (filepath) that we are importing;
+            overwrite (bool): if the imported information is already present in the system and overwrite = False then a message is returned and the file is not imported. Defaults to False.
         Returns:
             True if the import worked nominally; otherwise, False.
         """
@@ -374,7 +387,7 @@ class LodegSystem:
             elif filename.endswith('.p'):
                 with open(filename, 'rb') as fp:
                     data = pickle.load(fp)
-            else:s
+            else:
                 return 'File format not supported'
 
             try:
