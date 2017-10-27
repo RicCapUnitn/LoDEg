@@ -35,7 +35,7 @@ _num_attribs = _stats_whitelist
 _cat_attribs = []
 
 
-def migrateStatsToDataFrames(courseInfo: dict, mem_opt=True):
+def migrateStatsToDataFrames(courseInfo: dict, ml_mem_opt: bool = True):
     """Migrate user stats to course level dataframe.
 
     Args:
@@ -55,7 +55,7 @@ def migrateStatsToDataFrames(courseInfo: dict, mem_opt=True):
         series = series.T
         series_dict[user] = series
         # Delete userInfo stats if mem_opt is True
-        if mem_opt:
+        if ml_mem_opt:
             for stat in _stats_whitelist:
                 if stat in userInfo:
                     del userInfo[stat]

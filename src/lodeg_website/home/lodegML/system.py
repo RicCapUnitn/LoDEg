@@ -126,7 +126,7 @@ class LodegSystem:
         # Get appropriate cache (or set default one if available)
         requested_cache = self._config['cache']
         if requested_cache is not None:
-            from ..lodegML import cache  # migrate
+            from ..lodegML from ..lodegML import cache  # migrate
             # self.check_available_caches()
             # if requested_cache in available_caches:
             # pass # get the appropriate cache somehow
@@ -277,7 +277,7 @@ class LodegSystem:
 
         if 'stats_dframe' not in courseInfo:
             # Create the DataFrame
-            ml.migrateStatsToDataFrames(courseInfo, mem_opt=False)
+            ml.migrateStatsToDataFrames(courseInfo, ml_mem_opt=False)
 
         csv_export = courseInfo['stats_dframe'].to_csv()
         response.write(csv_export)
