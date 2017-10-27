@@ -25,6 +25,7 @@ class LodegSystem:
         'keep_session_data': False,
         'ml_mem_opt': False,  # Keep data both in dataframes and dictionaries
         'ml_autorun': True,  # Autorun the clustering algorith
+        # Initialization only
         'cache': None  # Default should be set to None or be always available
     }
 
@@ -152,7 +153,7 @@ class LodegSystem:
                 if type(self._config[param]) == type(param_value):
                     self._config[param] = param_value
 
-    def getData(self, course: str = None, user: str = None, session: str = None):
+    def getData(self, course: str = None, user: str = None, session: str = None, get_copy: bool = False):
         """Get a reference of a part of the system (default is SystemInfo)
 
         Args:
@@ -166,11 +167,14 @@ class LodegSystem:
         try:
             if course:
                 if user:
-                    return self._systemInfo['courses'][course]['users'][user]
+                    data = self._systemInfo['courses'][course]['users'][user] 
                 else:
-                    return self._systemInfo['courses'][course]
+                    data = self._systemInfo['courses'][course]
             else:
-                return self._systemInfo
+                data = self._systemInfo
+            
+            return data.copy() if get_copy else data
+
         except KeyError:
             # The information of the target course or user is not present in
             # the system
