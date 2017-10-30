@@ -119,7 +119,7 @@ class LodegSystem:
             self.modify_class_settings(**kwargs)
 
         # Get default collections
-        self._db = connection_to_mongo.connect_to_mongo()
+        self._db = connection_to_mongo.connect_to_mongo(db_name = 'lode_real')
         self._logs = self._db.get_collection('web_mockup_population')
         self._lessons = self._db.get_collection('web_mockup_lessons')
 
@@ -285,7 +285,7 @@ class LodegSystem:
         return response
 
     def export_data(self, export_type: str, course: str = None, user: str = None, session: str = None,
-                    selected_keys: list = None, pretty_printing: bool = False):
+                    selected_keys: list = None, excluded_keys:list = None, pretty_printing: bool = False):
         """Export the whole system or a part of it.
         
         The json and the binary .p formats are supported.
@@ -296,6 +296,7 @@ class LodegSystem:
             user (str): if both course and user are set, the target UserInfo is exported;
             session (str): if all course, user and session are set, the target SessionInfo is exported;
             selected_keys (list of str): the keys (stats) that you want to export. Defaults to all;
+            excluded_keys (list of str): the keys (stats) that you do not want to export. Defaults to None;
             pretty_printing (bool): if True json will be formatted with 4-spaces indentation. Defaults to False.        
         """
 
@@ -337,10 +338,13 @@ class LodegSystem:
                 insertion_key = ''
 
             # Select only requested keys
-            if selected_keys:
-                dict_keys = set(data.keys())
+            dict_keys = set(data.keys())
+            if selected_keys:                
                 target_keys = set(selected_keys)
                 for unwanted_key in dict_keys - target_keys:
+                    del data[unwanted_key]
+            if excluded_keys:
+                for unwanted_key in dict_keys & set(excluded_keys):
                     del data[unwanted_key]
 
         except KeyError:
