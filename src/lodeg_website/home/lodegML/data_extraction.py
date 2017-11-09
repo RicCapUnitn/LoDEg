@@ -54,12 +54,12 @@ def play_pause_extraction(sessionInfo: dict):
             for item in play_pause_list[1:]:
                 if (item['type'] == 'play'):
                     play_time = item['value2']
-                    pauses.append(play_time - pause_time) /1000.0 # Since time_abs is in milliseconds
+                    pauses.append((play_time - pause_time) /1000.0) # Since time_abs is in milliseconds
                     # Note that pause_time > play_time >= 0
                     pauses_ratio.append(plays[-1] / pauses[-1])
                 else:
                     pause_time = item['value2']
-                    plays.append(pause_time - play_time) /1000.0 # Since time_abs is in milliseconds
+                    plays.append((pause_time - play_time) /1000.0) # Since time_abs is in milliseconds
     except IndexError:
         raise IndexError(sessionInfo)
 
