@@ -1,9 +1,17 @@
 from django import template
 register = template.Library()
 
+@register.filter
+def is_bool(value):
+    return type(value) == bool
+
 @register.simple_tag(takes_context=True)
 def getLastUpdate(context):
     return context['system'].getLastUpdate()
+
+@register.simple_tag(takes_context=True)
+def getSystemSettings(context):
+    return context['system'].getSystemSettings()
 
 @register.simple_tag(takes_context=True)
 def getNumberOfUsers(context, level):

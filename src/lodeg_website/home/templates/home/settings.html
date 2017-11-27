@@ -1,0 +1,56 @@
+{% extends "base_admin.html" %}
+
+{% block scripts_head%}
+{% endblock %}
+
+{% block sidebar_top %}
+<li><a href="#settingsAnchor">Top<span class="sub_icon glyphicon glyphicon-arrow-up"></span></a></li>
+{% endblock %}
+
+{% block help %}
+<p>This is the settings page. Here you can modify system settings.</p>
+{% endblock %}
+
+{% load custom_tags %}
+{% block content %}
+<section class="row placeholders">
+    <div class="row">
+        <a class="anchor" id="settingsAnchor"></a>
+        <h1>Settings</h1>
+        <div class="text-left col-md-8 col-md-offset-2">
+            <ul>
+                <li>keep_session_data (bool): Keep the raw session data in the system. Defaults to False.</li>
+                <li>keep_user_info (bool): Keep the statistics computed at the userInfo level. Defaults to True. </li>
+                <li>query_mem_opt (bool): Do only partial queries to keep memory usage low. Defaults to True. </li>
+                <li>ml_mem_opt (bool): Keep data both in dataframes and dictionaries when clustering users. Defaults to False.</li>
+                <li>ml_autorun (bool): Autorun the clustering algorith after data extraction. Defaults to True.</li>
+                <li>cache (str): The caching mechanism that the system is using.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <hr>
+        <form class="col-md-12 col-sm-12 form-inline" action="{% url 'modifySystemSettings' %}" method="post">
+            {% csrf_token %}
+            {% getSystemSettings as dict %}
+            {% for key, value in dict.items %}
+            <div class="input-group col-md-3">
+                <p><h4>{{key}}</h4></p>
+            {% if value|is_bool %}
+            <select type="text" class="form-control" id="{{key}}" placeholder="{{value}}" value="{{value}}">
+                <option value="true">True</option>
+                <option value="false">False</option>
+            </select>
+            {% else %}
+            <input type="text" class="form-control" id="{{key}}" placeholder="{{value}}" value="{{value}}" disabled>
+            {% endif %}
+            </div>
+        {% endfor %}
+        </form>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts_body%}
+{% endblock %}

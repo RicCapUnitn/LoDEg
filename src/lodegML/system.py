@@ -71,14 +71,12 @@ class LodegSystem:
         def func_decorator(func):
             def func_wrapper(self, *args, **kwargs):
                 if len(args) > pos_params:
-                    return (
-                        'Wrong params call; config params should be set explicitly: param = value')
+                    return ('Wrong params call; config params should be set explicitly: param = value')
                 config_params = {}
 
                 # No config param has been provided
                 if kwargs is None:
-                    return func(
-                        self, *args, **{param: self._config[param] for param in params})
+                    return func(self, *args, **{param: self._config[param] for param in params})
 
                 # There is at least one config param in the function call
                 for param in params:
@@ -137,6 +135,10 @@ class LodegSystem:
             else:
                 self._cache = cache.CacheMongoDb(
                     self._db.get_collection('system_cache'))
+                
+    def getSystemSettings(self):
+        """Get system configuration"""
+        return self._config
 
     def modify_class_settings(self, **kwargs):
         """Tweak class params
@@ -149,22 +151,19 @@ class LodegSystem:
                 keep_session_data (bool): Keep the raw session data in the system. Defaults to False.
                 keep_user_info (bool): Keep the statistics computed at the userInfo level. Defaults to True.
                 query_mem_opt (bool): Do only partial queries to keep memory usage low. Defaults to True.
+                ml_mem_opt (bool): Keep data both in dataframes and dictionaries when clustering users. Defaults to False.
+                ml_autorun (bool): Autorun the clustering algorith after data extraction. Defaults to True.
         """
         for param, param_value in kwargs.items():
             if param in self._config:
-                if isinstance(self._config[param], type(param_value)):
+                if type(self._config[param]) == type(param_value):
                     self._config[param] = param_value
 
-    def getData(
-            self,
-            course: str = None,
-            user: str = None,
-            session: str = None,
-            get_copy: bool = False):
+    def getData(self, course: str = None, user: str = None, session: str = None, get_copy: bool = False):
         """Get a reference of a part of the system (default is SystemInfo)
 
         Args:
-            course (str): if set a CourseInfo is returned
+            course (str): if set a CourseInfo is returned 
             user (str): if both course and user are set then a UserInfo is returned
             session (str): if course, user and session are set then a SessionInfo is returned
 
@@ -174,12 +173,12 @@ class LodegSystem:
         try:
             if course:
                 if user:
-                    data = self._systemInfo['courses'][course]['users'][user]
+                    data = self._systemInfo['courses'][course]['users'][user] 
                 else:
                     data = self._systemInfo['courses'][course]
             else:
                 data = self._systemInfo
-
+            
             return data.copy() if get_copy else data
 
         except KeyError:
@@ -195,11 +194,7 @@ class LodegSystem:
             return 'never'
 
     @_takes_config(3, ['keep_session_data'])
-    def extractUserData(
-            self,
-            course: str,
-            user: str,
-            keep_session_data: bool = None):
+    def extractUserData(self, course: str, user: str, keep_session_data: bool = None):
         """Extracts the statistics for the target user.
 
         Args:
@@ -223,11 +218,7 @@ class LodegSystem:
         # Save the user in the system
         courseInfo['users'][user] = userInfo
 
-    @_takes_config(1,
-                   ['keep_session_data',
-                    'keep_user_info',
-                    'query_mem_opt',
-                    'ml_autorun'])
+    @_takes_config(1, ['keep_session_data', 'keep_user_info', 'query_mem_opt', 'ml_autorun'])
     def executeCompleteExtraction(self,
                                   keep_session_data: bool = None,
                                   keep_user_info: bool = None,
@@ -236,20 +227,15 @@ class LodegSystem:
         """Extract the data and compute all the statistics.
 
         Args:
-            keep_session_data (bool): Keep the raw session data in the system. Defaults to False.
-            keep_user_info (bool): Keep all computed userInfos in the system. Defaults to False.
+            keep_session_data (bool): Keep the raw session data in the system. Defaults to False. 
+            keep_user_info (bool): Keep all computed userInfos in the system. Defaults to False. 
         """
         systemInfo = {'courses': {}}
         data_extraction.execute_complete_extraction(
-            self._logs,
-            self._lessons,
-            systemInfo,
-            keep_session_data,
-            keep_user_info,
-            query_mem_opt)
+            self._logs, self._lessons, systemInfo, keep_session_data, keep_user_info, query_mem_opt)
         self._systemInfo = systemInfo
         # If ml_autorun is run the ml algorithms
-        if ml_autorun:
+        if ml_autorun: 
             self.runMl()
 
     @_cache_needed
@@ -304,25 +290,19 @@ class LodegSystem:
 
         return response
 
-    def export_data(
-            self,
-            export_type: str,
-            course: str = None,
-            user: str = None,
-            session: str = None,
-            selected_keys: list = None,
-            pretty_printing: bool = False):
+    def export_data(self, export_type: str, course: str = None, user: str = None, session: str = None,
+                    selected_keys: list = None, pretty_printing: bool = False):
         """Export the whole system or a part of it.
-
+        
         The json and the binary .p formats are supported.
-
+        
         Args:
             export_type (str): 'json' or 'bytes' export types are supported;
             course (str): if set the target CourseInfo is exported;
             user (str): if both course and user are set, the target UserInfo is exported;
             session (str): if all course, user and session are set, the target SessionInfo is exported;
             selected_keys (list of str): the keys (stats) that you want to export. Defaults to all;
-            pretty_printing (bool): if True json will be formatted with 4-spaces indentation. Defaults to False.
+            pretty_printing (bool): if True json will be formatted with 4-spaces indentation. Defaults to False.        
         """
 
         data = None
@@ -380,12 +360,12 @@ class LodegSystem:
                     json.dump({
                         'insertion_position': insertion_position,
                         'insertion_key': insertion_key,
-                        'data': data}, fp, indent=4, skipkeys=True, cls=utils.BetterEncoder)
+                        'data': data}, fp, indent=4, skipkeys=True, cls = utils.BetterEncoder)
                 else:
                     json.dump({
                         'insertion_position': insertion_position,
                         'insertion_key': insertion_key,
-                        'data': data}, fp, skipkeys=True, cls=utils.BetterEncoder)
+                        'data': data}, fp, skipkeys=True, cls = utils.BetterEncoder)
 
         # Binary file
         elif export_type == 'bytes':
@@ -397,7 +377,7 @@ class LodegSystem:
 
     def import_data(self, filename: str, overwrite: bool = False) -> str:
         """Import the whole system or a part of it
-
+        
         Args:
             filename (str): the filename (filepath) that we are importing;
             overwrite (bool): if the imported information is already present in the system and overwrite = False then a message is returned and the file is not imported. Defaults to False.
@@ -451,18 +431,17 @@ class LodegSystem:
                 insertion_position = self._systemInfo
                 system_flag = True
         except KeyError:
-            return 'Some layers above the {} you are inserting are not present in the system'.format(
-                location)
+            return 'Some layers above the {} you are inserting are not present in the system'.format(location)
         except IndexError:
             return 'Metadata are corrupted; the file cannot be imported'
 
         if system_flag:
-            if not overwrite:
+            if overwrite == False:
                 if len(self._systemInfo['courses']) != 0:
                     return 'Trying to overwrite the whole system without permissions; try overwrite = True'
             self._systemInfo = data
         else:
-            if not overwrite:
+            if overwrite == False:
                 if insertion_key in inserting_position.keys():
                     return 'Import has overwrite conflict; try to launch with overwrite = True'
             insertion_position[insertion_key] = data
@@ -533,8 +512,7 @@ class LodegSystem:
 
         """
         try:
-            return len(self._systemInfo['courses']
-                       [course]['lessons_durations'])
+            return len(self._systemInfo['courses'][course]['lessons_durations'])
         except KeyError:
             return 'Unknown'
 
@@ -550,8 +528,8 @@ class LodegSystem:
 
         """
         try:
-            coverage_percentage = str(
-                self._systemInfo['courses'][course]['users'][user]['coverage_percentage']) + '%'
+            coverage_percentage = str(self._systemInfo['courses'][course]['users'][user][
+                                      'coverage_percentage']) + '%'
         except KeyError:
             # We don't have this information in the system
             coverage_percentage = "Unknown"
@@ -594,8 +572,7 @@ class LodegSystem:
         """
         sessions_dates = []
         try:
-            for session, sessionInfo in self._systemInfo['courses'][course]['users'][user]['sessions'].items(
-            ):
+            for session, sessionInfo in self._systemInfo['courses'][course]['users'][user]['sessions'].items():
                 sessions_dates.append({'session_id': session, 'header': (
                     sessionInfo['lesson_id'] + "-> " + str(sessionInfo['date']))})
         except KeyError:
@@ -614,8 +591,7 @@ class LodegSystem:
             list of str: the headers of the session if known by the system; otherwise, the empty list
         """
         try:
-            return self._systemInfo['courses'][course]['lessons_durations'].keys(
-            )
+            return self._systemInfo['courses'][course]['lessons_durations'].keys()
         except KeyError:
             # We don't have this information in the system
             return []
@@ -634,7 +610,7 @@ class LodegSystem:
 ###############################################################################
 
     def printSessionCoverage(self, course: str, user: str, session: str):
-        """Returns an image of the session coverage as html string
+        """Returns an image of the session coverage as html string 
 
         Note:
             This method requires the user (_systemInfo['users'][user]['sessions']) to be already initialized.
@@ -651,8 +627,7 @@ class LodegSystem:
             self._systemInfo['courses'][course] = {
                 'users': {user: {'sessions': {}}}}
         else:
-            if (user not in self._systemInfo['courses']
-                    [course]['users'].keys()):
+            if (user not in self._systemInfo['courses'][course]['users'].keys()):
                 self._systemInfo['courses'][course][
                     'users'][user] = {'sessions': {}}
         # Check if it is the first time we encounter this session
@@ -663,11 +638,8 @@ class LodegSystem:
             # We have never computed the sessionInfo for this user -> execute a
             # complete extraction for this session
             sessionInfo = {}
-            data_extraction.execute_sessionInfo_extraction(
-                sessionInfo,
-                logs_collection=self._logs,
-                session=session,
-                keep_session_data=self._config['keep_session_data'])
+            data_extraction.execute_sessionInfo_extraction(sessionInfo,
+                                                           logs_collection=self._logs, session=session, keep_session_data=self._config['keep_session_data'])
             self._systemInfo['courses'][course]['users'][
                 user]['sessions'][session] = sessionInfo
 
@@ -701,7 +673,7 @@ class LodegSystem:
         Args:
             lesson (str): The id of the lesson whose coverage we are asking for.
             course (str): The course we are considering.
-            user (str): If set, we are asking for the lesson coverage of a specific user;
+            user (str): If set, we are asking for the lesson coverage of a specific user; 
                 otherwise, courseLevel lesson coverage will be plotted.
 
         Returns:
@@ -768,17 +740,15 @@ class LodegSystem:
         """
         try:
             if (user is not None):
-                return auto_plot.printLessonsHistogram(
-                    self._systemInfo['courses'][course]['users'][user]['coverage_histogram'])
+                return auto_plot.printLessonsHistogram(self._systemInfo['courses'][course]['users'][user]['coverage_histogram'])
             else:
-                return auto_plot.printLessonsHistogram(
-                    self._systemInfo['courses'][course]['coverage_histogram'])
+                return auto_plot.printLessonsHistogram(self._systemInfo['courses'][course]['coverage_histogram'])
         except KeyError:
              # We don't have this information in the system
             return('<h2 class="text-center">Histogram unknown</h2>')
 
     def printDaySessionDistribution(self, course: str, user: str = None):
-        """ Return a figure with a polar and a bar chart with the distribution of sessions throughout the day
+        """ Return a figure with a polar and a bar chart with the distribution of sessions throughout the day 
         if level = user user level info is plotted; otherwise, course level info
 
         Args:
@@ -790,21 +760,18 @@ class LodegSystem:
         """
         try:
             if (user is not None):
-                return auto_plot.printDaySessionDistribution(
-                    self._systemInfo['courses'][course]['users'][user]['day_distribution'])
+                return auto_plot.printDaySessionDistribution(self._systemInfo['courses'][course]['users'][user]['day_distribution'])
             else:
-                return auto_plot.printDaySessionDistribution(
-                    self._systemInfo['courses'][course]['day_distribution'])
+                return auto_plot.printDaySessionDistribution(self._systemInfo['courses'][course]['day_distribution'])
         except KeyError as e:
             # We don't have this information in the system
             return('<h2 class="text-center">Information unknown</h2>')
 
-    def printLessonUserCorrelationGraph(
-            self, course: str, time_format: str = None):
+    def printLessonUserCorrelationGraph(self, course: str, time_format: str = None):
         """Print a 3d graph of users lesson visualization.
 
         The graph plots a function of the number of users against time and lessons: for every lesson,
-        a curve is plotted to show when and how many users have watched the lessons.
+        a curve is plotted to show when and how many users have watched the lessons. 
 
         Time has two formats: abs and rel. It expresses whether each lesson curve is plotted agains its registration date (rel)
         or against the registration date of the first lesson (abs).
@@ -815,15 +782,9 @@ class LodegSystem:
         """
         try:
             if time_format is not None:
-                return auto_plot.printLessonUserCorrelationGraph(
-                    self._systemInfo['courses'][course]['lessons_visualization'],
-                    self._systemInfo['courses'][course]['registration_dates'],
-                    time_format)
+                return auto_plot.printLessonUserCorrelationGraph(self._systemInfo['courses'][course]['lessons_visualization'], self._systemInfo['courses'][course]['registration_dates'], time_format)
             else:
-                return auto_plot.printLessonUserCorrelationGraph(
-                    self._systemInfo['courses'][course]['lessons_visualization'],
-                    self._systemInfo['courses'][course]['registration_dates'],
-                )
+                return auto_plot.printLessonUserCorrelationGraph(self._systemInfo['courses'][course]['lessons_visualization'], self._systemInfo['courses'][course]['registration_dates'],)
         except KeyError:
              # We don't have this information in the system
             return('<h2 class="text-center">Correlation unknown</h2>')

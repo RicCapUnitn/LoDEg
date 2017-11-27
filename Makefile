@@ -6,7 +6,7 @@ clean:
 	./tools/clean.sh
 
 website:
-	cd src/lodeg_website; python manage.py runserver $(PORT) &
+	cd src/lodeg_website; python manage.py runserver $(PORT)
 
 to_web:
 	./tools/lib_to_web.sh

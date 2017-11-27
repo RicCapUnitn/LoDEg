@@ -159,6 +159,18 @@ def sendEmail(request):
     message.send(fail_silently=False)
     
     #return render(request, 'home/index.html')
+    
+@login_required
+@check_permissions
+def settings(request):
+    return render(request, 'home/settings.html', context)
+
+@login_required
+@check_permissions
+@require_http_methods(["POST"])
+def modifySystemSettings(request):
+    return render(request, 'home/settings.html', context)
+
 
 @login_required
 @check_permissions

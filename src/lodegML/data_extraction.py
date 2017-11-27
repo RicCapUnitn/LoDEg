@@ -14,7 +14,7 @@ import utility_queries as utils  # migrate
 def play_pause_extraction(sessionInfo: dict):
     """This function extracts information about of play and pauses.
 
-    extracted_information :
+    extracted_information : 
         - plays intervals
         - pauses intervals
         - play/pause ration
@@ -126,7 +126,7 @@ def session_coverage_extraction(sessionInfo: dict):
 def jumps_info_extraction(sessionInfo: dict):
     """This function extracts information of jumps for the session.
 
-    extracted_information :
+    extracted_information : 
         - average jump length
         - number of jumps
         - number of jumps/type (click_or_drag,keyframe,note)
@@ -145,8 +145,7 @@ def jumps_info_extraction(sessionInfo: dict):
         jumps_per_type[jump['value3']] = jumps_per_type[jump['value3']] + 1
 
     number_of_jumps = len(jump_list)
-    average_jumps_length = (total_jumps_length /
-                            number_of_jumps) if number_of_jumps > 0 else 0
+    average_jumps_length = (total_jumps_length / number_of_jumps) if number_of_jumps > 0 else 0
 
     # Add values to sessionInfo
     sessionInfo['number_of_jumps'] = number_of_jumps
@@ -201,7 +200,7 @@ def compute_session_duration(sessionInfo: dict):
 def notes_info_extraction(sessionInfo: dict):
     """This function extracts information of notes for the session.
 
-    extracted_information :
+    extracted_information : 
         - number of notes
         - number of notes/type (click_or_drag,keyframe,note)
         - notes / session_duration
@@ -225,8 +224,7 @@ def notes_info_extraction(sessionInfo: dict):
 # User level extraction #
 #########################
 
-def compute_lessons_coverage_for_single_user(
-        userInfo: dict, lessons_durations: dict):
+def compute_lessons_coverage_for_single_user(userInfo: dict, lessons_durations: dict):
     """This function computes the lesson coverage for all lessons of a user.
 
     Note: It computes the coverage_histogram as well
@@ -266,7 +264,7 @@ def compute_lessons_coverage_for_single_user(
 def user_notes_info_extraction(userInfo: dict):
     """This function extracts information of notes for the user.
 
-    extracted_information :
+    extracted_information : 
         - number of notes
         - number of notes/type (click_or_drag,keyframe,note)
         - notes / total_duration
@@ -297,7 +295,7 @@ def user_notes_info_extraction(userInfo: dict):
 def user_jump_info_extraction(userInfo: dict):
     """This function extracts information of jumps for the user.
 
-    extracted_information :
+    extracted_information : 
         - number of jumps
         - number of jumps/type (click_or_drag,keyframe,note)
         - total jumps length
@@ -321,13 +319,11 @@ def user_jump_info_extraction(userInfo: dict):
         jumps_per_type['note'] += sessionInfo['jumps_per_type']['note']
         total_jumps_length += sessionInfo['total_jumps_length']
         total_duration += sessionInfo['session_duration']
-
+        
     userInfo['number_of_jumps'] = number_of_jumps
     userInfo['jumps_per_type'] = jumps_per_type
     userInfo['total_jumps_length'] = total_jumps_length
-    userInfo['average_jumps_length'] = (
-        total_jumps_length /
-        number_of_jumps) if number_of_jumps > 0 else 0
+    userInfo['average_jumps_length'] = (total_jumps_length / number_of_jumps ) if number_of_jumps > 0 else 0
     userInfo['jumps_over_total_duration'] = number_of_jumps / total_duration
 
 
@@ -358,7 +354,7 @@ def day_session_distribution_extraction(userInfo: dict):
     """Extract the number of sessions for each hour of the day.
 
     Args:
-        userInfo (dict): The dictionaty that will be populated with the computed statistic.
+        userInfo (dict): The dictionaty that will be populated with the computed statistic. 
     """
     day_distribution = [0] * 24
     for sessionInfo in userInfo['sessions'].values():
@@ -398,10 +394,9 @@ def compute_course_global_coverage(courseInfo: dict):
                 histogram[lesson_title] += 1
                 # if lesson_title in userInfo['lessons_coverage']:
                 # If the user has watched the lesson
-                for i in range(
-                        len(userInfo['lessons_coverage'][lesson_title])):
-                    global_coverage[lesson_title][i] += (
-                        userInfo['lessons_coverage'][lesson_title][i] > 0)
+                for i in range(len(userInfo['lessons_coverage'][lesson_title])):
+                    global_coverage[lesson_title][
+                        i] += (userInfo['lessons_coverage'][lesson_title][i] > 0)
 
     courseInfo['global_coverage'] = global_coverage
     courseInfo['coverage_histogram'] = histogram
@@ -410,7 +405,7 @@ def compute_course_global_coverage(courseInfo: dict):
 def course_notes_info_extraction(courseInfo: dict):
     """This function extracts information of notes for the system.
 
-    extracted_information :
+    extracted_information : 
         - number of notes
         - number of notes/type (click_or_drag,keyframe,note)
 
@@ -444,8 +439,7 @@ def course_lessons_visualization_extraction(courseInfo: dict):
     try:
         lessons_visualization = {}
         for userInfo in courseInfo['users'].values():
-            for lesson, dates_counter in userInfo['lessons_visualization'].items(
-            ):
+            for lesson, dates_counter in userInfo['lessons_visualization'].items():
                 if lesson not in lessons_visualization:
                     lessons_visualization[lesson] = dates_counter.copy()
                 else:
@@ -460,7 +454,7 @@ def course_day_distribution_extraction(courseInfo: dict):
     """Extract the number of sessions for each hour of the day.
 
     Args:
-        courseInfo (dict): The dictionaty that will be populated with the computed statistic.
+        courseInfo (dict): The dictionaty that will be populated with the computed statistic. 
     """
     day_distribution = [0] * 24
     for userInfo in courseInfo['users'].values():
@@ -479,12 +473,7 @@ def course_day_distribution_extraction(courseInfo: dict):
 #######
 
 
-def execute_sessionInfo_extraction(
-        sessionInfo: dict,
-        logs_collection=None,
-        session=None,
-        data_provided=False,
-        keep_session_data=False):
+def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, session=None, data_provided=False, keep_session_data=False):
     """Execute a complete extraction for a single session.
 
     Note:
@@ -520,14 +509,8 @@ def execute_sessionInfo_extraction(
         del sessionInfo['data']
 
 
-def execute_userInfo_extraction(
-        logs_collection,
-        lessons_durations: dict,
-        course: str,
-        user: str,
-        userInfo: dict,
-        keep_session_data=False,
-        sessionInfo_provided=False):
+def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course: str,
+                                user: str, userInfo: dict, keep_session_data=False, sessionInfo_provided=False):
     """Execute a complete extraction for a single user.
 
     Args:
@@ -546,9 +529,7 @@ def execute_userInfo_extraction(
         for sessionInfo in userInfo['sessions'].values():
             # Extract sessionInfo information
             execute_sessionInfo_extraction(
-                sessionInfo,
-                data_provided=True,
-                keep_session_data=keep_session_data)
+                sessionInfo, data_provided=True, keep_session_data=keep_session_data)
             # Add coverage percentage
             try:
                 duration = lessons_durations[sessionInfo['lesson_id']]
@@ -556,6 +537,7 @@ def execute_userInfo_extraction(
                     'total_time_watched'] / duration
             except KeyError:
                 sessionInfo['coverage_percentage'] = 'unknown'
+                
 
     # Extract userInfo level statistics
     # user_lessons_coverage
@@ -570,18 +552,12 @@ def execute_userInfo_extraction(
     day_session_distribution_extraction(userInfo)
 
 
-def execute_courseInfo_extraction(
-        logs_collection,
-        lessons_collection,
-        course: str,
-        courseInfo: dict,
-        keep_session_data=False,
-        keep_user_info=True,
-        query_mem_opt=True):
+def execute_courseInfo_extraction(logs_collection, lessons_collection, course: str, courseInfo: dict,
+                                  keep_session_data=False, keep_user_info=True, query_mem_opt=True):
     """Execute a complete extraction for a single course.
 
     Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.
-        We have left the possibility of setting query_mem_opt to False though in practice we see
+        We have left the possibility of setting query_mem_opt to False though in practice we see 
         that there is no relevant speed improvement with big datasets (might have with small ones).
 
     Args:
@@ -610,14 +586,8 @@ def execute_courseInfo_extraction(
                 # Execute sessionInfo extraction
                 execute_sessionInfo_extraction(
                     sessionInfo, data_provided=True, keep_session_data=keep_session_data)
-            execute_userInfo_extraction(
-                logs_collection,
-                courseInfo['lessons_durations'],
-                course,
-                user,
-                userInfo,
-                keep_session_data=keep_session_data,
-                sessionInfo_provided=True)
+            execute_userInfo_extraction(logs_collection, courseInfo[
+                                        'lessons_durations'], course, user, userInfo, keep_session_data=keep_session_data, sessionInfo_provided=True)
             # Add this user sessions to the total counter
             total_number_of_sessions += len(userInfo['sessions'])
     else:
@@ -627,14 +597,8 @@ def execute_courseInfo_extraction(
         # Extract features
         for user in users:
             userInfo = {}
-            execute_userInfo_extraction(
-                logs_collection,
-                courseInfo['lessons_durations'],
-                course,
-                user,
-                userInfo,
-                keep_session_data=keep_session_data,
-                sessionInfo_provided=False)
+            execute_userInfo_extraction(logs_collection, courseInfo[
+                                        'lessons_durations'], course, user, userInfo, keep_session_data=keep_session_data, sessionInfo_provided=False)
             # Add this user sessions to the total counter
             total_number_of_sessions += len(userInfo['sessions'])
             # Add this user to the systemInfo
@@ -659,13 +623,7 @@ def execute_courseInfo_extraction(
         pass
 
 
-def execute_complete_extraction(
-        logs_collection,
-        lessons_collection,
-        systemInfo,
-        keep_session_data=False,
-        keep_user_info=True,
-        query_mem_opt=True):
+def execute_complete_extraction(logs_collection, lessons_collection, systemInfo, keep_session_data=False, keep_user_info=True, query_mem_opt=True):
     """Execute a complete extraction of the whole system.
 
     This function extracts all the data from the collection, extracts the
@@ -673,7 +631,7 @@ def execute_complete_extraction(
     one key(course_id) for each course in the database.
 
     Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.
-        We have left the possibility of setting query_mem_opt to False though in practice we see
+        We have left the possibility of setting query_mem_opt to False though in practice we see 
         that there is no relevant speed improvement with big datasets (might have with small ones).
 
     Args:
@@ -691,14 +649,8 @@ def execute_complete_extraction(
     for course in courses:
         courseInfo = {}
         # Extract features
-        execute_courseInfo_extraction(
-            logs_collection,
-            lessons_collection,
-            course,
-            courseInfo,
-            keep_session_data=keep_session_data,
-            keep_user_info=keep_user_info,
-            query_mem_opt=query_mem_opt)
+        execute_courseInfo_extraction(logs_collection, lessons_collection, course, courseInfo,
+                                      keep_session_data=keep_session_data, keep_user_info=keep_user_info, query_mem_opt=query_mem_opt)
         # Add this course to the systemInfo
         systemInfo['courses'][course] = courseInfo
 

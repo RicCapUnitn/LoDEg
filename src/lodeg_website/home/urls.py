@@ -20,5 +20,7 @@ urlpatterns = [
     url(r'^executeCompleteExtraction/', views.executeCompleteExtraction, name='executeCompleteExtraction'),
     url(r'^$', views.index, name='index'),
     
+    url(r'^settings/', views.settings, name='settings'),
+    url(r'^modifySystemSettings/', views.modifySystemSettings, name='modifySystemSettings'),
     url(r'^debuggingConsole/', views.debuggingConsole, name='debuggingConsole')
 ]

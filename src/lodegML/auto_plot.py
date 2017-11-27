@@ -141,14 +141,11 @@ def printDaySessionDistribution(distribution: list):
     return "data:image/png;base64," + base64.b64encode(f.getvalue()).decode()
 
 
-def printLessonUserCorrelationGraph(
-        lessons_visualization: dict,
-        registration_dates: dict,
-        time_format: str = 'abs'):
+def printLessonUserCorrelationGraph(lessons_visualization: dict, registration_dates: dict, time_format: str = 'abs'):
     """Print a 3d graph of users lesson visualization.
 
     The graph plots a function of the number of users against time and lessons: for every lesson,
-    a curve is plotted to show when and how many users have watched the lessons.
+    a curve is plotted to show when and how many users have watched the lessons. 
 
     Time has two formats: abs and rel. It expresses wheter each lesson curve is plotted agains its registration date (rel)
     or against the registration date of the first lesson (abs).
@@ -161,36 +158,36 @@ def printLessonUserCorrelationGraph(
 
     """
     lessons_visualization = test_utils.correlation_graph_lessons_test()
-
+    
     # Create the figure
     fig = plt.figure(figsize=(10,10))
     ax = fig.gca(projection='3d')
-
+    
     # Set z as lessons
     y_ticks = lessons_visualization.keys()
     zs = np.arange(0, len(lessons_visualization))
-
+    
     # Dates formatters
     months = mdates.MonthLocator()  # every month
     days = mdates.DayLocator()  # every day
     # Setup the DateFormatter for the x axis
     date_format = mdates.DateFormatter('%D')
-
-    # Min/max for x ticks
+    
+    # Min/max for x ticks   
     datemin = datetime.datetime.now(pytz.utc) + datetime.timedelta(days = -20) # Test
     #datemin = min(registration_dates.values())
     datemax = datetime.datetime.now(pytz.utc)
-
+    
     # Maxvalue for z axis
     max_value = 0
-
+    
     verts = []
-    for lesson, dates_counter in lessons_visualization.items():
+    for lesson, dates_counter in lessons_visualization.items():        
         # Get the dates that are present in the counter
-        dates = sorted(dates_counter.keys())
-
-        # Compute datemin and datemax
-        max_date = max(dates)
+        dates = sorted(dates_counter.keys())      
+        
+        # Compute datemin and datemax        
+        max_date = max(dates) 
         # Select a relative mindate if time_format = rel
         if (time_format == 'rel'):
             min_date = min(dates)
@@ -201,46 +198,46 @@ def printLessonUserCorrelationGraph(
 
         if max_date > datemax:
             datemax = max_date
-
+        
         # Create verts adding a 0 before the first and after the last days
-        xs = np.asarray([mdates.date2num(min_date + datetime.timedelta(days=-1))] + list(mdates.date2num(dates))
+        xs = np.asarray([mdates.date2num(min_date + datetime.timedelta(days=-1))] + list(mdates.date2num(dates)) 
                         + [mdates.date2num(max_date + datetime.timedelta(days=1))])
         ys = [0]
         for date in dates:
             ys.append(dates_counter[date])
         ys.append(0)
         verts.append(list(zip(xs, ys)))
-
+        
         # Update max_value
         tmp = max(dates_counter.values())
         if (tmp > max_value):
             max_value = tmp
-
+        
     # Create PolyCollection
     facecolors = [cm.jet(x) for x in np.linspace(0,1,5)]
     #facecolors = [cm.jet(x) for x in np.linspace(0,1,len(registration_dates))]
     poly = PolyCollection(verts, facecolors = facecolors, edgecolor='black', linewidth=0.6)
     poly.set_alpha(0.7)
-
-
+    
+    
     # Add the collection to the graph
     ax.add_collection3d(poly, zs=zs, zdir='y')
-
+    
     # Set ticks
     ax.set_yticklabels(y_ticks)
-
+    
     # format the ticks
     #ax.xaxis_date()
-    ax.xaxis.set_major_locator(months)
-    ax.xaxis.set_minor_locator(days)
-    ax.xaxis.set_major_formatter(date_format)
+    ax.xaxis.set_major_locator(months) 
+    ax.xaxis.set_minor_locator(days) 
+    ax.xaxis.set_major_formatter(date_format)   
 
     # Set axis labels and limits
     ax.set_xlim3d(datemin + datetime.timedelta(days=-1), datemax + datetime.timedelta(days=1))
     ax.set_ylim3d(0, len(lessons_visualization))
     ax.set_zlabel('Users')
     ax.set_zlim3d(0, max_value)
-
+    
     # Convert the image to a base64 binary stream
     if 'cStringIO' in sys.modules:
         f = cStringIO.StringIO()   # Python 2
@@ -290,8 +287,8 @@ def printLessonUserCorrelationGraph(
             datemax = max_date
 
         # Create verts adding a 0 before the first and after the last days
-        xs = np.asarray([mdates.date2num(min_date + datetime.timedelta(days=-1))] + list(
-            mdates.date2num(dates)) + [mdates.date2num(max_date + datetime.timedelta(days=1))])
+        xs = np.asarray([mdates.date2num(min_date + datetime.timedelta(days=-1))] + list(mdates.date2num(dates))
+                        + [mdates.date2num(max_date + datetime.timedelta(days=1))])
         ys = [0]
         for date in dates:
             ys.append(dates_counter[date])

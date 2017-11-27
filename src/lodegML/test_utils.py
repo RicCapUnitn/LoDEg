@@ -3,7 +3,6 @@ import datetime
 import random
 import pytz
 
-
 def get_lessons(collection):
     cursor = collection.find({}, {'_id': 0})
     return list(cursor)
@@ -42,19 +41,13 @@ def jumps_info_test(collection, test_session_id, sessionInfo):
     )
     sessionInfo['data'] = list(cursor)
 
-
 def correlation_graph_lessons_test():
     lessons_visualization = {}
     lessons = ['lesson' + str(i) for i in range(5)]
-    dates = [
-        datetime.datetime.now(
-            pytz.utc) +
-        datetime.timedelta(
-            days=-
-            i) for i in range(20)]
+    dates = [datetime.datetime.now(pytz.utc) + datetime.timedelta(days = -i) for i in range(20)]
     for lesson in lessons:
         counter = Counter()
         for date in dates:
-            counter[date] += random.randint(1, 100)
+            counter[date] += random.randint(1,100)
         lessons_visualization[lesson] = counter
     return lessons_visualization

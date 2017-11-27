@@ -3,19 +3,18 @@ from dateutil import tz
 import dateutil.parser
 from bson.objectid import ObjectId
 import json
-
-
+    
 class BetterEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, (datetime, date)):
             return obj.isoformat()
         # Let the base class default method raise the TypeError
-        return json.JSONEncoder.default(self, obj)
+        return json.JSONEncoder.default(self, obj)    
 
-
+    
 def getTimeFromObjectId(oid: str):
     """Get the generation time from a MongoDB objcetId.
-
+    
     Args:
         oid (str): the object id.
     """
@@ -32,10 +31,9 @@ def utc_to_local_time(utc: datetime):  # <-------------Not working
     return utc.strftime('%Y-%m-%d %H:%M:%S %Z')
 
 
-def get_lessons_durations_and_registration_dates(
-        lessons_collection, course: str, courseInfo: dict):
+def get_lessons_durations_and_registration_dates(lessons_collection, course: str, courseInfo: dict):
     """Set for a course the course lessons and their durations.
-
+    
     Args:
         lessons_collection : the MongoDB collection that contains the lessons records;
         course (str): the target course;
@@ -46,16 +44,14 @@ def get_lessons_durations_and_registration_dates(
     registration_dates = {}
     for lesson in cursor:
         lessons_durations[lesson['lesson_id']] = lesson['duration']
-        registration_dates[lesson['lesson_id']] = ObjectId(
-            lesson['_id']).generation_time
+        registration_dates[lesson['lesson_id']] = ObjectId(lesson['_id']).generation_time
     courseInfo['lessons_durations'] = lessons_durations
     courseInfo['registration_dates'] = registration_dates
-
-
+    
 def add_interval(intervals: list, interval: list):
     """Add an interval to a list of disjoint intervals.
 
-    It guarantees disjunction between intervals (substituting the intersections with a new interval),
+    It guarantees disjunction between intervals (substituting the intersections with a new interval), 
     the order intervals[i][end] < intervals[i+1][start] and itervals[i][start] < intervals[i][end].
 
     Args:
@@ -72,7 +68,7 @@ def add_interval(intervals: list, interval: list):
     end_index = -1
     concatenating = False
 
-    if (intervals is None or intervals == []):
+    if (intervals == None or intervals == []):
         return [[start, end]]
 
     for i in range(0, len(intervals)):
@@ -209,7 +205,7 @@ def get_all_sessions_for_user_and_course(collection, user: str, course: str):
 
 
 def get_all_users_records(collection, course: str, courseInfo: dict):
-    """ Retrieve courseInfo data
+    """ Retrieve courseInfo data 
 
     Args:
         collection: the collection of log records
@@ -255,11 +251,7 @@ def get_all_records_for_session(collection, session: str, sessionInfo: dict):
     sessionInfo['data'] = list(collection.find({'session_id': session}))
 
 
-def get_all_records_for_user_and_course(
-        collection,
-        course: str,
-        user: str,
-        userInfo: dict):
+def get_all_records_for_user_and_course(collection, course: str, user: str, userInfo: dict):
     """Populate the specified userInfo with data"""
     # Retrieve course sessions
     matching_sessions = get_all_sessions_for_course(collection, course)

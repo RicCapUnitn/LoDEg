@@ -135,6 +135,10 @@ class LodegSystem:
             else:
                 self._cache = cache.CacheMongoDb(
                     self._db.get_collection('system_cache'))
+                
+    def getSystemSettings(self):
+        """Get system configuration"""
+        return self._config
 
     def modify_class_settings(self, **kwargs):
         """Tweak class params
@@ -147,6 +151,8 @@ class LodegSystem:
                 keep_session_data (bool): Keep the raw session data in the system. Defaults to False.
                 keep_user_info (bool): Keep the statistics computed at the userInfo level. Defaults to True.
                 query_mem_opt (bool): Do only partial queries to keep memory usage low. Defaults to True.
+                ml_mem_opt (bool): Keep data both in dataframes and dictionaries when clustering users. Defaults to False.
+                ml_autorun (bool): Autorun the clustering algorith after data extraction. Defaults to True.
         """
         for param, param_value in kwargs.items():
             if param in self._config:
