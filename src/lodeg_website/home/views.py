@@ -169,7 +169,16 @@ def settings(request):
 @check_permissions
 @require_http_methods(["POST"])
 def modifySystemSettings(request):
-    return render(request, 'home/settings.html', context)
+    config = {}
+    for key, value in request.POST.dict().items():
+        if value == 'true':
+            config[key] = True
+        elif value == 'false':
+            config[key] = False
+        else:
+            config[key] = value
+    context['system'].modify_class_settings(** config)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required

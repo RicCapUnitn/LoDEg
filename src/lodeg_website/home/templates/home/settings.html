@@ -31,21 +31,28 @@
     <div class="row">
         <hr>
         <form class="col-md-12 col-sm-12 form-inline" action="{% url 'modifySystemSettings' %}" method="post">
-            {% csrf_token %}
-            {% getSystemSettings as dict %}
-            {% for key, value in dict.items %}
-            <div class="input-group col-md-3">
-                <p><h4>{{key}}</h4></p>
-            {% if value|is_bool %}
-            <select type="text" class="form-control" id="{{key}}" placeholder="{{value}}" value="{{value}}">
-                <option value="true">True</option>
-                <option value="false">False</option>
-            </select>
-            {% else %}
-            <input type="text" class="form-control" id="{{key}}" placeholder="{{value}}" value="{{value}}" disabled>
-            {% endif %}
+            <div class="row">
+                <div class="row">
+                    {% csrf_token %}
+                    {% getSystemSettings as dict %}
+                    {% for key, value in dict.items %}
+                    <div class="input-group col-md-3">
+                        <p><h4>{{key}}</h4></p>
+                    {% if value|is_bool %}
+                    <select type="text" class="form-control" id="{{key}}" placeholder="{{value}}" name="{{key}}">
+                        <option value="true" {% if value == True %} selected {% endif %}>True</option>
+                        <option value="false" {% if value == False %} selected {% endif %}>False</option>
+                    </select>
+                    {% else %}
+                    <input type="text" class="form-control" id="{{key}}" placeholder="{{value}}" name="{{key}}" value="{{value}}" disabled>
+                    {% endif %}
+                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+            <div class="row">
+                <hr>
+                <button class="btn btn-success col-md-2 col-md-offset-5" type="submit" >Submit</button>
+            </div>
         </form>
     </div>
 </section>
