@@ -1,7 +1,12 @@
 SHELL=/bin/sh #Shell da utilizzare per l'esecuzione dei comandi
 
+PORT = 8000
+
 clean:
 	./tools/clean.sh
+
+website:
+	cd src/lodeg_website; python manage.py runserver $(PORT) &
 
 to_web:
 	./tools/lib_to_web.sh

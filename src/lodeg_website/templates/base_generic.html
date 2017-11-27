@@ -76,20 +76,29 @@
                                 <!-- Help collapse -->
                                 <div class="collapse" id="collapseHelp" >
                                     <div id="wellHelp" class="well">
-                                        <h1>LoDEg: log analytics for the LODE platform</h1>
-                                        {% block help %}
-                                        <p> Add a tiny description here</p>
+                                        <h1>LoDEg: log analysis for the LODE platform</h1>                                        
+                                        <h4>Follow this brief tutorial to put yourself to work.</h4>
                                         <div class="container-fluid">
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    Explain the image here  
+                                                <div class="col-md-4">
+                                                    <h2>Step 1: page navigation</h2>
+                                                    <p><span class="glyphicon glyphicon-arrow-left"></span> Use the sidebar top buttons to navigate through the various sections of this page. </p>
+                                                    <p><span class="glyphicon glyphicon-arrow-down"></span> Use the sidebar bottom buttons to interact with the system. </p>
+                                                    <p>For further info open the sidevar using the button <span class="glyphicon glyphicon-align-justify"></span></p>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <img id="imageHelp" src="{% static 'images/help.png' %}">
+                                                <div class="col-md-4">
+                                                    <h2>Step 2: site navigation</h2>
+                                                    <p><span class="glyphicon glyphicon-arrow-up"></span> Use the links in the top left of the navbar to navigate to the website page.</p>
+                                                    <p>Use the navbar top right buttons to logout <span class="glyphicon glyphicon-log-out"></span>, debug through the server console <span class="glyphicon glyphicon-warning-sign"></span>, contact us <span class="glyphicon glyphicon-envelope"></span> or toggle this section. <span class="glyphicon glyphicon-question-sign"></span></p>
+                                                    <p>Click on LoDEg or <span class="glyphicon glyphicon-home"></span> to go to the home page.</p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <h2>Step 3: page description</h2>
+                                                    {% block help %}
+                                                    {% endblock %}
                                                 </div>
                                             </div>
-                                        </div>
-                                        {% endblock %}
+                                        </div>                                        
                                     </div>
                                 </div>
                                 {% block content %}{% endblock %}
