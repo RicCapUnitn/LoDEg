@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create a backup
-mv -f src/lodegML/*.py tools/migration_backups
+mv -f src/lodegML/*.py tools/tmp/migration_backups
 
 # Copy the library
 cp -f src/lodeg_website/home/lodegML/*.py src/lodegML

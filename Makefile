@@ -14,5 +14,8 @@ to_web:
 from_web:
 	./tools/web_to_lib.sh
 
+check:
+	./tools/check_migration.sh
+
 #target "clean" non è un file!
 .PHONY: clean
