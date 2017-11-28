@@ -20,6 +20,20 @@ class AutoPlot:
     
     def __init__(self, target = 'console'):
         self._target = target
+        
+    def _plot(self, figure, output_type = 'png'):
+        if self._target == 'console':
+            plt.show()
+        elif self._target == 'web':
+            if output_type == 'html':
+                html = mpld3.fig_to_html(figure)
+                return html
+            elif output_type == 'png':
+                f = io.BytesIO()
+                figure.savefig(f, format="png")
+                plt.clf() # Might break everything when parallelizing
+                return "data:image/png;base64," + base64.b64encode(f.getvalue()).decode()
+            
 
     def printSessionCoverage(self, sessionInfo: dict, lesson_duration: float):
         session_coverage = sessionInfo['session_coverage']
@@ -35,9 +49,7 @@ class AutoPlot:
         ax.grid(True)
         ax.set_xlabel('Seconds')
         ax.set_ylabel('Inteval number')
-        html = mpld3.fig_to_html(fig)
-        return html
-
+        return self._plot(fig, 'html')     
 
     def printLessonCoverage(self, coverage: list):
         fig, ax = plt.subplots()
@@ -45,8 +57,7 @@ class AutoPlot:
         ax.set_xlabel('Seconds')
         ax.set_ylabel('Number of users')
         bars = ax.bar(np.arange(len(coverage)), coverage)
-        html = mpld3.fig_to_html(fig)
-        return html
+        return self._plot(fig, 'html')  
 
 
     def printNotesPolarChart(self, notes_types: dict):
@@ -57,7 +68,7 @@ class AutoPlot:
         width = 2 * np.pi / 3
         labels = list(notes_types.keys())
 
-        ax = plt.subplot(111, projection='polar')
+        fig, ax = plt.subplot(111, projection='polar')
         bars = ax.bar(theta, radii, width=width, bottom=0.0)
 
         ax.legend((bars[i] for i in range(len(bars))), (labels[i]
@@ -67,12 +78,8 @@ class AutoPlot:
         for r, bar in zip(radii, bars):
             bar.set_facecolor(plt.cm.plasma(r / 5.))
             bar.set_alpha(0.5)
-
-        f = io.BytesIO()
-        plt.savefig(f, format="png")
-        plt.clf()
-        return "data:image/png;base64," + base64.b64encode(f.getvalue()).decode()
-
+            
+        return self._plot(fig, 'png')            
 
     def printNotesBarChart(self, notes_types: dict):
         fig, ax = plt.subplots()
@@ -84,9 +91,8 @@ class AutoPlot:
         ax.legend((bars[0], bars[1]), ('Handwritten', 'Text'))
         ax.grid(True)
 
-        html = mpld3.fig_to_html(fig)
-        return html
-
+        return self._plot(fig, 'html')  
+ 
 
     def printLessonsHistogram(self, histogram: dict):
         """The histogram is of type {'lesson':'number_of_users'}
@@ -99,8 +105,7 @@ class AutoPlot:
         plt.xticks(x, histogram.keys())
         ax.grid(True)
 
-        html = mpld3.fig_to_html(fig)
-        return html
+        return self._plot(fig, 'html')  
 
 
     def printDaySessionDistribution(self, distribution: list):
@@ -139,10 +144,7 @@ class AutoPlot:
                              '%d' % int(height), ha='center', va='bottom')
             ax2.set_xticks(range(0, 24, 2))
 
-        f = io.BytesIO()
-        plt.savefig(f, format="png")
-        plt.clf()
-        return "data:image/png;base64," + base64.b64encode(f.getvalue()).decode()
+        return self._plot(plt.gcf(), 'png') 
 
 
     def printLessonUserCorrelationGraph(self, lessons_visualization: dict, registration_dates: dict, time_format: str = 'abs'):
@@ -322,7 +324,4 @@ class AutoPlot:
         ax.set_zlabel('Users')
 
         # Convert the image to a base64 binary stream
-        f = io.BytesIO()
-        plt.savefig(f, format="png")
-        plt.clf()
-        return "data:image/png;base64," + base64.b64encode(f.getvalue()).decode()
+        return self._plot(fig, 'png') 

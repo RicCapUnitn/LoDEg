@@ -126,7 +126,7 @@ class LodegSystem:
                 self._config = self._config_web.copy()
                 self._plot = auto_plot.AutoPlot('web')
             elif modality == 'console':
-                self._config = self.connfig_console.copy()
+                self._config = self._config_console.copy()
                 self._plot = auto_plot.AutoPlot('console')
             else:
                 self._config = self._config_default.copy()

@@ -25,6 +25,7 @@ class LodegSystem:
         'keep_session_data': False,
         'ml_mem_opt': False,  # Keep data both in dataframes and dictionaries
         'ml_autorun': True,  # Autorun the clustering algorith
+        'plot_target': 'web',
         # Initialization only
         'cache': None  # Default should be set to None or be always available
     }
@@ -36,6 +37,18 @@ class LodegSystem:
         'keep_session_data': False,
         'ml_mem_opt': True,
         'ml_autorun': False,
+        'plot_target': 'web',
+        'cache': None  # Default should be set to None or be always available
+    }
+    
+    # Console configuration
+    _config_console = {
+        'query_mem_opt': True,
+        'keep_user_info': True,  # Discard user statistics after computation
+        'keep_session_data': False,
+        'ml_mem_opt': False,
+        'ml_autorun': False,
+        'plot_target': 'console',
         'cache': None  # Default should be set to None or be always available
     }
 
@@ -46,6 +59,7 @@ class LodegSystem:
         'keep_session_data': False,
         'ml_mem_opt': True,
         'ml_autorun': False,
+        'plot_target': 'web',
         'cache': 'sqlite'  # Default should be set to None or be always available
     }
 
@@ -103,16 +117,23 @@ class LodegSystem:
         """
         self._systemInfo = {'courses': {}, 'last_update': 'never'}
 
-        # Set base settings
+        # Set base settings and AutoPlot instance
         if modality:
-            if modality == 'low_mem':
+            if modality == 'low_mem': 
                 self._config = self._config_low_mem.copy()
+                self._plot = auto_plot.AutoPlot('web')
             elif modality == 'web':
                 self._config = self._config_web.copy()
+                self._plot = auto_plot.AutoPlot('web')
+            elif modality == 'console':
+                self._config = self._config_console.copy()
+                self._plot = auto_plot.AutoPlot('console')
             else:
                 self._config = self._config_default.copy()
+                self._plot = auto_plot.AutoPlot('web')
         else:
             self._config = self._config_default.copy()
+            self._plot = auto_plot.AutoPlot('web')
 
         # Update class settings if required during instantiation
         if (kwargs is not None):
@@ -654,13 +675,13 @@ class LodegSystem:
 
         # Check if the session_coverage has already been calculated
         try:
-            image = auto_plot.printSessionCoverage(
+            image = self._plot.printSessionCoverage(
                 sessionInfo, lesson_duration)
         except KeyError:
             # We don't have this information in the system -> extract it
             data_extraction.session_coverage_extraction(
                 sessionInfo, lesson_duration)
-            image = auto_plot.printSessionCoverage(sessionInfo)
+            image = self._plot.printSessionCoverage(sessionInfo)
 
         return image
 
@@ -691,7 +712,7 @@ class LodegSystem:
         except KeyError:
             # We don't have this information in the system
             return('<h2 class="text-center">Coverage unknown</h2>')
-        return auto_plot.printLessonCoverage(coverage)
+        return self._plot.printLessonCoverage(coverage)
 
     def printNotesBarChart(self, course: str, user=None, session=None):
         """Returns a bar chart of the notes types distribution as html string.
@@ -725,7 +746,7 @@ class LodegSystem:
         except KeyError:
             # We don't have this information in the system
             return('<h2 class="text-center">Notes statistics unknown</h2>')
-        return auto_plot.printNotesBarChart(notes_types)
+        return self._plot.printNotesBarChart(notes_types)
 
     def printLessonsHistogram(self, course: str, user: str = None):
         """ Return the histogram that plots the number of users that have watched each lesson if level = system;
@@ -740,9 +761,9 @@ class LodegSystem:
         """
         try:
             if (user is not None):
-                return auto_plot.printLessonsHistogram(self._systemInfo['courses'][course]['users'][user]['coverage_histogram'])
+                return self._plot.printLessonsHistogram(self._systemInfo['courses'][course]['users'][user]['coverage_histogram'])
             else:
-                return auto_plot.printLessonsHistogram(self._systemInfo['courses'][course]['coverage_histogram'])
+                return self._plot.printLessonsHistogram(self._systemInfo['courses'][course]['coverage_histogram'])
         except KeyError:
              # We don't have this information in the system
             return('<h2 class="text-center">Histogram unknown</h2>')
@@ -760,9 +781,9 @@ class LodegSystem:
         """
         try:
             if (user is not None):
-                return auto_plot.printDaySessionDistribution(self._systemInfo['courses'][course]['users'][user]['day_distribution'])
+                return self._plot.printDaySessionDistribution(self._systemInfo['courses'][course]['users'][user]['day_distribution'])
             else:
-                return auto_plot.printDaySessionDistribution(self._systemInfo['courses'][course]['day_distribution'])
+                return self._plot.printDaySessionDistribution(self._systemInfo['courses'][course]['day_distribution'])
         except KeyError as e:
             # We don't have this information in the system
             return('<h2 class="text-center">Information unknown</h2>')
@@ -782,9 +803,9 @@ class LodegSystem:
         """
         try:
             if time_format is not None:
-                return auto_plot.printLessonUserCorrelationGraph(self._systemInfo['courses'][course]['lessons_visualization'], self._systemInfo['courses'][course]['registration_dates'], time_format)
+                return self._plot.printLessonUserCorrelationGraph(self._systemInfo['courses'][course]['lessons_visualization'], self._systemInfo['courses'][course]['registration_dates'], time_format)
             else:
-                return auto_plot.printLessonUserCorrelationGraph(self._systemInfo['courses'][course]['lessons_visualization'], self._systemInfo['courses'][course]['registration_dates'],)
+                return self._plot.printLessonUserCorrelationGraph(self._systemInfo['courses'][course]['lessons_visualization'], self._systemInfo['courses'][course]['registration_dates'],)
         except KeyError:
              # We don't have this information in the system
             return('<h2 class="text-center">Correlation unknown</h2>')
