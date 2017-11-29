@@ -282,7 +282,7 @@ class TestQueries(unittest.TestCase):
 
     def test_queries_2_get_all_users_for_course(self):
         self.assertEqual(
-            set(utils.get_all_users_for_course(logs_collection, 'course1')), set(['user1', 'user2', 'user3']))
+            set(utils.get_all_users_for_course(logs_collection, 'course1')), set(['user1', 'user2', 'user3','play_pause_test','session_coverage_test','jumps_info_test']))
 
     def test_queries_3_get_all_sessions_for_user_and_course(self):
         self.assertEqual(
@@ -335,11 +335,13 @@ class TestJumpsInfoExtraction(unittest.TestCase):
         }]
 
         number_of_jumps = 4
-        average_jump_length = (60.0 + 40.0 + 70.0 + 90.0) / 4.0
+        total_jumps_length = 60.0 + 40.0 + 70.0 + 90.0
+        average_jumps_length = total_jumps_length / 4.0
         jumps_per_type = jumps_per_type = {
             'click_or_drag': 3, 'keyframe': 1, 'note': 0}
-        expected_output = {'number_of_jumps': number_of_jumps, 'average_jump_length':
-                           average_jump_length, 'jumps_per_type': jumps_per_type}
+        expected_output = {'number_of_jumps': number_of_jumps, 'average_jumps_length':
+                           average_jumps_length, 'jumps_per_type': jumps_per_type,
+                           'total_jumps_length':total_jumps_length}
 
         test_utils.jumps_info_test(
             logs_collection, 'jumps_info_test', self._sessionInfo)
@@ -361,6 +363,7 @@ class TestDataExtraction(unittest.TestCase):
         # Get the records
         utils.get_all_users_records(
             logs_collection, self._test_course, self._courseInfo)
+
         # Purify the records
         extracted_purified_records = utils.purify_list(
             self._courseInfo['users']['play_pause_test']['sessions']['play_pause_test']['data'], ['play', 'pause'])
@@ -376,10 +379,10 @@ class TestDataExtraction(unittest.TestCase):
         computed_output = {}
         expected_output = {}
         # Get the records
-        utils.get_all_users_records(logs_collection, self._systemInfo)
+        utils.get_all_users_records(logs_collection, self._test_course, self._courseInfo)
         # Purify the records
         extracted_purified_records = utils.purify_list(
-            self._systemInfo['users']['session_coverage_test']['sessions']['test7']['data'], ['play', 'pause', 'alive', 'jump'])
+            self._courseInfo['users']['session_coverage_test']['sessions']['test7']['data'], ['play', 'pause', 'alive', 'jump'])
         # Run the session_coverage_extraction on the extracted data
         data_extraction.session_coverage_extraction(
             computed_output, extracted_purified_records)
@@ -392,7 +395,7 @@ class TestDataExtraction(unittest.TestCase):
         computed_output = {}
         expected_output = {}
         # Get the records
-        utils.get_all_users_records(logs_collection, self._systemInfo)
+        utils.get_all_users_records(logs_collection, 'course1', self._courseInfo)
         # Purify the records
         extracted_purified_records = utils.purify_list(
             self._systemInfo['users']['jumps_info_test']['sessions']['jumps_info_test']['data'], ['jump'])
@@ -435,7 +438,7 @@ class TestDataExtraction(unittest.TestCase):
     def test_data_extraction_5_compute_global_coverage(self):
         raw_lessons_data_list = test_utils.get_lessons(
             db.get_collection('lessons'))
-        lessons_durations = utils.create_lessons_durations_dict(
+        lessons_durations = test_utils.create_lessons_durations_dict(
             raw_lessons_data_list)
         utils.get_all_users_records(logs_collection, self._systemInfo)
         test_users = ['user1', 'user2', 'user3']
@@ -500,7 +503,7 @@ class TestDataExtraction(unittest.TestCase):
 
     def test_data_extraction_7_complete_extraction(self):
         self._systemInfo = data_extraction.execute_complete_extraction(
-            logs_collection)
+            logs_collection, self._systemInfo)
         # To be refined
 
 if __name__ == '__main__':

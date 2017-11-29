@@ -1,6 +1,11 @@
 import json
 from datetime import datetime
 
+# Add path in order to be able to do imports
+import sys, os
+myPath = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, myPath + '/../unit/')
+
 import test_utils
 
 """
@@ -42,8 +47,15 @@ def create_population():
         # PLAY_PAUSE_TEST #
         ###################
 
+        record['course_id'] = 'course1'
         record['user_id'] = 'play_pause_test'
         record['session_id'] = 'play_pause_test'
+
+        # Add title record
+        json.dump(
+        {'type':'title','user_id': record['user_id'],
+        'session_id':record['session_id'],
+        'value2':record['course_id']},out, indent =indent)
 
         # Add play and pauses records (only time_abs)
         # Should add a test case that ends with a pause record (though it won't
@@ -64,10 +76,17 @@ def create_population():
         #########################
 
         record = {}
+        record['course_id'] = 'course1'
         record['user_id'] = 'session_coverage_test'
 
         # Test1
         record['session_id'] = 'test1'
+        # Add title record
+        json.dump(
+        {'type':'title','user_id': record['user_id'],
+        'session_id':record['session_id'],
+        'value2':record['course_id']},out, indent =indent)
+
         session_coverage_records = [
             ['play', 0.0],
             ['pause', 30.0],
@@ -80,6 +99,12 @@ def create_population():
 
         # Test2
         record['session_id'] = 'test2'
+        # Add title record
+        json.dump(
+        {'type':'title','user_id': record['user_id'],
+        'session_id':record['session_id'],
+        'value2':record['course_id']},out, indent =indent)
+
         session_coverage_records = [
             ['play', 0.0],
             ['pause', 130.0],
@@ -92,6 +117,12 @@ def create_population():
 
         # Test3
         record['session_id'] = 'test3'
+        # Add title record
+        json.dump(
+        {'type':'title','user_id': record['user_id'],
+        'session_id':record['session_id'],
+        'value2':record['course_id']},out, indent =indent)
+
         session_coverage_records = [
             ['play', 0.0],
             ['jump', 30.0, 50.0],
@@ -110,6 +141,12 @@ def create_population():
 
         # Test4
         record['session_id'] = 'test4'
+        # Add title record
+        json.dump(
+        {'type':'title','user_id': record['user_id'],
+        'session_id':record['session_id'],
+        'value2':record['course_id']},out, indent =indent)
+
         session_coverage_records = [
             ['play', 100.0],
             ['jump', 120.0, 80.0],
@@ -128,6 +165,12 @@ def create_population():
 
         # Test5
         record['session_id'] = 'test5'
+        # Add title record
+        json.dump(
+        {'type':'title','user_id': record['user_id'],
+        'session_id':record['session_id'],
+        'value2':record['course_id']},out, indent =indent)
+
         session_coverage_records = [
             ['play', 100.0],
             ['jump', 120.0, 80.0],
@@ -146,6 +189,12 @@ def create_population():
 
         # Test6
         record['session_id'] = 'test6'
+        # Add title record
+        json.dump(
+        {'type':'title','user_id': record['user_id'],
+        'session_id':record['session_id'],
+        'value2':record['course_id']},out, indent =indent)
+
         session_coverage_records = [
             ['play', 0.0],
             ['jump', 10.0, 70.0],
@@ -168,6 +217,12 @@ def create_population():
 
         # Test7
         record['session_id'] = 'test7'
+        # Add title record
+        json.dump(
+        {'type':'title','user_id': record['user_id'],
+        'session_id':record['session_id'],
+        'value2':record['course_id']},out, indent =indent)
+
         session_coverage_records = [
             ['play', 0.0],
             ['jump', 10.0, 70.0],
@@ -189,6 +244,12 @@ def create_population():
 
         # Test8
         record['session_id'] = 'test8'
+        # Add title record
+        json.dump(
+        {'type':'title','user_id': record['user_id'],
+        'session_id':record['session_id'],
+        'value2':record['course_id']},out, indent =indent)
+
         session_coverage_records = [
             ['play', 0.0],
             ['speed', 10.0, 2.0],
@@ -215,8 +276,16 @@ def create_population():
         ##############################
 
         record = {}
+        record['course_id'] = 'course1'
         record['user_id'] = 'jumps_info_test'
         record['session_id'] = 'jumps_info_test'
+
+        # Add title record
+        json.dump(
+        {'type':'title','user_id': record['user_id'],
+        'session_id':record['session_id'],
+        'value2':record['course_id']},out, indent =indent)
+
         jump_info_test = [
             ['play', 0.0],
             ['jump', 10.0, 70.0, 'click_or_drag'],
@@ -243,6 +312,7 @@ def create_population():
         ##############
 
         record = {}
+        record['course_id'] = 'course1'
         test_users = ['user1', 'user2', 'user3']
         test_sessions = ['session1', 'session2', 'session3']
 
@@ -306,6 +376,7 @@ def create_population():
             ['pause', 40.0]]
 
         record = {}
+        record['course_id'] = 'course1'
         record['user_id'] = 'user2'
         for i in range(len(test_sessions)):
             session = test_sessions[i]
@@ -329,6 +400,7 @@ def create_population():
 
         # Add notes
         record = {}
+        record['course_id'] = 'course1'
         record['type'] = 'note'
         test_users = ['user4', 'user5']
         notes = [

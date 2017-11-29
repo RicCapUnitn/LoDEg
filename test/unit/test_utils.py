@@ -41,6 +41,9 @@ def jumps_info_test(collection, test_session_id, sessionInfo):
     )
     sessionInfo['data'] = list(cursor)
 
+def create_lessons_durations_dict(raw_lessons_data_list):
+    pass
+
 def correlation_graph_lessons_test():
     lessons_visualization = {}
     lessons = ['lesson' + str(i) for i in range(5)]
