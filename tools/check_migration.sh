@@ -1,6 +1,9 @@
+# Ensure previous files are deleted
+make clean
+
 # Migrate a temp library
 cp -f src/lodegML/*.py tools/tmp/migration_backups
-find tools/tmp/migration_backups -type f -name "*.py" -print0 | xargs -0 sed -i "s/import\(.*migrate\)/from ..lodegML import\1/g" 
+find tools/tmp/migration_backups -type f -name "*.py" -print0 | xargs -0 sed -i "s/import\(.*migrate\)/from ..lodegML import\1/g"
 
 # Compute md5 for the lib dir
 find tools/tmp/migration_backups -maxdepth 1 -type f -name "*.py" -exec md5sum {} \; |cut -c-32 |sort > tools/tmp/webmd5.txt
