@@ -1,15 +1,20 @@
 import unittest
 
-from ..lodegML import connection_to_mongo as connect
+# Add path in order to be able to do imports
+import sys, os
+myPath = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, myPath + '/../../src/lodegML')
+
+import connection_to_mongo as connect
+import data_extraction
+import test_utils
+import utility_queries as utils
+
 # Connect to the instance of MongoDB where the mockup_population
 # collection is located
 db = connect.connect_to_mongo()
 logs_collection = db.get_collection('mockup_population')
 lessons_collection = db.get_collection('mockup_lessons')
-
-from ..lodegML import data_extraction
-from ..lodegML import test_utils
-from ..lodegML import utility_queries as utils
 
 
 class TestPausesExtraction(unittest.TestCase):
