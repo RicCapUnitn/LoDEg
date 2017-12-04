@@ -1,24 +1,63 @@
 SHELL=/bin/sh #Shell da utilizzare per l'esecuzione dei comandi
 
-PORT = 8000
+# if set to @ will hide which command are executed,
+# otherwise it will show all executed commands
+SILENT = @
+# if set to --silent will hide recursive make output,
+# otherwise it will show all the outputs
+MAKE_SILENT = --silent
 
-clean:
-	./tools/clean.sh
+RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+# turn args into do-nothing targets
+$(eval $(RUN_ARGS):;@:)
+
+help:
+	$(SILENT)echo "LoDEg makefile\n"
+	$(SILENT)echo "Rules:"
+	$(SILENT)echo	"- help"
+	$(SILENT)echo	"\t show this help"
+	$(SILENT)echo	"- website PORT"
+	$(SILENT)echo	"\t deploy the website"
+	$(SILENT)echo	"- to_web"
+	$(SILENT)echo	"\t copy WebApp library to standalone"
+	$(SILENT)echo	"- from_web"
+	$(SILENT)echo	"\t copy standalone library to WebApp"
+	$(SILENT)echo	"- check"
+	$(SILENT)echo	"\t check library integrity"
+	$(SILENT)echo	"- test i[interactive]"
+	$(SILENT)echo	"\t test the library"
 
 website:
-	cd src/lodeg_website; python manage.py runserver $(PORT)
+	$(SILENT)cd src/lodeg_website; python manage.py runserver $(filter-out $@, $(MAKECMDGOALS))
 
 to_web:
-	./tools/lib_to_web.sh
+	$(SILENT)echo ">>> Starting migration from WebApp library to the standalone library..."
+	$(SILENT)./tools/lib_to_web.sh
+	$(SILENT)echo ">>> Done!\n"
 
 from_web:
-	./tools/web_to_lib.sh
+	$(SILENT)./tools/web_to_lib.sh
 
-check:
-	./tools/check_migration.sh
+check: clean
+	$(SILENT)echo ">>> Starting integrity test..."
+	$(SILENT)./tools/check_migration.sh
+	$(SILENT)echo ">>> Done!\n"
+
+.SILENT: tests
 
 tests:
-	./test/run_tests.sh
+	$(SILENT)echo ">>> Starting testing..."
+	$(SILENT)./test/run_tests.sh $(filter-out $@, $(MAKECMDGOALS))
+	$(SILENT)echo ">>> Done!\n"
 
-#target "clean" non è un file!
+
+### ===================== ###
+###     Clean section     ###
+### ===================== ###
+# remove generated files
 .PHONY: clean
+
+clean:
+	$(SILENT)echo ">>> Deleting temporary files..."
+	$(SILENT)./tools/clean.sh
+	$(SILENT)echo ">>> Done!\n"

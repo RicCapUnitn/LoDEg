@@ -1,6 +1,3 @@
-# Ensure previous files are deleted
-make clean
-
 # Migrate a temp library
 cp -f src/lodegML/*.py tools/tmp/migration_backups
 find tools/tmp/migration_backups -type f -name "*.py" -print0 | xargs -0 sed -i "s/import\(.*migrate\)/from ..lodegML import\1/g"
