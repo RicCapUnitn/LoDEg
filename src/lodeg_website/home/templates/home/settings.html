@@ -1,64 +1,55 @@
-{% extends "base_admin.html" %}
-
-{% block scripts_head%}
-{% endblock %}
-
-{% block sidebar_top %}
+{% extends "base_admin.html" %} {% block scripts_head%} {% endblock %} {% block sidebar_top %}
 <li><a href="#settingsAnchor">Top<span class="sub_icon glyphicon glyphicon-arrow-up"></span></a></li>
-{% endblock %}
-
-{% block help %}
+{% endblock %} {% block help %}
 <p>This is the settings page. Here you can modify system settings.</p>
-{% endblock %}
-
-{% load custom_tags %}
-{% block content %}
+{% endblock %} {% load custom_tags %} {% block content %}
 <section class="row placeholders">
-    <div class="row">
-        <a class="anchor" id="settingsAnchor"></a>
-        <h1>Settings</h1>
-        <div class="text-left col-md-8 col-md-offset-2">
-            <ul>
-                <li>keep_session_data (bool): Keep the raw session data in the system. Defaults to False.</li>
-                <li>keep_user_info (bool): Keep the statistics computed at the userInfo level. Defaults to True. </li>
-                <li>query_mem_opt (bool): Do only partial queries to keep memory usage low. Defaults to True. </li>
-                <li>ml_mem_opt (bool): Keep data both in dataframes and dictionaries when clustering users. Defaults to False.</li>
-                <li>ml_autorun (bool): Autorun the clustering algorith after data extraction. Defaults to True.</li>
-                <li>cache (str): The caching mechanism that the system is using. Init param only.</li>
-                <li>plot_target (str): The target of the plot functions: console(plt.plot) or web(html,png). Init param only.</li>
-            </ul>
-        </div>
+  <div class="row">
+    <a class="anchor" id="settingsAnchor"></a>
+    <h1>Settings</h1>
+    <div class="text-left col-md-8 col-md-offset-2">
+      <h4>Configurable parameters</h4>
+      <ul>
+        <li>keep_session_data (bool): Keep the raw session data in the system. Defaults to False.</li>
+        <li>keep_user_info (bool): Keep the statistics computed at the userInfo level. Defaults to True. </li>
+        <li>query_mem_opt (bool): Do only partial queries to keep memory usage low. Defaults to True. </li>
+        <li>ml_mem_opt (bool): Keep data both in dataframes and dictionaries when clustering users. Defaults to False.</li>
+        <li>ml_autorun (bool): Autorun the clustering algorith after data extraction. Defaults to True.</li>
+        <li>cache (str): The caching mechanism that the system is using. Init param only.</li>
+        <li>plot_target (str): The target of the plot functions: console(plt.plot) or web(html,png). Init param only.</li>
+        <li>debug (bool): Shows if debug is enabled. Init param only.</li>
+      </ul>
+      <h4>Initialization parameters</h4>
+      <ul>
+        <li>plot_target (str): The target of the plot functions: console(plt.plot) or web(html,png).</li>
+        <li>debug (bool): Shows if debug is enabled.</li>
+      </ul>
     </div>
-    <div class="row">
-        <hr>
-        <form class="col-md-12 col-sm-12 form-inline" action="{% url 'modifySystemSettings' %}" method="post">
-            <div class="row">
-                <div class="row">
-                    {% csrf_token %}
-                    {% getSystemSettings as dict %}
-                    {% for key, value in dict.items %}
-                    <div class="input-group col-md-3">
-                        <p><h4>{{key}}</h4></p>
-                    {% if value|is_bool %}
-                    <select type="text" class="form-control" id="{{key}}" placeholder="{{value}}" name="{{key}}">
+  </div>
+  <div class="row">
+    <hr>
+    <form class="col-md-12 col-sm-12 form-inline" action="{% url 'modifySystemSettings' %}" method="post">
+      <div class="row">
+        <div class="row">
+          {% csrf_token %} {% getSystemSettings as dict %} {% for key, value in dict.items %}
+          <div class="input-group col-md-3">
+            <p>
+              <h4>{{key}}</h4></p>
+            {% if key|not_debug and value|is_bool %}
+            <select type="text" class="form-control" id="{{key}}" placeholder="{{value}}" name="{{key}}">
                         <option value="true" {% if value == True %} selected {% endif %}>True</option>
                         <option value="false" {% if value == False %} selected {% endif %}>False</option>
-                    </select>
-                    {% else %}
-                    <input type="text" class="form-control" id="{{key}}" placeholder="{{value}}" name="{{key}}" value="{{value}}" disabled>
-                    {% endif %}
-                </div>
-                {% endfor %}
-            </div>
-            <div class="row">
-                <hr>
-                <button class="btn btn-success col-md-2 col-md-offset-5" type="submit" >Submit</button>
-            </div>
-        </form>
+                    </select> {% else %}
+            <input type="text" class="form-control" id="{{key}}" placeholder="{{value}}" name="{{key}}" value="{{value}}" disabled> {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        <div class="row">
+          <hr>
+          <button class="btn btn-success col-md-2 col-md-offset-5" type="submit">Submit</button>
+        </div>
+    </form>
     </div>
 </section>
 
-{% endblock %}
-
-{% block scripts_body%}
-{% endblock %}
+{% endblock %} {% block scripts_body%} {% endblock %}

@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from .lodegML.system import LodegSystem
 
 context = {
-    "system": LodegSystem(),
+    "system": LodegSystem(modality='web'),
     "adminPermissions": False,
     "contact_mail_address" : "capraroriccardo@gmail.com"
 }
@@ -20,16 +20,16 @@ context = {
 # Useful decorators
 def set_context_user(func):
     def func_wrapper(request):
-        context['user'] = request.user.lodeguser.lodeg_user_id 
+        context['user'] = request.user.lodeguser.lodeg_user_id
         return func(request)
     return func_wrapper
 
-def check_permissions(func): 
+def check_permissions(func):
     def func_wrapper(request):
         if request.user.is_superuser:
             context['adminPermissions'] = True
         else:
-            context['adminPermissions'] = False        
+            context['adminPermissions'] = False
         return func(request)
     return func_wrapper
 
@@ -64,7 +64,7 @@ def userInfo(request):
 
 @login_required
 def sessionInfo(request):
-    return render(request, 'home/sessionInfo.html', context)    
+    return render(request, 'home/sessionInfo.html', context)
 
 @login_required
 @set_context_user
@@ -94,7 +94,7 @@ def saveDataToDb(request):
 @login_required
 @check_permissions
 @course_required
-def exportToCsv(request):   
+def exportToCsv(request):
     # Need to add something here to prompt the user for course if not selected
     return context['system'].getCSV(context['course'])
 
@@ -141,25 +141,25 @@ def setCourse(request):
 
 @login_required
 @require_http_methods(["POST"])
-def sendEmail(request):  
+def sendEmail(request):
     message = EmailMessage(
         'LoDEg bug report by: ' + request.POST.get('name'),
         request.POST.get('comment'),
         request.POST.get('mail') if request.POST.get('mail') is not None else 'not_specified@example.com',
         [context['contact_mail_address']]
     )
-    
+
     attachment = request.POST.get('attachment')
     if attachment is not None:
         try:
             message.attach_file(attachment)
         except:
             pass
-        
+
     message.send(fail_silently=False)
-    
+
     #return render(request, 'home/index.html')
-    
+
 @login_required
 @check_permissions
 def settings(request):

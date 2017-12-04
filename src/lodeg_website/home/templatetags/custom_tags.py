@@ -5,6 +5,10 @@ register = template.Library()
 def is_bool(value):
     return type(value) == bool
 
+@register.filter
+def not_debug(key):
+    return key != 'debug'
+
 @register.simple_tag(takes_context=True)
 def getLastUpdate(context):
     return context['system'].getLastUpdate()
@@ -28,7 +32,7 @@ def getNumberOfSessions(context, level):
         return context['system'].getNumberOfSessions(context['course'])
     else:
         return context['system'].getNumberOfSessions()
-    
+
 @register.simple_tag(takes_context=True)
 def getNumberOfLessons(context, level):
     if (level == 'course'):
@@ -42,7 +46,7 @@ def getUsers(context, level):
         return context['system'].getUsers(context['course'])
     else:
         return context['system'].getUsers()
-    
+
 @register.simple_tag(takes_context=True)
 def getUserCoveragePercentage(context):
     return context['system'].getUserCoveragePercentage(context['course'], context['user'])
@@ -98,7 +102,7 @@ def printLessonsHistogram(context, level):
         return context['system'].printLessonsHistogram(context['course'], context['user'])
     else:
         return context['system'].printLessonsHistogram(context['course'])
-        
+
 @register.simple_tag(takes_context=True)
 def printNotesBarChart(context, level):
     if (level == 'course'):
@@ -107,7 +111,7 @@ def printNotesBarChart(context, level):
         return context['system'].printNotesBarChart(context['course'], context['user'])
     else:
         return context['system'].printNotesBarChart(context['course'], context['user'], context['session'])
-  
+
 @register.simple_tag(takes_context=True)
 def printDaySessionDistribution(context, level):
     if (level == 'user'):

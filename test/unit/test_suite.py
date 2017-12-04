@@ -27,11 +27,11 @@ class TestPausesExtraction(unittest.TestCase):
 
     def test_pauses(self):
         self.assertEqual(self._sessionInfo['pauses'], [
-                         15.13 - 15.0, 19.0 - 17.0])
+                         (15.13 - 15.0)/1000, (19.0 - 17.0)/1000])
 
     def test_plays(self):
         self.assertEqual(self._sessionInfo['plays'], [
-                         15.0 - 0.0, 17.0 - 15.13])
+                         (15.0 - 0.0)/1000, (17.0 - 15.13)/1000])
 
     def test_pauses_ratio(self):
         self.assertEqual(self._sessionInfo['pauses_ratio'], [

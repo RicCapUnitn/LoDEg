@@ -32,18 +32,36 @@ def play_pause_extraction(sessionInfo: dict):
     # List of fractions play_time/ pause_time;
     pauses_ratio = []
 
-    play_time = play_pause_list[0]['value2']
-    pause_time = 0
+    #######################################################
+    # Check sessionValidity (should not be necessary!!!!!)
+    valid = True
+    if len(play_pause_list) > 0:
+        if play_pause_list[0]['type'] != 'play':
+            valid = False
+        for i in range(len(play_pause_list) - 1):
+            if play_pause_list[i]['type'] == play_pause_list[i+1]['type']:
+                valid = False
+    else:
+        valid = False
+        
+    #######################################################
+        
+    try:
+        if valid:
+            play_time = play_pause_list[0]['value2']
+            pause_time = 0
 
-    for item in play_pause_list[1:]:
-        if (item['type'] == 'play'):
-            play_time = item['value2']
-            pauses.append(play_time - pause_time)
-            # Note that pause_time > play_time >= 0
-            pauses_ratio.append(plays[-1] / pauses[-1])
-        else:
-            pause_time = item['value2']
-            plays.append(pause_time - play_time)
+            for item in play_pause_list[1:]:
+                if (item['type'] == 'play'):
+                    play_time = item['value2']
+                    pauses.append((play_time - pause_time) /1000.0) # Since time_abs is in milliseconds
+                    # Note that pause_time > play_time >= 0
+                    pauses_ratio.append(plays[-1] / pauses[-1])
+                else:
+                    pause_time = item['value2']
+                    plays.append((pause_time - play_time) /1000.0) # Since time_abs is in milliseconds
+    except IndexError:
+        raise IndexError(sessionInfo)
 
     sessionInfo['pauses'] = pauses
     sessionInfo['plays'] = plays
@@ -473,7 +491,7 @@ def course_day_distribution_extraction(courseInfo: dict):
 #######
 
 
-def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, session=None, data_provided=False, keep_session_data=False):
+def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, session=None, data_provided=False, keep_session_data=False) -> bool:
     """Execute a complete extraction for a single session.
 
     Note:
@@ -485,11 +503,19 @@ def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, sess
         session (str): The id of the session we are interested in.
         data_provided (bool): Set to True if the sessionInfo has already been populated with the raw data. Defaults to False.
         keep_session_data (bool): Keep the raw session data in the system. Defaults to False.
-    """
-    if (not data_provided):
+        
+    Returns:
+        True if everything worked nominally; false otherwise (you should remove this session).
+    """    
+    if not data_provided:
         # Get the raw data from the database
         utils.get_all_records_for_session(
             logs_collection, session, sessionInfo)
+        
+    # Check if we have a valid session
+    if not check_session_validity(sessionInfo):
+        return False
+    
     # Set session_id
     add_lesson_id_to_session(sessionInfo)
     # Add session date
@@ -504,10 +530,10 @@ def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, sess
     jumps_info_extraction(sessionInfo)
     # Notes_info_extraction
     notes_info_extraction(sessionInfo)
-    if(not keep_session_data):
+    if not keep_session_data:
         # Delete raw data for all users
         del sessionInfo['data']
-
+    return True
 
 def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course: str,
                                 user: str, userInfo: dict, keep_session_data=False, sessionInfo_provided=False):
@@ -522,21 +548,29 @@ def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course
         keep_session_data (bool): Keep the raw session data in the system. Defaults to False.
         sessionInfo_provided (bool): Set to true if the sessionInfo has already been computed. Defaults to False.
     """
-    if(not sessionInfo_provided):
+    if not sessionInfo_provided:
         # Get the raw data from the database
         utils.get_all_records_for_user_and_course(
             logs_collection, course, user, userInfo)
-        for sessionInfo in userInfo['sessions'].values():
+        
+        invalid_sessions = []
+        
+        for session,sessionInfo in userInfo['sessions'].items():
             # Extract sessionInfo information
-            execute_sessionInfo_extraction(
-                sessionInfo, data_provided=True, keep_session_data=keep_session_data)
-            # Add coverage percentage
-            try:
-                duration = lessons_durations[sessionInfo['lesson_id']]
-                sessionInfo['coverage_percentage'] = sessionInfo[
-                    'total_time_watched'] / duration
-            except KeyError:
-                sessionInfo['coverage_percentage'] = 'unknown'
+            if not execute_sessionInfo_extraction(sessionInfo, data_provided=True, keep_session_data=keep_session_data):
+                invalid_sessions.append(session)
+            else:
+                # Add coverage percentage
+                try:
+                    duration = lessons_durations[sessionInfo['lesson_id']]
+                    sessionInfo['coverage_percentage'] = sessionInfo[
+                        'total_time_watched'] / duration
+                except KeyError:
+                    sessionInfo['coverage_percentage'] = 'unknown'
+                    
+        # Discard invalid sessions
+        for session in invalid_sessions:
+            del userInfo['sessions'][session]
                 
 
     # Extract userInfo level statistics
@@ -571,7 +605,7 @@ def execute_courseInfo_extraction(logs_collection, lessons_collection, course: s
     """
 
     # Check if the lessons_durations has already been extracted
-    if ('lessons_durations' not in courseInfo.keys()):
+    if 'lessons_durations' not in courseInfo.keys():
         utils.get_lessons_durations_and_registration_dates(
             lessons_collection, course, courseInfo)
     # Create a counter for the total number of sessions
@@ -582,10 +616,17 @@ def execute_courseInfo_extraction(logs_collection, lessons_collection, course: s
         utils.get_all_users_records(logs_collection, course, courseInfo)
         # Extract features
         for user, userInfo in courseInfo['users'].items():
+            
+            # Compute statistics only if the session is valid
+            invalid_sessions = []
+            
             for session, sessionInfo in userInfo['sessions'].items():
                 # Execute sessionInfo extraction
-                execute_sessionInfo_extraction(
-                    sessionInfo, data_provided=True, keep_session_data=keep_session_data)
+                if not execute_sessionInfo_extraction(sessionInfo, data_provided=True, keep_session_data=keep_session_data):
+                    invalid_sessions.append(session)
+                # Remove invalid sessions
+                for session in invalid_sessions:
+                    del userInfo['sessions'][session]
             execute_userInfo_extraction(logs_collection, courseInfo[
                                         'lessons_durations'], course, user, userInfo, keep_session_data=keep_session_data, sessionInfo_provided=True)
             # Add this user sessions to the total counter
@@ -618,9 +659,9 @@ def execute_courseInfo_extraction(logs_collection, lessons_collection, course: s
     # Add update time
     courseInfo['last_update'] = datetime.utcnow()
 
-    if (not keep_user_info):
+    if not keep_user_info:
         # Discard userInfo
-        pass
+        pass#<------------------------------
 
 
 def execute_complete_extraction(logs_collection, lessons_collection, systemInfo, keep_session_data=False, keep_user_info=True, query_mem_opt=True):
@@ -662,9 +703,15 @@ def execute_complete_extraction(logs_collection, lessons_collection, systemInfo,
 # Miscellaneous #
 #################
 
-def check_session_validity():
+def check_session_validity(sessionInfo: dict):
     """ Check if the session meets the basic requirements in order not to raise exceptions.
     """
-    pass
-    # Check if user has at least one session
     # Check if every session is well formed
+    well_formed = False
+    try:
+        if sessionInfo['data'][0]['type'] == 'title':
+            well_formed = True
+    except KeyError or IndexError:
+        well_formed = False
+    return well_formed
+        

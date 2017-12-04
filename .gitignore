@@ -1,5 +1,5 @@
-# Code migrations
-tools/migration_backups
+# Test temporary folder
+tools/tmp/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

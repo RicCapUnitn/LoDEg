@@ -14,13 +14,13 @@ import base64
 import io
 
 # For correlation_graph test only
-from ..lodegML import test_utils  # migrate
+# from ..lodegML import test_utils  # migrate
 
-class AutoPlot:    
-    
+class AutoPlot:
+
     def __init__(self, target = 'console'):
         self._target = target
-        
+
     def _plot(self, figure, output_type = 'png'):
         if self._target == 'console':
             plt.show()
@@ -33,7 +33,7 @@ class AutoPlot:
                 figure.savefig(f, format="png")
                 plt.clf() # Might break everything when parallelizing
                 return "data:image/png;base64," + base64.b64encode(f.getvalue()).decode()
-            
+
 
     def printSessionCoverage(self, sessionInfo: dict, lesson_duration: float):
         session_coverage = sessionInfo['session_coverage']
@@ -49,7 +49,7 @@ class AutoPlot:
         ax.grid(True)
         ax.set_xlabel('Seconds')
         ax.set_ylabel('Inteval number')
-        return self._plot(fig, 'html')     
+        return self._plot(fig, 'html')
 
     def printLessonCoverage(self, coverage: list):
         fig, ax = plt.subplots()
@@ -57,7 +57,7 @@ class AutoPlot:
         ax.set_xlabel('Seconds')
         ax.set_ylabel('Number of users')
         bars = ax.bar(np.arange(len(coverage)), coverage)
-        return self._plot(fig, 'html')  
+        return self._plot(fig, 'html')
 
 
     def printNotesPolarChart(self, notes_types: dict):
@@ -78,8 +78,8 @@ class AutoPlot:
         for r, bar in zip(radii, bars):
             bar.set_facecolor(plt.cm.plasma(r / 5.))
             bar.set_alpha(0.5)
-            
-        return self._plot(fig, 'png')            
+
+        return self._plot(fig, 'png')
 
     def printNotesBarChart(self, notes_types: dict):
         fig, ax = plt.subplots()
@@ -91,8 +91,8 @@ class AutoPlot:
         ax.legend((bars[0], bars[1]), ('Handwritten', 'Text'))
         ax.grid(True)
 
-        return self._plot(fig, 'html')  
- 
+        return self._plot(fig, 'html')
+
 
     def printLessonsHistogram(self, histogram: dict):
         """The histogram is of type {'lesson':'number_of_users'}
@@ -105,7 +105,7 @@ class AutoPlot:
         plt.xticks(x, histogram.keys())
         ax.grid(True)
 
-        return self._plot(fig, 'html')  
+        return self._plot(fig, 'html')
 
 
     def printDaySessionDistribution(self, distribution: list):
@@ -144,14 +144,14 @@ class AutoPlot:
                              '%d' % int(height), ha='center', va='bottom')
             ax2.set_xticks(range(0, 24, 2))
 
-        return self._plot(plt.gcf(), 'png') 
+        return self._plot(plt.gcf(), 'png')
 
 
     def printLessonUserCorrelationGraph(self, lessons_visualization: dict, registration_dates: dict, time_format: str = 'abs'):
         """Print a 3d graph of users lesson visualization.
 
         The graph plots a function of the number of users against time and lessons: for every lesson,
-        a curve is plotted to show when and how many users have watched the lessons. 
+        a curve is plotted to show when and how many users have watched the lessons.
 
         Time has two formats: abs and rel. It expresses wheter each lesson curve is plotted agains its registration date (rel)
         or against the registration date of the first lesson (abs).
@@ -179,7 +179,7 @@ class AutoPlot:
         # Setup the DateFormatter for the x axis
         date_format = mdates.DateFormatter('%D')
 
-        # Min/max for x ticks   
+        # Min/max for x ticks
         datemin = datetime.datetime.now(pytz.utc) + datetime.timedelta(days = -20) # Test
         #datemin = min(registration_dates.values())
         datemax = datetime.datetime.now(pytz.utc)
@@ -188,12 +188,12 @@ class AutoPlot:
         max_value = 0
 
         verts = []
-        for lesson, dates_counter in lessons_visualization.items():        
+        for lesson, dates_counter in lessons_visualization.items():
             # Get the dates that are present in the counter
-            dates = sorted(dates_counter.keys())      
+            dates = sorted(dates_counter.keys())
 
-            # Compute datemin and datemax        
-            max_date = max(dates) 
+            # Compute datemin and datemax
+            max_date = max(dates)
             # Select a relative mindate if time_format = rel
             if (time_format == 'rel'):
                 min_date = min(dates)
@@ -206,7 +206,7 @@ class AutoPlot:
                 datemax = max_date
 
             # Create verts adding a 0 before the first and after the last days
-            xs = np.asarray([mdates.date2num(min_date + datetime.timedelta(days=-1))] + list(mdates.date2num(dates)) 
+            xs = np.asarray([mdates.date2num(min_date + datetime.timedelta(days=-1))] + list(mdates.date2num(dates))
                             + [mdates.date2num(max_date + datetime.timedelta(days=1))])
             ys = [0]
             for date in dates:
@@ -234,9 +234,9 @@ class AutoPlot:
 
         # format the ticks
         #ax.xaxis_date()
-        ax.xaxis.set_major_locator(months) 
-        ax.xaxis.set_minor_locator(days) 
-        ax.xaxis.set_major_formatter(date_format)   
+        ax.xaxis.set_major_locator(months)
+        ax.xaxis.set_minor_locator(days)
+        ax.xaxis.set_major_formatter(date_format)
 
         # Set axis labels and limits
         ax.set_xlim3d(datemin + datetime.timedelta(days=-1), datemax + datetime.timedelta(days=1))
@@ -324,4 +324,4 @@ class AutoPlot:
         ax.set_zlabel('Users')
 
         # Convert the image to a base64 binary stream
-        return self._plot(fig, 'png') 
+        return self._plot(fig, 'png')

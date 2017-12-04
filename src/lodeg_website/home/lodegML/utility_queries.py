@@ -9,7 +9,8 @@ class BetterEncoder(json.JSONEncoder):
         if isinstance(obj, (datetime, date)):
             return obj.isoformat()
         # Let the base class default method raise the TypeError
-        return json.JSONEncoder.default(self, obj)    
+        # return json.JSONEncoder.default(self, obj)    
+        return {} 
 
     
 def getTimeFromObjectId(oid: str):

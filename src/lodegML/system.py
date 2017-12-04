@@ -27,7 +27,8 @@ class LodegSystem:
         'ml_autorun': True,  # Autorun the clustering algorith
         'plot_target': 'web',
         # Initialization only
-        'cache': None  # Default should be set to None or be always available
+        'cache': None,  # Default should be set to None or be always available
+        'debug': True # Needed for testing, Default should be False
     }
 
     # Low memory configuration
@@ -38,9 +39,10 @@ class LodegSystem:
         'ml_mem_opt': True,
         'ml_autorun': False,
         'plot_target': 'web',
-        'cache': None  # Default should be set to None or be always available
+        'cache': None,  # Default should be set to None or be always available
+        'debug': True
     }
-    
+
     # Console configuration
     _config_console = {
         'query_mem_opt': True,
@@ -49,7 +51,8 @@ class LodegSystem:
         'ml_mem_opt': False,
         'ml_autorun': False,
         'plot_target': 'console',
-        'cache': None  # Default should be set to None or be always available
+        'cache': None,  # Default should be set to None or be always available
+        'debug': True
     }
 
     # Web default configuration
@@ -60,7 +63,8 @@ class LodegSystem:
         'ml_mem_opt': True,
         'ml_autorun': False,
         'plot_target': 'web',
-        'cache': 'sqlite'  # Default should be set to None or be always available
+        'cache': 'sqlite',  # Default should be set to None or be always available,
+        'debug': True
     }
 
     _config = _config_default.copy()
@@ -119,7 +123,7 @@ class LodegSystem:
 
         # Set base settings and AutoPlot instance
         if modality:
-            if modality == 'low_mem': 
+            if modality == 'low_mem':
                 self._config = self._config_low_mem.copy()
                 self._plot = auto_plot.AutoPlot('web')
             elif modality == 'web':
@@ -140,9 +144,15 @@ class LodegSystem:
             self.modify_class_settings(**kwargs)
 
         # Get default collections
-        self._db = connection_to_mongo.connect_to_mongo()
-        self._logs = self._db.get_collection('web_mockup_population')
-        self._lessons = self._db.get_collection('web_mockup_lessons')
+        if self._config['debug']:
+            self._db = connection_to_mongo.connect_to_mongo()
+            self._logs = self._db.get_collection('web_mockup_population')
+            self._lessons = self._db.get_collection('web_mockup_lessons')
+        else:
+            self._db = connection_to_mongo.connect_to_mongo(db_name = 'lode_real')
+            # should rename these collections <--------------------------------------
+            self._logs = self._db.get_collection('web_mockup_population')
+            self._lessons = self._db.get_collection('web_mockup_lessons')
 
         # Get appropriate cache (or set default one if available)
         requested_cache = self._config['cache']
@@ -156,7 +166,7 @@ class LodegSystem:
             else:
                 self._cache = cache.CacheMongoDb(
                     self._db.get_collection('system_cache'))
-                
+
     def getSystemSettings(self):
         """Get system configuration"""
         return self._config
@@ -184,7 +194,7 @@ class LodegSystem:
         """Get a reference of a part of the system (default is SystemInfo)
 
         Args:
-            course (str): if set a CourseInfo is returned 
+            course (str): if set a CourseInfo is returned
             user (str): if both course and user are set then a UserInfo is returned
             session (str): if course, user and session are set then a SessionInfo is returned
 
@@ -194,12 +204,12 @@ class LodegSystem:
         try:
             if course:
                 if user:
-                    data = self._systemInfo['courses'][course]['users'][user] 
+                    data = self._systemInfo['courses'][course]['users'][user]
                 else:
                     data = self._systemInfo['courses'][course]
             else:
                 data = self._systemInfo
-            
+
             return data.copy() if get_copy else data
 
         except KeyError:
@@ -248,15 +258,15 @@ class LodegSystem:
         """Extract the data and compute all the statistics.
 
         Args:
-            keep_session_data (bool): Keep the raw session data in the system. Defaults to False. 
-            keep_user_info (bool): Keep all computed userInfos in the system. Defaults to False. 
+            keep_session_data (bool): Keep the raw session data in the system. Defaults to False.
+            keep_user_info (bool): Keep all computed userInfos in the system. Defaults to False.
         """
         systemInfo = {'courses': {}}
         data_extraction.execute_complete_extraction(
             self._logs, self._lessons, systemInfo, keep_session_data, keep_user_info, query_mem_opt)
         self._systemInfo = systemInfo
         # If ml_autorun is run the ml algorithms
-        if ml_autorun: 
+        if ml_autorun:
             self.runMl()
 
     @_cache_needed
@@ -312,18 +322,19 @@ class LodegSystem:
         return response
 
     def export_data(self, export_type: str, course: str = None, user: str = None, session: str = None,
-                    selected_keys: list = None, pretty_printing: bool = False):
+                    selected_keys: list = None, excluded_keys:list = None, pretty_printing: bool = False):
         """Export the whole system or a part of it.
-        
+
         The json and the binary .p formats are supported.
-        
+
         Args:
             export_type (str): 'json' or 'bytes' export types are supported;
             course (str): if set the target CourseInfo is exported;
             user (str): if both course and user are set, the target UserInfo is exported;
             session (str): if all course, user and session are set, the target SessionInfo is exported;
             selected_keys (list of str): the keys (stats) that you want to export. Defaults to all;
-            pretty_printing (bool): if True json will be formatted with 4-spaces indentation. Defaults to False.        
+            excluded_keys (list of str): the keys (stats) that you do not want to export. Defaults to None;
+            pretty_printing (bool): if True json will be formatted with 4-spaces indentation. Defaults to False.
         """
 
         data = None
@@ -364,10 +375,13 @@ class LodegSystem:
                 insertion_key = ''
 
             # Select only requested keys
+            dict_keys = set(data.keys())
             if selected_keys:
-                dict_keys = set(data.keys())
                 target_keys = set(selected_keys)
                 for unwanted_key in dict_keys - target_keys:
+                    del data[unwanted_key]
+            if excluded_keys:
+                for unwanted_key in dict_keys & set(excluded_keys):
                     del data[unwanted_key]
 
         except KeyError:
@@ -398,7 +412,7 @@ class LodegSystem:
 
     def import_data(self, filename: str, overwrite: bool = False) -> str:
         """Import the whole system or a part of it
-        
+
         Args:
             filename (str): the filename (filepath) that we are importing;
             overwrite (bool): if the imported information is already present in the system and overwrite = False then a message is returned and the file is not imported. Defaults to False.
@@ -631,7 +645,7 @@ class LodegSystem:
 ###############################################################################
 
     def printSessionCoverage(self, course: str, user: str, session: str):
-        """Returns an image of the session coverage as html string 
+        """Returns an image of the session coverage as html string
 
         Note:
             This method requires the user (_systemInfo['users'][user]['sessions']) to be already initialized.
@@ -694,7 +708,7 @@ class LodegSystem:
         Args:
             lesson (str): The id of the lesson whose coverage we are asking for.
             course (str): The course we are considering.
-            user (str): If set, we are asking for the lesson coverage of a specific user; 
+            user (str): If set, we are asking for the lesson coverage of a specific user;
                 otherwise, courseLevel lesson coverage will be plotted.
 
         Returns:
@@ -769,7 +783,7 @@ class LodegSystem:
             return('<h2 class="text-center">Histogram unknown</h2>')
 
     def printDaySessionDistribution(self, course: str, user: str = None):
-        """ Return a figure with a polar and a bar chart with the distribution of sessions throughout the day 
+        """ Return a figure with a polar and a bar chart with the distribution of sessions throughout the day
         if level = user user level info is plotted; otherwise, course level info
 
         Args:
@@ -792,7 +806,7 @@ class LodegSystem:
         """Print a 3d graph of users lesson visualization.
 
         The graph plots a function of the number of users against time and lessons: for every lesson,
-        a curve is plotted to show when and how many users have watched the lessons. 
+        a curve is plotted to show when and how many users have watched the lessons.
 
         Time has two formats: abs and rel. It expresses whether each lesson curve is plotted agains its registration date (rel)
         or against the registration date of the first lesson (abs).
