@@ -1,9 +1,9 @@
 # Tests
 
-To run tests run the following command in the home directory:
+To run tests navigate to the top directory and run
 
 ```
-$ python -m unittest discover
+$ make tests
 ```
 
 ## Test populations

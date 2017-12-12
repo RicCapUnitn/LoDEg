@@ -49,7 +49,7 @@ else
     echo ">>> UNIT TEST: running..."
     echo ">>> COVERAGE TEST: running..."
     coverage run --source=./src/lodegML -m unittest discover -v -s ./test/unit
-    coverage html
+    coverage html -d ./docs/testsCoverage
   fi
   echo '>>> Done!'
   echo '#######################################################################################'

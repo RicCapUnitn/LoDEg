@@ -1,10 +1,10 @@
 # LoDEg
 
-Log analytics for the LODE platform. Further details will be added later.
+Log analytics for the LODE platform.
 
-## lodegML
+## The library: lodegML
 
-lodegML is the name of the library on which the project runs. It exposes an facade API through the class LodegSystem. Please refer to the library [documentation](/docs/html/index.html).
+lodegML is the name of the library on which the project runs. It exposes a facade API through the class LodegSystem. Please refer to the library [documentation](/docs/lodegML_docs/_build/html/index.html).
 
 ## Requirements
 
@@ -44,3 +44,31 @@ $ python manage.py runserver [port_number]
 ```
 
 The port number is not mandatory, defaults to 8000.
+
+## Tests
+
+The following tests are provided:
+
+- Unit tests (with [coverage](/docs/testsCoverage/index.html))
+
+  ```
+  $ make tests [i,interactive]
+  ```
+
+- Library integrity tests (between the WebApp and the standalone library)
+
+  ```
+  $ make check
+  ```
+
+- Performance tests and benchmarking (todo)
+
+  ```
+  $ make tests performance (todo)
+  ```
+
+- Logs integrity check (todo)
+
+  ```
+    $ make tests integrity (todo)
+  ```
