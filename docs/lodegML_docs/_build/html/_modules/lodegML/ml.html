@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lodegML.ml &#8212; LoDEg 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for lodegML.ml</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span><span class="p">,</span> <span class="n">FeatureUnion</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">Imputer</span><span class="p">,</span> <span class="n">LabelBinarizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">GridSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">mixture</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">kneighbors_graph</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="DataFrameSelector"><a class="viewcode-back" href="../../lodegML.html#lodegML.ml.DataFrameSelector">[docs]</a><span class="k">class</span> <span class="nc">DataFrameSelector</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Selector used in pipelines along with dataframes&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_names</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attribute_names</span> <span class="o">=</span> <span class="n">attribute_names</span>
+
+<div class="viewcode-block" id="DataFrameSelector.fit"><a class="viewcode-back" href="../../lodegML.html#lodegML.ml.DataFrameSelector.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="DataFrameSelector.transform"><a class="viewcode-back" href="../../lodegML.html#lodegML.ml.DataFrameSelector.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">attribute_names</span><span class="p">]</span><span class="o">.</span><span class="n">values</span></div></div>
+
+<span class="n">_stats_whitelist</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;number_of_notes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;notes_over_session_duration&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;number_of_jumps&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;average_jumps_length&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;total_jumps_length&#39;</span>
+<span class="p">]</span>
+
+<span class="n">_num_attribs</span> <span class="o">=</span> <span class="n">_stats_whitelist</span>
+<span class="n">_cat_attribs</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="migrateStatsToDataFrames"><a class="viewcode-back" href="../../lodegML.html#lodegML.ml.migrateStatsToDataFrames">[docs]</a><span class="k">def</span> <span class="nf">migrateStatsToDataFrames</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ml_mem_opt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Migrate user stats to course level dataframe.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        courseInfo (dict):  The dictionary that will be populated with the computed statistic;</span>
+<span class="sd">        mem_opt (bool): If set, user level statistics are discarded during the migration to the dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">series_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">userInfo</span> <span class="ow">in</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Populate a dataframe with the required statistics</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_stats_whitelist</span><span class="p">:</span>
+                <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">keys</span><span class="p">)</span>
+        <span class="n">series</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">series_dict</span><span class="p">[</span><span class="n">user</span><span class="p">]</span> <span class="o">=</span> <span class="n">series</span>
+        <span class="c1"># Delete userInfo stats if mem_opt is True</span>
+        <span class="k">if</span> <span class="n">ml_mem_opt</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">_stats_whitelist</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">userInfo</span><span class="p">[</span><span class="n">stat</span><span class="p">]</span>
+    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;stats_dframe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">series_dict</span><span class="p">)</span><span class="o">.</span><span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="executeUserClustering"><a class="viewcode-back" href="../../lodegML.html#lodegML.ml.executeUserClustering">[docs]</a><span class="k">def</span> <span class="nf">executeUserClustering</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function executes the clustering algorithm on the course users</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        In order to allow this funtion to work, it has to be already populated with the stats_dframe (see migrateStatToDataFrate())</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        courseInfo (dict):  The dictionary that will be populated with the computed statistic;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Create pipeline for numerics values</span>
+    <span class="n">num_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+        <span class="p">(</span><span class="s1">&#39;selector&#39;</span><span class="p">,</span> <span class="n">DataFrameSelector</span><span class="p">(</span><span class="n">_num_attribs</span><span class="p">)),</span>  <span class="c1"># Select numeric data</span>
+        <span class="p">(</span><span class="s1">&#39;imputer&#39;</span><span class="p">,</span> <span class="n">Imputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;median&quot;</span><span class="p">)),</span>  <span class="c1"># Fill missing data</span>
+        <span class="c1"># Scale data (required by the clustering algorithms)</span>
+        <span class="p">(</span><span class="s1">&#39;std_scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">())</span>
+    <span class="p">])</span>
+
+    <span class="c1"># Create pipeline for categorical attributes (not needed at the moment)</span>
+    <span class="n">cat_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+        <span class="p">(</span><span class="s1">&#39;selector&#39;</span><span class="p">,</span> <span class="n">DataFrameSelector</span><span class="p">(</span><span class="n">_cat_attribs</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;label_binarizer&#39;</span><span class="p">,</span> <span class="n">LabelBinarizer</span><span class="p">()),</span>
+    <span class="p">])</span>
+
+    <span class="c1"># Create full pipeline</span>
+    <span class="n">full_pipeline</span> <span class="o">=</span> <span class="n">FeatureUnion</span><span class="p">(</span><span class="n">transformer_list</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;num_pipeline&quot;</span><span class="p">,</span> <span class="n">num_pipeline</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;cat_pipeline&quot;</span><span class="p">,</span> <span class="n">cat_pipeline</span><span class="p">)</span>
+    <span class="p">])</span>
+
+    <span class="c1"># Get the data</span>
+    <span class="n">dataframe</span> <span class="o">=</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;stats_dframe&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Add noise for testing</span>
+    <span class="c1">#noise = np.random.normal(100,10, dataframe.shape)</span>
+    <span class="c1">#dataframe += noise</span>
+
+    <span class="c1"># Run pipeline</span>
+    <span class="k">if</span> <span class="n">_num_attribs</span> <span class="o">!=</span> <span class="p">[]</span> <span class="ow">and</span> <span class="n">_cat_attribs</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">full_pipeline</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataframe</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">_num_attribs</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">num_pipeline</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataframe</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">_cat_attribs</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">cat_pipeline</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataframe</span><span class="p">)</span>
+
+    <span class="c1"># ============</span>
+    <span class="c1"># Set up cluster parameters</span>
+    <span class="c1"># ============</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;quantile&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">3</span><span class="p">,</span>
+              <span class="s1">&#39;eps&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">3</span><span class="p">,</span>  <span class="c1"># This can be modified</span>
+              <span class="s1">&#39;damping&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">9</span><span class="p">,</span>
+              <span class="s1">&#39;preference&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">200</span><span class="p">,</span>
+              <span class="s1">&#39;n_neighbors&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+              <span class="s1">&#39;n_clusters&#39;</span><span class="p">:</span> <span class="mi">3</span>
+              <span class="p">}</span>
+
+    <span class="c1"># ============</span>
+    <span class="c1"># Set up GridSearch parameters</span>
+    <span class="c1"># ============</span>
+
+    <span class="n">param_grid</span> <span class="o">=</span> <span class="p">[{</span>
+        <span class="s1">&#39;n_neighbors&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="s1">&#39;n_clusters&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="p">}]</span>
+
+    <span class="c1"># estimate bandwidth for mean shift</span>
+    <span class="c1">#bandwidth = cluster.estimate_bandwidth(X, quantile=params[&#39;quantile&#39;])</span>
+    <span class="c1"># connectivity matrix for structured Ward</span>
+    <span class="n">connectivity</span> <span class="o">=</span> <span class="n">kneighbors_graph</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_neighbors&#39;</span><span class="p">],</span> <span class="n">include_self</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># make connectivity symmetric</span>
+    <span class="n">connectivity</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">connectivity</span> <span class="o">+</span> <span class="n">connectivity</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="c1"># ============</span>
+    <span class="c1"># Create algorithms</span>
+    <span class="c1"># ============</span>
+    <span class="c1">#ms = cluster.MeanShift(bandwidth=bandwidth, bin_seeding=True)</span>
+    <span class="n">two_means</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">MiniBatchKMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">])</span>
+    <span class="n">ward</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">AgglomerativeClustering</span><span class="p">(</span>
+        <span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span> <span class="n">linkage</span><span class="o">=</span><span class="s1">&#39;ward&#39;</span><span class="p">,</span> <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">)</span>
+    <span class="n">spectral</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">SpectralClustering</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span>
+                                          <span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span> <span class="n">eigen_solver</span><span class="o">=</span><span class="s1">&#39;arpack&#39;</span><span class="p">,</span> <span class="n">affinity</span><span class="o">=</span><span class="s2">&quot;nearest_neighbors&quot;</span><span class="p">)</span>
+    <span class="n">dbscan</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;eps&#39;</span><span class="p">])</span>
+    <span class="n">affinity_propagation</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">AffinityPropagation</span><span class="p">(</span>
+        <span class="n">damping</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;damping&#39;</span><span class="p">],</span> <span class="n">preference</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;preference&#39;</span><span class="p">])</span>
+    <span class="n">average_linkage</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">AgglomerativeClustering</span><span class="p">(</span><span class="n">linkage</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span> <span class="n">affinity</span><span class="o">=</span><span class="s2">&quot;cityblock&quot;</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span>
+                                                      <span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span>         <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">)</span>
+    <span class="n">birch</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">Birch</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">])</span>
+    <span class="n">gmm</span> <span class="o">=</span> <span class="n">mixture</span><span class="o">.</span><span class="n">GaussianMixture</span><span class="p">(</span>
+        <span class="n">n_components</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span> <span class="n">covariance_type</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+
+    <span class="n">clustering_algorithms</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;MiniBatchKMeans&#39;</span><span class="p">,</span> <span class="n">two_means</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;AffinityPropagation&#39;</span><span class="p">,</span> <span class="n">affinity_propagation</span><span class="p">),</span>
+        <span class="c1">#(&#39;MeanShift&#39;, ms),</span>
+        <span class="c1">#(&#39;SpectralClustering&#39;, spectral),</span>
+        <span class="p">(</span><span class="s1">&#39;Ward&#39;</span><span class="p">,</span> <span class="n">ward</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;AgglomerativeClustering&#39;</span><span class="p">,</span> <span class="n">average_linkage</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;DBSCAN&#39;</span><span class="p">,</span> <span class="n">dbscan</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;Birch&#39;</span><span class="p">,</span> <span class="n">birch</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;GaussianMixture&#39;</span><span class="p">,</span> <span class="n">gmm</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># ============</span>
+    <span class="c1"># Train and predict</span>
+    <span class="c1"># ============</span>
+
+    <span class="n">algorithm_execution_time</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">clustering_results</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">algorithm</span> <span class="ow">in</span> <span class="n">clustering_algorithms</span><span class="p">:</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="c1"># catch warnings related to kneighbors_graph</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
+                <span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;the number of connected components of the &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;connectivity matrix is [0-9]{1,2}&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot; &gt; 1. Completing it to avoid stopping the tree early.&quot;</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="ne">UserWarning</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
+                <span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Graph is not fully connected, spectral embedding&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot; may not work as expected.&quot;</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="ne">UserWarning</span><span class="p">)</span>
+            <span class="n">algorithm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="c1"># Get predictions (clusters)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">algorithm</span><span class="p">,</span> <span class="s1">&#39;labels_&#39;</span><span class="p">):</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">algorithm</span><span class="o">.</span><span class="n">labels_</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">algorithm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="c1"># Save clustering results</span>
+        <span class="n">clustering_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
+
+        <span class="c1"># Save execution time for debugging purposes</span>
+        <span class="n">algorithm_execution_time</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span>
+
+    <span class="c1"># ============</span>
+    <span class="c1"># Save results</span>
+    <span class="c1"># ============</span>
+
+    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;clusters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;clustering_results&#39;</span><span class="p">:</span> <span class="n">clustering_results</span><span class="p">,</span>
+        <span class="s1">&#39;execution_time&#39;</span><span class="p">:</span> <span class="n">algorithm_execution_time</span>
+    <span class="p">}</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Riccardo Capraro.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

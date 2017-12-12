@@ -11,7 +11,7 @@ class TestSystem(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._system = system.LodegSystem(modality='console')
+        cls._system = system.LodegSystem()
 
     def test_system_initialzation(self):
         if self._system == None:
@@ -22,6 +22,41 @@ class TestSystem(unittest.TestCase):
             self._system.executeCompleteExtraction()
         except:
             return self.fail()
+
+    def test_get_system_settings(self):
+        try:
+            settings = self._system.getSystemSettings()
+            self.assertEqual(settings, self._system._config)
+        except:
+            return self.fail()
+
+    def test_modify_class_settings(self):
+        try:
+            self._system.modify_class_settings(**self._system._config_console)
+            self.assertEqual(self._system._config_console, self._system._config)
+            # Restore system settings
+            self._system._config = self._system._config_default.copy()
+        except:
+            return self.fail()
+
+    def test_get_data_all(self):
+        try:
+            data = self._system.getData()
+            self.assertNotEqual(data, None)
+            self.assertNotEqual(data, {})
+        except:
+            return self.fail()
+
+
+    def test_get_data_course(self):
+        try:
+            data = self._system.getData()
+            self.assertNotEqual(data, None)
+            self.assertNotEqual(data, {})
+        except:
+            return self.fail()
+
+
 
 if __name__ == '__main__':
     unittest.main()

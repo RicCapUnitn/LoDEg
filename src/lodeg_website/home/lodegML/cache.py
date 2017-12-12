@@ -1,8 +1,6 @@
 from abc import ABCMeta, abstractmethod
-from ..lodegML import utility_queries as utils  # migrate
-# For SQLite implementation
-from ..models import Cache as DjangoCache, LodegUser
 import pickle
+from ..lodegML import utility_queries as utils  # migrate
 
 
 class Cache(metaclass=ABCMeta):
@@ -86,6 +84,9 @@ class CacheMongoDb(Cache):
 
 class CacheSQLite(Cache):
     """A SQLite implementation of the cache"""
+
+    def __init__(self):
+        from ..models import Cache as DjangoCache, LodegUser
 
     def collectDataFromDb(self, systemInfo: dict, user: str = None):
         if(user is None):

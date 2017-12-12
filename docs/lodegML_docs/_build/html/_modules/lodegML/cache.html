@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lodegML.cache &#8212; LoDEg 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for lodegML.cache</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">utility_queries</span> <span class="k">as</span> <span class="nn">utils</span>  <span class="c1"># migrate</span>
+
+
+<div class="viewcode-block" id="Cache"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.Cache">[docs]</a><span class="k">class</span> <span class="nc">Cache</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class gives a black box for a generic caching system for the system</span>
+
+<span class="sd">    Two implementations are provided at hte moment:</span>
+<span class="sd">    - SQLite: the system work with the Django SQLite to cache data</span>
+<span class="sd">    - MongoDB: the system works with a generic MongoDB implementation (not ready for production!!)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="Cache.collectDataFromDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.Cache.collectDataFromDb">[docs]</a>    <span class="k">def</span> <span class="nf">collectDataFromDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Queries the db for already computed information.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            If the user is defined we query only the userInfo. Otherwise, it means</span>
+<span class="sd">            that the user is an administrator of the system: in this case we query</span>
+<span class="sd">            the cache for the whole systemInfo.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (str): The id of the user whose userInfo we are quering the db.</span>
+<span class="sd">            systemInfo (dict): The dictionary where the information will be stored.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            The updated SystemInfo dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="Cache.saveDataToDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.Cache.saveDataToDb">[docs]</a>    <span class="k">def</span> <span class="nf">saveDataToDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves the current information into the database.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            If the user is defined we save only the userInfo. Otherwise, it means</span>
+<span class="sd">            that the user is an administrator of the system: in this case we save</span>
+<span class="sd">            the whole systemInfo in the cache.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">             user (str): The id of the user whose userInfo we are saving. Defaults to None.</span>
+<span class="sd">             systemInfo (dict): The dictionary that contains the information we want to store.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="CacheMongoDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.CacheMongoDb">[docs]</a><span class="k">class</span> <span class="nc">CacheMongoDb</span><span class="p">(</span><span class="n">Cache</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A MongoDb implementation of the cache</span>
+
+<span class="sd">    Note: Not ready for production: at the moment the implementation does not support huge data structures; use GridFS to break the structure or a relational DB instead</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            collection: The collection we use for the cache</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span> <span class="o">=</span> <span class="n">collection</span>
+
+<div class="viewcode-block" id="CacheMongoDb.collectDataFromDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.CacheMongoDb.collectDataFromDb">[docs]</a>    <span class="k">def</span> <span class="nf">collectDataFromDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s1">&#39;cache_system&#39;</span><span class="p">:</span> <span class="s1">&#39;admin&#39;</span><span class="p">})</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">cursor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="n">systemInfo</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">[</span><span class="s1">&#39;systemInfo&#39;</span><span class="p">]</span>
+                <span class="n">systemInfo</span><span class="p">[</span><span class="s1">&#39;last_update&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">getTimeFromObjectId</span><span class="p">(</span><span class="n">cursor</span><span class="p">[</span>
+                                                                      <span class="s1">&#39;_id&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># User level info</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+                <span class="p">{</span><span class="s1">&#39;cache_user_id&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">cursor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="n">systemInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span>
+                    <span class="n">cursor</span><span class="p">[</span><span class="s1">&#39;cache_user_id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">[</span><span class="s1">&#39;userInfo&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">systemInfo</span></div>
+
+<div class="viewcode-block" id="CacheMongoDb.saveDataToDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.CacheMongoDb.saveDataToDb">[docs]</a>    <span class="k">def</span> <span class="nf">saveDataToDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">replace_one</span><span class="p">({</span><span class="s1">&#39;cache_system&#39;</span><span class="p">:</span> <span class="s1">&#39;admin&#39;</span><span class="p">},</span> <span class="p">{</span>
+                <span class="s1">&#39;cache_system&#39;</span><span class="p">:</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;systemInfo&#39;</span><span class="p">:</span> <span class="n">systemInfo</span><span class="p">},</span> <span class="n">upsert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">replace_one</span><span class="p">({</span><span class="s1">&#39;cache_user_id&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">},</span> <span class="p">{</span>
+                <span class="s1">&#39;cache_user_id&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s1">&#39;userInfo&#39;</span><span class="p">:</span> <span class="n">systemInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">]},</span> <span class="n">upsert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CacheSQLite"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.CacheSQLite">[docs]</a><span class="k">class</span> <span class="nc">CacheSQLite</span><span class="p">(</span><span class="n">Cache</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A SQLite implementation of the cache&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">..models</span> <span class="k">import</span> <span class="n">Cache</span> <span class="k">as</span> <span class="n">DjangoCache</span><span class="p">,</span> <span class="n">LodegUser</span>
+
+<div class="viewcode-block" id="CacheSQLite.collectDataFromDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.CacheSQLite.collectDataFromDb">[docs]</a>    <span class="k">def</span> <span class="nf">collectDataFromDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># SystemLevel info</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">LodegUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lodeg_user_id</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">DjangoCache</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># UserLevel info</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">LodegUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lodeg_user_id</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">DjangoCache</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CacheSQLite.saveDataToDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.CacheSQLite.saveDataToDb">[docs]</a>    <span class="k">def</span> <span class="nf">saveDataToDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">systemInfo</span><span class="p">,</span> <span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">LodegUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lodeg_user_id</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">LodegUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lodeg_user_id</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="c1"># Might not be necessary</span>
+        <span class="n">DjangoCache</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="n">DjangoCache</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Riccardo Capraro.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

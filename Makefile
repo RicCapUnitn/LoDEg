@@ -45,6 +45,10 @@ check: clean
 
 .SILENT: tests
 
+doc:
+	$(SILENT)sphinx-apidoc -f -o docs/ src/lodegML/
+	$(SILENT)cd docs/lodegML_docs && $(MAKE) html
+
 tests:
 	$(SILENT)echo ">>> Starting testing..."
 	$(SILENT)./test/run_tests.sh $(filter-out $@, $(MAKECMDGOALS))

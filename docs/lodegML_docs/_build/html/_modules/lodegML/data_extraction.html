@@ -1,0 +1,804 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lodegML.data_extraction &#8212; LoDEg 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for lodegML.data_extraction</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
+<span class="kn">import</span> <span class="nn">dateutil.tz</span>
+<span class="kn">from</span> <span class="nn">bson.objectid</span> <span class="k">import</span> <span class="n">ObjectId</span>
+
+<span class="kn">import</span> <span class="nn">utility_queries</span> <span class="k">as</span> <span class="nn">utils</span>  <span class="c1"># migrate</span>
+
+<span class="c1">############################</span>
+<span class="c1"># Session level extraction #</span>
+<span class="c1">############################</span>
+
+
+<div class="viewcode-block" id="play_pause_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.play_pause_extraction">[docs]</a><span class="k">def</span> <span class="nf">play_pause_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts information about of play and pauses.</span>
+
+<span class="sd">    extracted_information : </span>
+<span class="sd">        - plays intervals</span>
+<span class="sd">        - pauses intervals</span>
+<span class="sd">        - play/pause ration</span>
+
+<span class="sd">     Args:</span>
+<span class="sd">        sessionInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">play_pause_list</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">purify_list</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;play&#39;</span><span class="p">,</span> <span class="s1">&#39;pause&#39;</span><span class="p">])</span>
+
+    <span class="c1"># List of pauses for this session</span>
+    <span class="n">pauses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># List of play intervals for this session</span>
+    <span class="n">plays</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># List of fractions play_time/ pause_time;</span>
+    <span class="n">pauses_ratio</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">#######################################################</span>
+    <span class="c1"># Check sessionValidity (should not be necessary!!!!!)</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">play_pause_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">play_pause_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;play&#39;</span><span class="p">:</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">play_pause_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">play_pause_list</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">play_pause_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]:</span>
+                <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+        
+    <span class="c1">#######################################################</span>
+        
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">valid</span><span class="p">:</span>
+            <span class="n">play_time</span> <span class="o">=</span> <span class="n">play_pause_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;value2&#39;</span><span class="p">]</span>
+            <span class="n">pause_time</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">play_pause_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;play&#39;</span><span class="p">):</span>
+                    <span class="n">play_time</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;value2&#39;</span><span class="p">]</span>
+                    <span class="n">pauses</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">play_time</span> <span class="o">-</span> <span class="n">pause_time</span><span class="p">)</span> <span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span> <span class="c1"># Since time_abs is in milliseconds</span>
+                    <span class="c1"># Note that pause_time &gt; play_time &gt;= 0</span>
+                    <span class="n">pauses_ratio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plays</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">pauses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pause_time</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;value2&#39;</span><span class="p">]</span>
+                    <span class="n">plays</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pause_time</span> <span class="o">-</span> <span class="n">play_time</span><span class="p">)</span> <span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span> <span class="c1"># Since time_abs is in milliseconds</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">)</span>
+
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;pauses&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pauses</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;plays&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plays</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;pauses_ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pauses_ratio</span></div>
+
+
+<div class="viewcode-block" id="session_coverage_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.session_coverage_extraction">[docs]</a><span class="k">def</span> <span class="nf">session_coverage_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts the video coverage of the session.</span>
+
+<span class="sd">    Note: it adds the session_coverage and the total_time_watched to the sessionInfo</span>
+
+<span class="sd">     Args:</span>
+<span class="sd">        sessionInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intervals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">interval</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">start_interval</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">end_interval</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">current_action</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">previous_action</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">current_value1</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">play_pause_alive_jump_list</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">purify_list</span><span class="p">(</span>
+        <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;play&#39;</span><span class="p">,</span> <span class="s1">&#39;pause&#39;</span><span class="p">,</span> <span class="s1">&#39;alive&#39;</span><span class="p">,</span> <span class="s1">&#39;jump&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">play_pause_alive_jump_list</span><span class="p">:</span>
+        <span class="n">previous_action</span> <span class="o">=</span> <span class="n">current_action</span>
+        <span class="n">current_action</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="n">current_value1</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;value1&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">current_action</span> <span class="o">==</span> <span class="s1">&#39;play&#39;</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">previous_action</span> <span class="o">!=</span> <span class="s1">&#39;pause&#39;</span><span class="p">):</span>
+                <span class="n">start_interval</span> <span class="o">=</span> <span class="n">current_value1</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="n">current_action</span> <span class="o">==</span> <span class="s1">&#39;jump&#39;</span><span class="p">):</span>
+            <span class="c1"># Add an interval only if it has a duration of at least</span>
+            <span class="c1"># 5 secs (to improve performances)</span>
+            <span class="n">end_interval</span> <span class="o">=</span> <span class="n">current_value1</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">end_interval</span> <span class="o">-</span> <span class="n">start_interval</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">5.0</span><span class="p">):</span>
+                <span class="n">intervals</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">add_interval</span><span class="p">(</span>
+                    <span class="n">intervals</span><span class="p">,</span> <span class="p">[</span><span class="n">start_interval</span><span class="p">,</span> <span class="n">end_interval</span><span class="p">])</span>
+            <span class="n">start_interval</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;value2&#39;</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="n">current_action</span> <span class="o">==</span> <span class="s1">&#39;alive&#39;</span><span class="p">):</span>
+            <span class="c1"># Add a new interval only if we were playing</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">previous_action</span> <span class="o">==</span> <span class="s1">&#39;play&#39;</span> <span class="ow">or</span> <span class="n">previous_action</span> <span class="o">==</span> <span class="s1">&#39;speed&#39;</span><span class="p">):</span>
+                <span class="c1"># Add an interval only if it has a duration of at least</span>
+                <span class="c1"># 5 secs (to improve performances)</span>
+                <span class="n">end_interval</span> <span class="o">=</span> <span class="n">current_value1</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">end_interval</span> <span class="o">-</span> <span class="n">start_interval</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">5.0</span><span class="p">):</span>
+                    <span class="n">intervals</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">add_interval</span><span class="p">(</span>
+                        <span class="n">intervals</span><span class="p">,</span> <span class="p">[</span><span class="n">start_interval</span><span class="p">,</span> <span class="n">end_interval</span><span class="p">])</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="n">current_action</span> <span class="o">==</span> <span class="s1">&#39;speed&#39;</span><span class="p">):</span>
+            <span class="c1"># Add a new interval with the previous speed (without limitations)</span>
+            <span class="n">end_interval</span> <span class="o">=</span> <span class="n">current_value1</span>
+            <span class="n">intervals</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">add_interval</span><span class="p">(</span>
+                <span class="n">intervals</span><span class="p">,</span> <span class="p">[</span><span class="n">start_interval</span><span class="p">,</span> <span class="n">end_interval</span><span class="p">])</span>
+            <span class="n">start_interval</span> <span class="o">=</span> <span class="n">end_interval</span>
+
+    <span class="c1"># Add last interval if the session ends with a pause</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">current_action</span> <span class="o">==</span> <span class="s1">&#39;pause&#39;</span><span class="p">):</span>
+        <span class="n">end_interval</span> <span class="o">=</span> <span class="n">current_value1</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">end_interval</span> <span class="o">-</span> <span class="n">start_interval</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">5.0</span><span class="p">):</span>
+            <span class="n">intervals</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">add_interval</span><span class="p">(</span>
+                <span class="n">intervals</span><span class="p">,</span> <span class="p">[</span><span class="n">start_interval</span><span class="p">,</span> <span class="n">end_interval</span><span class="p">])</span>
+
+    <span class="c1"># Computer total_time_watched</span>
+    <span class="n">total_time_watched</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">intervals</span><span class="p">:</span>
+        <span class="n">total_time_watched</span> <span class="o">+=</span> <span class="n">interval</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">interval</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Add the video coverage</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;session_coverage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">intervals</span>
+    <span class="c1"># Add the total_time_watched</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;total_time_watched&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_time_watched</span></div>
+
+
+<div class="viewcode-block" id="jumps_info_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.jumps_info_extraction">[docs]</a><span class="k">def</span> <span class="nf">jumps_info_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts information of jumps for the session.</span>
+
+<span class="sd">    extracted_information : </span>
+<span class="sd">        - average jump length</span>
+<span class="sd">        - number of jumps</span>
+<span class="sd">        - number of jumps/type (click_or_drag,keyframe,note)</span>
+<span class="sd">        - total jumps length</span>
+
+<span class="sd">     Args:</span>
+<span class="sd">        sessionInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">total_jumps_length</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">jumps_per_type</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;click_or_drag&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;keyframe&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;note&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="n">jump_list</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">purify_list</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;jump&#39;</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">jump</span> <span class="ow">in</span> <span class="n">jump_list</span><span class="p">:</span>
+        <span class="n">jump_length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">jump</span><span class="p">[</span><span class="s1">&#39;value1&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">jump</span><span class="p">[</span><span class="s1">&#39;value2&#39;</span><span class="p">])</span>
+        <span class="n">total_jumps_length</span> <span class="o">+=</span> <span class="n">jump_length</span>
+        <span class="n">jumps_per_type</span><span class="p">[</span><span class="n">jump</span><span class="p">[</span><span class="s1">&#39;value3&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">jumps_per_type</span><span class="p">[</span><span class="n">jump</span><span class="p">[</span><span class="s1">&#39;value3&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">number_of_jumps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jump_list</span><span class="p">)</span>
+    <span class="n">average_jumps_length</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_jumps_length</span> <span class="o">/</span> <span class="n">number_of_jumps</span><span class="p">)</span> <span class="k">if</span> <span class="n">number_of_jumps</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="c1"># Add values to sessionInfo</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;number_of_jumps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_of_jumps</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;average_jumps_length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">average_jumps_length</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;jumps_per_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jumps_per_type</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;total_jumps_length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_jumps_length</span></div>
+
+
+<div class="viewcode-block" id="add_lesson_id_to_session"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.add_lesson_id_to_session">[docs]</a><span class="k">def</span> <span class="nf">add_lesson_id_to_session</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This function adds the lesson_id to the sessionInfo dictionary</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        It requires a valid session.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sessionInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># We assume the first record of data to be a title record</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;lesson_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;value1&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="add_session_date"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.add_session_date">[docs]</a><span class="k">def</span> <span class="nf">add_session_date</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This function adds the session_date to the sessionInfo dictionary</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        It requires a valid session.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sessionInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># We assume the session has at least one record</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ObjectId</span><span class="p">(</span>
+        <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;_id&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">generation_time</span></div>
+
+
+<div class="viewcode-block" id="compute_session_duration"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.compute_session_duration">[docs]</a><span class="k">def</span> <span class="nf">compute_session_duration</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function takes a session and calculates the session duration.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sessionInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">first_timestamp</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">generation_time</span>
+    <span class="n">last_timestamp</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">generation_time</span>
+    <span class="n">session_duration</span> <span class="o">=</span> <span class="p">(</span><span class="n">last_timestamp</span> <span class="o">-</span> <span class="n">first_timestamp</span><span class="p">)</span><span class="o">.</span><span class="n">seconds</span>
+    <span class="k">if</span> <span class="n">session_duration</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;session_duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;session_duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">session_duration</span></div>
+
+
+<div class="viewcode-block" id="notes_info_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.notes_info_extraction">[docs]</a><span class="k">def</span> <span class="nf">notes_info_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts information of notes for the session.</span>
+
+<span class="sd">    extracted_information : </span>
+<span class="sd">        - number of notes</span>
+<span class="sd">        - number of notes/type (click_or_drag,keyframe,note)</span>
+<span class="sd">        - notes / session_duration</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        It requires the session_duration to be computed first.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sessionInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">notes_list</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">purify_list</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">])</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;number_of_notes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">notes_list</span><span class="p">)</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;handwritten&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">notes_list</span><span class="p">:</span>
+        <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">][</span><span class="n">note</span><span class="p">[</span><span class="s1">&#39;value1&#39;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;notes_over_session_duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span>
+        <span class="s1">&#39;number_of_notes&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;session_duration&#39;</span><span class="p">]</span></div>
+
+
+<span class="c1">#########################</span>
+<span class="c1"># User level extraction #</span>
+<span class="c1">#########################</span>
+
+<div class="viewcode-block" id="compute_lessons_coverage_for_single_user"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.compute_lessons_coverage_for_single_user">[docs]</a><span class="k">def</span> <span class="nf">compute_lessons_coverage_for_single_user</span><span class="p">(</span><span class="n">userInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">lessons_durations</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function computes the lesson coverage for all lessons of a user.</span>
+
+<span class="sd">    Note: It computes the coverage_histogram as well</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        userInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">        lessons_durations (dict) : The systemInfo dictionary {&#39;lesson_id&#39;:&#39;lesson_duration&#39;}.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">interval_gap</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># seconds</span>
+
+    <span class="n">lessons_coverage</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">histogram</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Initialize lessons lists</span>
+    <span class="k">for</span> <span class="n">lesson_id</span><span class="p">,</span> <span class="n">duration</span> <span class="ow">in</span> <span class="n">lessons_durations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">number_of_buckets</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span> <span class="o">//</span> <span class="n">interval_gap</span>
+        <span class="n">lessons_coverage</span><span class="p">[</span><span class="n">lesson_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">number_of_buckets</span>
+        <span class="n">histogram</span><span class="p">[</span><span class="n">lesson_id</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Compute lessons coverage</span>
+    <span class="k">for</span> <span class="n">session</span><span class="p">,</span> <span class="n">sessionInfo</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">lesson</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;lesson_id&#39;</span><span class="p">]</span>
+        <span class="c1"># Add this session to the histogram</span>
+        <span class="n">histogram</span><span class="p">[</span><span class="n">lesson</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;session_coverage&#39;</span><span class="p">]:</span>
+            <span class="n">left_bucket</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">interval</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">//</span> <span class="n">interval_gap</span>
+            <span class="n">right_bucket</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">interval</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">//</span> <span class="n">interval_gap</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">right_bucket</span> <span class="o">==</span> <span class="n">left_bucket</span><span class="p">):</span>
+                <span class="n">lessons_coverage</span><span class="p">[</span><span class="n">lesson</span><span class="p">][</span><span class="n">right_bucket</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">left_bucket</span><span class="p">,</span> <span class="n">right_bucket</span><span class="p">):</span>
+                    <span class="n">lessons_coverage</span><span class="p">[</span><span class="n">lesson</span><span class="p">][</span><span class="n">bucket</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;lessons_coverage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lessons_coverage</span>
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;coverage_histogram&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">histogram</span></div>
+
+
+<div class="viewcode-block" id="user_notes_info_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.user_notes_info_extraction">[docs]</a><span class="k">def</span> <span class="nf">user_notes_info_extraction</span><span class="p">(</span><span class="n">userInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts information of notes for the user.</span>
+
+<span class="sd">    extracted_information : </span>
+<span class="sd">        - number of notes</span>
+<span class="sd">        - number of notes/type (click_or_drag,keyframe,note)</span>
+<span class="sd">        - notes / total_duration</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        It requires the notes_info_extraction to be executed first.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        userInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">number_of_notes</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">notes_per_type</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;handwritten&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="n">total_duration</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">sessionInfo</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">number_of_notes</span> <span class="o">+=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;number_of_notes&#39;</span><span class="p">]</span>
+        <span class="n">notes_per_type</span><span class="p">[</span>
+            <span class="s1">&#39;handwritten&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">][</span><span class="s1">&#39;handwritten&#39;</span><span class="p">]</span>
+        <span class="n">notes_per_type</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+        <span class="n">total_duration</span> <span class="o">+=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;session_duration&#39;</span><span class="p">]</span>
+
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;number_of_notes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_of_notes</span>
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">notes_per_type</span>
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;notes_over_session_duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_of_notes</span> <span class="o">/</span> \
+        <span class="n">total_duration</span></div>
+
+
+<div class="viewcode-block" id="user_jump_info_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.user_jump_info_extraction">[docs]</a><span class="k">def</span> <span class="nf">user_jump_info_extraction</span><span class="p">(</span><span class="n">userInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts information of jumps for the user.</span>
+
+<span class="sd">    extracted_information : </span>
+<span class="sd">        - number of jumps</span>
+<span class="sd">        - number of jumps/type (click_or_drag,keyframe,note)</span>
+<span class="sd">        - total jumps length</span>
+<span class="sd">        - average jumps length</span>
+
+<span class="sd">     Args:</span>
+<span class="sd">        userSession (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">number_of_jumps</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">jumps_per_type</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;click_or_drag&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;keyframe&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;note&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="n">total_duration</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total_jumps_length</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">average_jumps_length</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">sessionInfo</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">number_of_jumps</span> <span class="o">+=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;number_of_jumps&#39;</span><span class="p">]</span>
+        <span class="n">jumps_per_type</span><span class="p">[</span>
+            <span class="s1">&#39;click_or_drag&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;jumps_per_type&#39;</span><span class="p">][</span><span class="s1">&#39;click_or_drag&#39;</span><span class="p">]</span>
+        <span class="n">jumps_per_type</span><span class="p">[</span><span class="s1">&#39;keyframe&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;jumps_per_type&#39;</span><span class="p">][</span><span class="s1">&#39;keyframe&#39;</span><span class="p">]</span>
+        <span class="n">jumps_per_type</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;jumps_per_type&#39;</span><span class="p">][</span><span class="s1">&#39;note&#39;</span><span class="p">]</span>
+        <span class="n">total_jumps_length</span> <span class="o">+=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;total_jumps_length&#39;</span><span class="p">]</span>
+        <span class="n">total_duration</span> <span class="o">+=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;session_duration&#39;</span><span class="p">]</span>
+        
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;number_of_jumps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_of_jumps</span>
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;jumps_per_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jumps_per_type</span>
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;total_jumps_length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_jumps_length</span>
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;average_jumps_length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_jumps_length</span> <span class="o">/</span> <span class="n">number_of_jumps</span> <span class="p">)</span> <span class="k">if</span> <span class="n">number_of_jumps</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;jumps_over_total_duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_of_jumps</span> <span class="o">/</span> <span class="n">total_duration</span></div>
+
+
+<div class="viewcode-block" id="user_lessons_visualization_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.user_lessons_visualization_extraction">[docs]</a><span class="k">def</span> <span class="nf">user_lessons_visualization_extraction</span><span class="p">(</span><span class="n">userInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract for each lesson when the user watched the lesson.</span>
+
+<span class="sd">    This function adds to the userInfo a Counter of datetimes; the Counter is called called &#39;lessons_visualization&#39;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        userInfo (dict): The dictionaty that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lessons_visualization</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">sessionInfo</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">lesson</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;lesson_id&#39;</span><span class="p">]</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">lesson</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lessons_visualization</span><span class="p">:</span>
+                <span class="n">lessons_visualization</span><span class="p">[</span><span class="n">lesson</span><span class="p">]</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">({</span><span class="n">date</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lessons_visualization</span><span class="p">[</span><span class="n">lesson</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Counter</span><span class="p">({</span><span class="n">date</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+        <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;lessons_visualization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lessons_visualization</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="c1"># Some statistics are missing (dates or sessionInfo)</span>
+        <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;lessons_visualization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+
+<div class="viewcode-block" id="day_session_distribution_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.day_session_distribution_extraction">[docs]</a><span class="k">def</span> <span class="nf">day_session_distribution_extraction</span><span class="p">(</span><span class="n">userInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract the number of sessions for each hour of the day.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        userInfo (dict): The dictionaty that will be populated with the computed statistic. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">day_distribution</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">24</span>
+    <span class="k">for</span> <span class="n">sessionInfo</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">hour</span>
+        <span class="n">day_distribution</span><span class="p">[</span><span class="n">hour</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;day_distribution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">day_distribution</span></div>
+
+
+<span class="c1">###########################</span>
+<span class="c1"># Course level extraction #</span>
+<span class="c1">###########################</span>
+
+
+<div class="viewcode-block" id="compute_course_global_coverage"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.compute_course_global_coverage">[docs]</a><span class="k">def</span> <span class="nf">compute_course_global_coverage</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function computes the global coverage and the users histogram for a single course.</span>
+
+<span class="sd">     Args:</span>
+<span class="sd">        courseInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">interval_gap</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># seconds</span>
+    <span class="n">global_coverage</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">histogram</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">lessons_durations</span> <span class="o">=</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;lessons_durations&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Initialize lessons lists</span>
+    <span class="k">for</span> <span class="n">lesson_id</span><span class="p">,</span> <span class="n">duration</span> <span class="ow">in</span> <span class="n">lessons_durations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">number_of_buckets</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span> <span class="o">//</span> <span class="n">interval_gap</span>
+        <span class="n">global_coverage</span><span class="p">[</span><span class="n">lesson_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">number_of_buckets</span>
+        <span class="n">histogram</span><span class="p">[</span><span class="n">lesson_id</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Compute global coverage</span>
+    <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">userInfo</span> <span class="ow">in</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s1">&#39;lessons_coverage&#39;</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># If we have already computed the lessons_coverage</span>
+            <span class="k">for</span> <span class="n">lesson_title</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;lessons_coverage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="c1"># Add this user to the histogram</span>
+                <span class="n">histogram</span><span class="p">[</span><span class="n">lesson_title</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># if lesson_title in userInfo[&#39;lessons_coverage&#39;]:</span>
+                <span class="c1"># If the user has watched the lesson</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;lessons_coverage&#39;</span><span class="p">][</span><span class="n">lesson_title</span><span class="p">])):</span>
+                    <span class="n">global_coverage</span><span class="p">[</span><span class="n">lesson_title</span><span class="p">][</span>
+                        <span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;lessons_coverage&#39;</span><span class="p">][</span><span class="n">lesson_title</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;global_coverage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">global_coverage</span>
+    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;coverage_histogram&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">histogram</span></div>
+
+
+<div class="viewcode-block" id="course_notes_info_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.course_notes_info_extraction">[docs]</a><span class="k">def</span> <span class="nf">course_notes_info_extraction</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts information of notes for the system.</span>
+
+<span class="sd">    extracted_information : </span>
+<span class="sd">        - number of notes</span>
+<span class="sd">        - number of notes/type (click_or_drag,keyframe,note)</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        It requires the user notes_info_extraction to be executed first.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        courseInfo (dict): The dictionary that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">number_of_notes</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">notes_per_type</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;handwritten&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">userInfo</span> <span class="ow">in</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">number_of_notes</span> <span class="o">+=</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;number_of_notes&#39;</span><span class="p">]</span>
+        <span class="n">notes_per_type</span><span class="p">[</span>
+            <span class="s1">&#39;handwritten&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">][</span><span class="s1">&#39;handwritten&#39;</span><span class="p">]</span>
+        <span class="n">notes_per_type</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+
+    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;number_of_notes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_of_notes</span>
+    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">notes_per_type</span></div>
+
+
+<div class="viewcode-block" id="course_lessons_visualization_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.course_lessons_visualization_extraction">[docs]</a><span class="k">def</span> <span class="nf">course_lessons_visualization_extraction</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract for each course when the users watched the lessons.</span>
+
+<span class="sd">    This function adds to the courseInfo a Counter of datetimes; the Counter is called called &#39;lessons_visualization&#39;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        courseInfo (dict): The dictionaty that will be populated with the computed statistic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lessons_visualization</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">userInfo</span> <span class="ow">in</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">lesson</span><span class="p">,</span> <span class="n">dates_counter</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;lessons_visualization&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">lesson</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lessons_visualization</span><span class="p">:</span>
+                    <span class="n">lessons_visualization</span><span class="p">[</span><span class="n">lesson</span><span class="p">]</span> <span class="o">=</span> <span class="n">dates_counter</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">lessons_visualization</span><span class="p">[</span><span class="n">lesson</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dates_counter</span>
+        <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;lessons_visualization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lessons_visualization</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="c1"># Some statistics are missing</span>
+        <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;lessons_visualization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+
+<div class="viewcode-block" id="course_day_distribution_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.course_day_distribution_extraction">[docs]</a><span class="k">def</span> <span class="nf">course_day_distribution_extraction</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract the number of sessions for each hour of the day.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        courseInfo (dict): The dictionaty that will be populated with the computed statistic. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">day_distribution</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">24</span>
+    <span class="k">for</span> <span class="n">userInfo</span> <span class="ow">in</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">user_distribution</span> <span class="o">=</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;day_distribution&#39;</span><span class="p">]</span>
+        <span class="n">day_distribution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">day_distribution</span><span class="p">,</span> <span class="n">user_distribution</span><span class="p">)</span>
+    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;day_distribution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">day_distribution</span></div>
+
+
+<span class="c1">###########################</span>
+<span class="c1"># System level extraction #</span>
+<span class="c1">###########################</span>
+
+
+<span class="c1">#######</span>
+<span class="c1"># API #</span>
+<span class="c1">#######</span>
+
+
+<div class="viewcode-block" id="execute_sessionInfo_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.execute_sessionInfo_extraction">[docs]</a><span class="k">def</span> <span class="nf">execute_sessionInfo_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">logs_collection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_provided</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Execute a complete extraction for a single session.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        If data_provided = True, than the only required parameter is sessionInfo.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sessionInfo (dict): The dictionary that will be populated with the computed statistics.</span>
+<span class="sd">        logs_collection : The MongoDb collection that containes the logs.</span>
+<span class="sd">        session (str): The id of the session we are interested in.</span>
+<span class="sd">        data_provided (bool): Set to True if the sessionInfo has already been populated with the raw data. Defaults to False.</span>
+<span class="sd">        keep_session_data (bool): Keep the raw session data in the system. Defaults to False.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        True if everything worked nominally; false otherwise (you should remove this session).</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data_provided</span><span class="p">:</span>
+        <span class="c1"># Get the raw data from the database</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">get_all_records_for_session</span><span class="p">(</span>
+            <span class="n">logs_collection</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">sessionInfo</span><span class="p">)</span>
+        
+    <span class="c1"># Check if we have a valid session</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">check_session_validity</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="c1"># Set session_id</span>
+    <span class="n">add_lesson_id_to_session</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">)</span>
+    <span class="c1"># Add session date</span>
+    <span class="n">add_session_date</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">)</span>
+    <span class="c1"># Execute play_pause_extraction</span>
+    <span class="n">play_pause_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">)</span>
+    <span class="c1"># Get session coverage</span>
+    <span class="n">session_coverage_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">)</span>
+    <span class="c1"># Compute session duration</span>
+    <span class="n">compute_session_duration</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">)</span>
+    <span class="c1"># Execute jumps_info_extraction</span>
+    <span class="n">jumps_info_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">)</span>
+    <span class="c1"># Notes_info_extraction</span>
+    <span class="n">notes_info_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_session_data</span><span class="p">:</span>
+        <span class="c1"># Delete raw data for all users</span>
+        <span class="k">del</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="execute_userInfo_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.execute_userInfo_extraction">[docs]</a><span class="k">def</span> <span class="nf">execute_userInfo_extraction</span><span class="p">(</span><span class="n">logs_collection</span><span class="p">,</span> <span class="n">lessons_durations</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">userInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sessionInfo_provided</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Execute a complete extraction for a single user.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        logs_collection : The MongoDb collection that containes the logs.</span>
+<span class="sd">        lessons_durations (dict) : The systemInfo dictionary {&#39;lesson_id&#39;:&#39;lesson_duration&#39;}.</span>
+<span class="sd">        course (str): Used if sessionInfo_provided = False (as default)</span>
+<span class="sd">        user (str): The id of the user whose userInfo we are extracting.</span>
+<span class="sd">        userInfo (dict): The dictionary that will be populated with the computed statistics.</span>
+<span class="sd">        keep_session_data (bool): Keep the raw session data in the system. Defaults to False.</span>
+<span class="sd">        sessionInfo_provided (bool): Set to true if the sessionInfo has already been computed. Defaults to False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sessionInfo_provided</span><span class="p">:</span>
+        <span class="c1"># Get the raw data from the database</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">get_all_records_for_user_and_course</span><span class="p">(</span>
+            <span class="n">logs_collection</span><span class="p">,</span> <span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">userInfo</span><span class="p">)</span>
+        
+        <span class="n">invalid_sessions</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">session</span><span class="p">,</span><span class="n">sessionInfo</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Extract sessionInfo information</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">execute_sessionInfo_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">,</span> <span class="n">data_provided</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="o">=</span><span class="n">keep_session_data</span><span class="p">):</span>
+                <span class="n">invalid_sessions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Add coverage percentage</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">duration</span> <span class="o">=</span> <span class="n">lessons_durations</span><span class="p">[</span><span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;lesson_id&#39;</span><span class="p">]]</span>
+                    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;coverage_percentage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span>
+                        <span class="s1">&#39;total_time_watched&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">duration</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;coverage_percentage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;unknown&#39;</span>
+                    
+        <span class="c1"># Discard invalid sessions</span>
+        <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">invalid_sessions</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session</span><span class="p">]</span>
+                
+
+    <span class="c1"># Extract userInfo level statistics</span>
+    <span class="c1"># user_lessons_coverage</span>
+    <span class="n">compute_lessons_coverage_for_single_user</span><span class="p">(</span><span class="n">userInfo</span><span class="p">,</span> <span class="n">lessons_durations</span><span class="p">)</span>
+    <span class="c1"># notes info extraction</span>
+    <span class="n">user_notes_info_extraction</span><span class="p">(</span><span class="n">userInfo</span><span class="p">)</span>
+    <span class="c1"># jumps info extraction</span>
+    <span class="n">user_jump_info_extraction</span><span class="p">(</span><span class="n">userInfo</span><span class="p">)</span>
+    <span class="c1"># Lessons_visualization extraction</span>
+    <span class="n">user_lessons_visualization_extraction</span><span class="p">(</span><span class="n">userInfo</span><span class="p">)</span>
+    <span class="c1"># Get sessions day distribution</span>
+    <span class="n">day_session_distribution_extraction</span><span class="p">(</span><span class="n">userInfo</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="execute_courseInfo_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.execute_courseInfo_extraction">[docs]</a><span class="k">def</span> <span class="nf">execute_courseInfo_extraction</span><span class="p">(</span><span class="n">logs_collection</span><span class="p">,</span> <span class="n">lessons_collection</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">courseInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                                  <span class="n">keep_session_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">keep_user_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">query_mem_opt</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Execute a complete extraction for a single course.</span>
+
+<span class="sd">    Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.</span>
+<span class="sd">        We have left the possibility of setting query_mem_opt to False though in practice we see </span>
+<span class="sd">        that there is no relevant speed improvement with big datasets (might have with small ones).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        logs_collection : The MongoDb collection that containes the logs.</span>
+<span class="sd">        lessons_collection : The MongoDb collection that containes the uploaded lessons logs.</span>
+<span class="sd">        course: The id of the course whose information we are extracting.</span>
+<span class="sd">        courseInfo (dict): The dictionary that will be populated with the computed statistics.</span>
+<span class="sd">        keep_session_data (bool): Keep the raw session data in the system. Defaults to False.</span>
+<span class="sd">        keep_user_info (bool): Keep the statistics computed at the userInfo level. Defaults to True.</span>
+<span class="sd">        query_mem_opt (bool): Do only partial queries to keep memory usage low. Defaults to True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check if the lessons_durations has already been extracted</span>
+    <span class="k">if</span> <span class="s1">&#39;lessons_durations&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">courseInfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">get_lessons_durations_and_registration_dates</span><span class="p">(</span>
+            <span class="n">lessons_collection</span><span class="p">,</span> <span class="n">course</span><span class="p">,</span> <span class="n">courseInfo</span><span class="p">)</span>
+    <span class="c1"># Create a counter for the total number of sessions</span>
+    <span class="n">total_number_of_sessions</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">query_mem_opt</span><span class="p">):</span>
+        <span class="c1"># Collect all raw data at once</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">get_all_users_records</span><span class="p">(</span><span class="n">logs_collection</span><span class="p">,</span> <span class="n">course</span><span class="p">,</span> <span class="n">courseInfo</span><span class="p">)</span>
+        <span class="c1"># Extract features</span>
+        <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">userInfo</span> <span class="ow">in</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            
+            <span class="c1"># Compute statistics only if the session is valid</span>
+            <span class="n">invalid_sessions</span> <span class="o">=</span> <span class="p">[]</span>
+            
+            <span class="k">for</span> <span class="n">session</span><span class="p">,</span> <span class="n">sessionInfo</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># Execute sessionInfo extraction</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">execute_sessionInfo_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">,</span> <span class="n">data_provided</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="o">=</span><span class="n">keep_session_data</span><span class="p">):</span>
+                    <span class="n">invalid_sessions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+                <span class="c1"># Remove invalid sessions</span>
+                <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">invalid_sessions</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session</span><span class="p">]</span>
+            <span class="n">execute_userInfo_extraction</span><span class="p">(</span><span class="n">logs_collection</span><span class="p">,</span> <span class="n">courseInfo</span><span class="p">[</span>
+                                        <span class="s1">&#39;lessons_durations&#39;</span><span class="p">],</span> <span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">userInfo</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="o">=</span><span class="n">keep_session_data</span><span class="p">,</span> <span class="n">sessionInfo_provided</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># Add this user sessions to the total counter</span>
+            <span class="n">total_number_of_sessions</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Collect user ids</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_all_users_for_course</span><span class="p">(</span><span class="n">logs_collection</span><span class="p">,</span> <span class="n">course</span><span class="p">)</span>
+        <span class="c1"># Extract features</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+            <span class="n">userInfo</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">execute_userInfo_extraction</span><span class="p">(</span><span class="n">logs_collection</span><span class="p">,</span> <span class="n">courseInfo</span><span class="p">[</span>
+                                        <span class="s1">&#39;lessons_durations&#39;</span><span class="p">],</span> <span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">userInfo</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="o">=</span><span class="n">keep_session_data</span><span class="p">,</span> <span class="n">sessionInfo_provided</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="c1"># Add this user sessions to the total counter</span>
+            <span class="n">total_number_of_sessions</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">])</span>
+            <span class="c1"># Add this user to the systemInfo</span>
+            <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">]</span> <span class="o">=</span> <span class="n">userInfo</span>
+
+    <span class="c1"># Save the total number of sessions</span>
+    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;number_of_sessions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_number_of_sessions</span>
+    <span class="c1"># Compute system level statistics</span>
+    <span class="c1"># Compute global coverage and histogram</span>
+    <span class="n">compute_course_global_coverage</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">)</span>
+    <span class="c1"># Execute notes info extraction</span>
+    <span class="n">course_notes_info_extraction</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">)</span>
+    <span class="c1"># Lessons_visualization extraction</span>
+    <span class="n">course_lessons_visualization_extraction</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">)</span>
+    <span class="c1"># Get sessions day distribution</span>
+    <span class="n">course_day_distribution_extraction</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">)</span>
+    <span class="c1"># Add update time</span>
+    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;last_update&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_user_info</span><span class="p">:</span>
+        <span class="c1"># Discard userInfo</span>
+        <span class="k">pass</span><span class="c1">#&lt;------------------------------</span></div>
+
+
+<div class="viewcode-block" id="execute_complete_extraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.execute_complete_extraction">[docs]</a><span class="k">def</span> <span class="nf">execute_complete_extraction</span><span class="p">(</span><span class="n">logs_collection</span><span class="p">,</span> <span class="n">lessons_collection</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">keep_user_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">query_mem_opt</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Execute a complete extraction of the whole system.</span>
+
+<span class="sd">    This function extracts all the data from the collection, extracts the</span>
+<span class="sd">    features we want, deletes the raw data and returns a dict of courseInfo, with</span>
+<span class="sd">    one key(course_id) for each course in the database.</span>
+
+<span class="sd">    Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.</span>
+<span class="sd">        We have left the possibility of setting query_mem_opt to False though in practice we see </span>
+<span class="sd">        that there is no relevant speed improvement with big datasets (might have with small ones).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        logs_collection : The MongoDb collection that containes the logs.</span>
+<span class="sd">        lessons_collection : The MongoDb collection that containes the uploaded lessons logs.</span>
+<span class="sd">        systemInfo (dict): The dictionary that will be populated with the computed statistics.</span>
+<span class="sd">        keep_session_data (bool): Keep the raw session data in the system. Defaults to False.</span>
+<span class="sd">        keep_user_info (bool): Keep the statistics computed at the userInfo level. Defaults to True.</span>
+<span class="sd">        query_mem_opt (bool): Do only partial queries to keep memory usage low. Defaults to True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Get courses headers</span>
+    <span class="n">courses</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_all_courses</span><span class="p">(</span><span class="n">lessons_collection</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">course</span> <span class="ow">in</span> <span class="n">courses</span><span class="p">:</span>
+        <span class="n">courseInfo</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Extract features</span>
+        <span class="n">execute_courseInfo_extraction</span><span class="p">(</span><span class="n">logs_collection</span><span class="p">,</span> <span class="n">lessons_collection</span><span class="p">,</span> <span class="n">course</span><span class="p">,</span> <span class="n">courseInfo</span><span class="p">,</span>
+                                      <span class="n">keep_session_data</span><span class="o">=</span><span class="n">keep_session_data</span><span class="p">,</span> <span class="n">keep_user_info</span><span class="o">=</span><span class="n">keep_user_info</span><span class="p">,</span> <span class="n">query_mem_opt</span><span class="o">=</span><span class="n">query_mem_opt</span><span class="p">)</span>
+        <span class="c1"># Add this course to the systemInfo</span>
+        <span class="n">systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">]</span> <span class="o">=</span> <span class="n">courseInfo</span>
+
+    <span class="c1"># Add update time</span>
+    <span class="n">systemInfo</span><span class="p">[</span><span class="s1">&#39;last_update&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span></div>
+
+
+<span class="c1">#################</span>
+<span class="c1"># Miscellaneous #</span>
+<span class="c1">#################</span>
+
+<div class="viewcode-block" id="check_session_validity"><a class="viewcode-back" href="../../lodegML.html#lodegML.data_extraction.check_session_validity">[docs]</a><span class="k">def</span> <span class="nf">check_session_validity</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Check if the session meets the basic requirements in order not to raise exceptions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if every session is well formed</span>
+    <span class="n">well_formed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span>
+            <span class="n">well_formed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="ow">or</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="n">well_formed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">well_formed</span></div>
+        
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Riccardo Capraro.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

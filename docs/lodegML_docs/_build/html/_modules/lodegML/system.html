@@ -1,0 +1,938 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lodegML.system &#8212; LoDEg 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for lodegML.system</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">utility_queries</span> <span class="k">as</span> <span class="nn">utils</span>  <span class="c1"># migrate</span>
+<span class="kn">import</span> <span class="nn">auto_plot</span>  <span class="c1"># migrate</span>
+<span class="kn">import</span> <span class="nn">data_extraction</span>  <span class="c1"># migrate</span>
+<span class="kn">import</span> <span class="nn">connection_to_mongo</span>  <span class="c1"># migrate</span>
+<span class="kn">import</span> <span class="nn">ml</span>  <span class="c1"># migrate</span>
+
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="k">import</span> <span class="n">HttpResponse</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+
+
+<div class="viewcode-block" id="LodegSystem"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem">[docs]</a><span class="k">class</span> <span class="nc">LodegSystem</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The class that represents the system.&quot;&quot;&quot;</span>
+
+    <span class="c1">##################</span>
+    <span class="c1"># CONFIGURATIONS #</span>
+    <span class="c1">##################</span>
+
+    <span class="c1"># Default configuration (command line, python script, ...)</span>
+    <span class="n">_config_default</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;query_mem_opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Might be false (need to benchmark)</span>
+        <span class="s1">&#39;keep_user_info&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;keep_session_data&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;ml_mem_opt&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Keep data both in dataframes and dictionaries</span>
+        <span class="s1">&#39;ml_autorun&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Autorun the clustering algorith</span>
+        <span class="s1">&#39;plot_target&#39;</span><span class="p">:</span> <span class="s1">&#39;web&#39;</span><span class="p">,</span>
+        <span class="c1"># Initialization only</span>
+        <span class="s1">&#39;cache&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Default should be set to None or be always available</span>
+        <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="kc">True</span> <span class="c1"># Needed for testing, Default should be False</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Low memory configuration</span>
+    <span class="n">_config_low_mem</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;query_mem_opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;keep_user_info&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Discard user statistics after computation</span>
+        <span class="s1">&#39;keep_session_data&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;ml_mem_opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;ml_autorun&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;plot_target&#39;</span><span class="p">:</span> <span class="s1">&#39;web&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;cache&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Default should be set to None or be always available</span>
+        <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Console configuration</span>
+    <span class="n">_config_console</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;query_mem_opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;keep_user_info&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Discard user statistics after computation</span>
+        <span class="s1">&#39;keep_session_data&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;ml_mem_opt&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;ml_autorun&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;plot_target&#39;</span><span class="p">:</span> <span class="s1">&#39;console&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;cache&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Default should be set to None or be always available</span>
+        <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Web default configuration</span>
+    <span class="n">_config_web</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;query_mem_opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;keep_user_info&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;keep_session_data&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;ml_mem_opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;ml_autorun&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;plot_target&#39;</span><span class="p">:</span> <span class="s1">&#39;web&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;cache&#39;</span><span class="p">:</span> <span class="s1">&#39;sqlite&#39;</span><span class="p">,</span>  <span class="c1"># Default should be set to None or be always available,</span>
+        <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+
+    <span class="n">_config</span> <span class="o">=</span> <span class="n">_config_default</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1">##############</span>
+    <span class="c1"># DECORATORS #</span>
+    <span class="c1">##############</span>
+
+    <span class="k">def</span> <span class="nf">_cache_needed</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;cache&#39;</span><span class="p">]:</span>
+                <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;You need to initialize a cache to run this method.&#39;</span>
+        <span class="k">return</span> <span class="n">func_wrapper</span>
+
+    <span class="k">def</span> <span class="nf">_takes_config</span><span class="p">(</span><span class="n">pos_params</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            pos_params (int): the number of position parameters (self included)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pos_params</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;Wrong params call; config params should be set explicitly: param = value&#39;</span><span class="p">)</span>
+                <span class="n">config_params</span> <span class="o">=</span> <span class="p">{}</span>
+
+                <span class="c1"># No config param has been provided</span>
+                <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">param</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params</span><span class="p">})</span>
+
+                <span class="c1"># There is at least one config param in the function call</span>
+                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">param</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                        <span class="n">config_params</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="n">param</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">config_params</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="n">param</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">config_params</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">param</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">config_params</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func_wrapper</span>
+        <span class="k">return</span> <span class="n">func_decorator</span>
+
+    <span class="c1">#################</span>
+    <span class="c1"># CLASS METHODS #</span>
+    <span class="c1">#################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modality</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Object constructur, accepts config dictionary.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            modality (str): Select a predefined configuration between [default, low_mem, web]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;courses&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;last_update&#39;</span><span class="p">:</span> <span class="s1">&#39;never&#39;</span><span class="p">}</span>
+
+        <span class="c1"># Set base settings and AutoPlot instance</span>
+        <span class="k">if</span> <span class="n">modality</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">modality</span> <span class="o">==</span> <span class="s1">&#39;low_mem&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_low_mem</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span> <span class="o">=</span> <span class="n">auto_plot</span><span class="o">.</span><span class="n">AutoPlot</span><span class="p">(</span><span class="s1">&#39;web&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">modality</span> <span class="o">==</span> <span class="s1">&#39;web&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_web</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span> <span class="o">=</span> <span class="n">auto_plot</span><span class="o">.</span><span class="n">AutoPlot</span><span class="p">(</span><span class="s1">&#39;web&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">modality</span> <span class="o">==</span> <span class="s1">&#39;console&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_console</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span> <span class="o">=</span> <span class="n">auto_plot</span><span class="o">.</span><span class="n">AutoPlot</span><span class="p">(</span><span class="s1">&#39;console&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_default</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span> <span class="o">=</span> <span class="n">auto_plot</span><span class="o">.</span><span class="n">AutoPlot</span><span class="p">(</span><span class="s1">&#39;web&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_default</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span> <span class="o">=</span> <span class="n">auto_plot</span><span class="o">.</span><span class="n">AutoPlot</span><span class="p">(</span><span class="s1">&#39;web&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Update class settings if required during instantiation</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">kwargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">modify_class_settings</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Get default collections</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;debug&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">connection_to_mongo</span><span class="o">.</span><span class="n">connect_to_mongo</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s1">&#39;web_mockup_population&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lessons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s1">&#39;web_mockup_lessons&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">connection_to_mongo</span><span class="o">.</span><span class="n">connect_to_mongo</span><span class="p">(</span><span class="n">db_name</span> <span class="o">=</span> <span class="s1">&#39;lode_real&#39;</span><span class="p">)</span>
+            <span class="c1"># should rename these collections &lt;--------------------------------------</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s1">&#39;web_mockup_population&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lessons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s1">&#39;web_mockup_lessons&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Get appropriate cache (or set default one if available)</span>
+        <span class="n">requested_cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;cache&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">requested_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">cache</span>  <span class="c1"># migrate</span>
+            <span class="c1"># self.check_available_caches()</span>
+            <span class="c1"># if requested_cache in available_caches:</span>
+            <span class="c1"># pass # get the appropriate cache somehow</span>
+            <span class="k">if</span> <span class="n">requested_cache</span> <span class="o">==</span> <span class="s1">&#39;sqlite&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">CacheSQLite</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">CacheMongoDb</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s1">&#39;system_cache&#39;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="LodegSystem.getSystemSettings"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getSystemSettings">[docs]</a>    <span class="k">def</span> <span class="nf">getSystemSettings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get system configuration&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span></div>
+
+<div class="viewcode-block" id="LodegSystem.modify_class_settings"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.modify_class_settings">[docs]</a>    <span class="k">def</span> <span class="nf">modify_class_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tweak class params</span>
+
+<span class="sd">        Note: default values for all parameters has already been provided before this function can be called;</span>
+<span class="sd">            Only params that already exist can be modified (type checking is implemented to avoid inappropriate use).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            kwargs:</span>
+<span class="sd">                keep_session_data (bool): Keep the raw session data in the system. Defaults to False.</span>
+<span class="sd">                keep_user_info (bool): Keep the statistics computed at the userInfo level. Defaults to True.</span>
+<span class="sd">                query_mem_opt (bool): Do only partial queries to keep memory usage low. Defaults to True.</span>
+<span class="sd">                ml_mem_opt (bool): Keep data both in dataframes and dictionaries when clustering users. Defaults to False.</span>
+<span class="sd">                ml_autorun (bool): Autorun the clustering algorith after data extraction. Defaults to True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">param_value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="n">param</span><span class="p">])</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">param_value</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_value</span></div>
+
+<div class="viewcode-block" id="LodegSystem.getData"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getData">[docs]</a>    <span class="k">def</span> <span class="nf">getData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a reference of a part of the system (default is SystemInfo)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): if set a CourseInfo is returned</span>
+<span class="sd">            user (str): if both course and user are set then a UserInfo is returned</span>
+<span class="sd">            session (str): if course, user and session are set then a SessionInfo is returned</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            the target system part if present; otherwise, an empty dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">course</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span>
+
+            <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">get_copy</span> <span class="k">else</span> <span class="n">data</span>
+
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># The information of the target course or user is not present in</span>
+            <span class="c1"># the system</span>
+            <span class="k">return</span> <span class="p">{}</span></div>
+
+<div class="viewcode-block" id="LodegSystem.getLastUpdate"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getLastUpdate">[docs]</a>    <span class="k">def</span> <span class="nf">getLastUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the local time representation of the last data extraction&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;last_update&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;never&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">utc_to_local_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;last_update&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;never&#39;</span></div>
+
+    <span class="nd">@_takes_config</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;keep_session_data&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="LodegSystem.extractUserData"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.extractUserData">[docs]</a>    <span class="k">def</span> <span class="nf">extractUserData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extracts the statistics for the target user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): The id of the course we are interested in.</span>
+<span class="sd">            user (str): The id of the user whose userInfo we are extracting.</span>
+<span class="sd">            keep_session_data (bool): Keep the raw session data in the system. Defaults to config.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check if the course is already known by the system</span>
+        <span class="k">if</span> <span class="n">course</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;users&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="n">courseInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">]</span>
+        <span class="c1"># Check if the lessons_durations have already been computed</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;lessons_durations&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">courseInfo</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">get_lessons_durations_and_registration_dates</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_lessons</span><span class="p">,</span> <span class="n">course</span><span class="p">,</span> <span class="n">courseInfo</span><span class="p">)</span>
+        <span class="n">lessons_durations</span> <span class="o">=</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;lessons_durations&#39;</span><span class="p">]</span>
+        <span class="c1"># Extract user data</span>
+        <span class="n">userInfo</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_extraction</span><span class="o">.</span><span class="n">execute_userInfo_extraction</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logs</span><span class="p">,</span> <span class="n">lessons_durations</span><span class="p">,</span> <span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">userInfo</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="p">)</span>
+        <span class="c1"># Save the user in the system</span>
+        <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">]</span> <span class="o">=</span> <span class="n">userInfo</span></div>
+
+    <span class="nd">@_takes_config</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;keep_session_data&#39;</span><span class="p">,</span> <span class="s1">&#39;keep_user_info&#39;</span><span class="p">,</span> <span class="s1">&#39;query_mem_opt&#39;</span><span class="p">,</span> <span class="s1">&#39;ml_autorun&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="LodegSystem.executeCompleteExtraction"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.executeCompleteExtraction">[docs]</a>    <span class="k">def</span> <span class="nf">executeCompleteExtraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                  <span class="n">keep_session_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">keep_user_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">query_mem_opt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">ml_autorun</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract the data and compute all the statistics.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            keep_session_data (bool): Keep the raw session data in the system. Defaults to False.</span>
+<span class="sd">            keep_user_info (bool): Keep all computed userInfos in the system. Defaults to False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">systemInfo</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;courses&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="n">data_extraction</span><span class="o">.</span><span class="n">execute_complete_extraction</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lessons</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="p">,</span> <span class="n">keep_user_info</span><span class="p">,</span> <span class="n">query_mem_opt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span> <span class="o">=</span> <span class="n">systemInfo</span>
+        <span class="c1"># If ml_autorun is run the ml algorithms</span>
+        <span class="k">if</span> <span class="n">ml_autorun</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">runMl</span><span class="p">()</span></div>
+
+    <span class="nd">@_cache_needed</span>
+<div class="viewcode-block" id="LodegSystem.collectDataFromDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.collectDataFromDb">[docs]</a>    <span class="k">def</span> <span class="nf">collectDataFromDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Queries the db for already computed information.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            If the user is defined we query only the userInfo. Otherwise, it means</span>
+<span class="sd">            that the user is an administrator of the system: in this case we query</span>
+<span class="sd">            the cache for the whole systemInfo.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (str): The id of the user whose userInfo we are quering the db.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">collectDataFromDb</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span></div>
+
+    <span class="nd">@_cache_needed</span>
+<div class="viewcode-block" id="LodegSystem.saveDataToDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.saveDataToDb">[docs]</a>    <span class="k">def</span> <span class="nf">saveDataToDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves the current information into the database.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            If the user is defined we save only the userInfo. Otherwise, it means</span>
+<span class="sd">            that the user is an administrator of the system: in this case we save</span>
+<span class="sd">            the whole systemInfo in the cache.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">             user (str): The id of the user whose userInfo we are saving. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">saveDataToDb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LodegSystem.getCSV"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getCSV">[docs]</a>    <span class="k">def</span> <span class="nf">getCSV</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Get an HttpResponse containing the courseInfo information formatted as CSV.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): the course whose statistics we are exporting.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            An HttpResponse with content MIME text/csv</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/csv&#39;</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;attachment; filename= &quot;&#39;</span> <span class="o">+</span> \
+            <span class="n">course</span> <span class="o">+</span> <span class="s1">&#39;Export.csv&quot;&#39;</span>
+        <span class="n">courseInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s1">&#39;stats_dframe&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">courseInfo</span><span class="p">:</span>
+            <span class="c1"># Create the DataFrame</span>
+            <span class="n">ml</span><span class="o">.</span><span class="n">migrateStatsToDataFrames</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">,</span> <span class="n">ml_mem_opt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">csv_export</span> <span class="o">=</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;stats_dframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">csv_export</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="LodegSystem.export_data"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.export_data">[docs]</a>    <span class="k">def</span> <span class="nf">export_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">export_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">selected_keys</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">excluded_keys</span><span class="p">:</span><span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pretty_printing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Export the whole system or a part of it.</span>
+
+<span class="sd">        The json and the binary .p formats are supported.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            export_type (str): &#39;json&#39; or &#39;bytes&#39; export types are supported;</span>
+<span class="sd">            course (str): if set the target CourseInfo is exported;</span>
+<span class="sd">            user (str): if both course and user are set, the target UserInfo is exported;</span>
+<span class="sd">            session (str): if all course, user and session are set, the target SessionInfo is exported;</span>
+<span class="sd">            selected_keys (list of str): the keys (stats) that you want to export. Defaults to all;</span>
+<span class="sd">            excluded_keys (list of str): the keys (stats) that you do not want to export. Defaults to None;</span>
+<span class="sd">            pretty_printing (bool): if True json will be formatted with 4-spaces indentation. Defaults to False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">insertion_level</span> <span class="o">=</span> <span class="s1">&#39;system&#39;</span>
+        <span class="n">insertion_key</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="c1"># Localize the target data</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">course</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">session</span><span class="p">:</span>
+                        <span class="c1"># SessionInfo</span>
+                        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+                        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span>
+                            <span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session</span><span class="p">]</span>
+                        <span class="n">insertion_position</span> <span class="o">=</span> <span class="s1">&#39;session&#39;</span>
+                        <span class="n">insertion_key</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># UserInfo</span>
+                        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+                        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span>
+                            <span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">]</span>
+                        <span class="n">insertion_position</span> <span class="o">=</span> <span class="s1">&#39;user&#39;</span>
+                        <span class="n">insertion_key</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># CourseInfo</span>
+                    <span class="n">title</span> <span class="o">=</span> <span class="n">course</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">]</span>
+                    <span class="n">insertion_position</span> <span class="o">=</span> <span class="s1">&#39;course&#39;</span>
+                    <span class="n">insertion_key</span> <span class="o">=</span> <span class="n">course</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># SystemInfo</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;system&#39;</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span>
+                <span class="n">insertion_position</span> <span class="o">=</span> <span class="s1">&#39;system&#39;</span>
+                <span class="n">insertion_key</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+            <span class="c1"># Select only requested keys</span>
+            <span class="n">dict_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">selected_keys</span><span class="p">:</span>
+                <span class="n">target_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">selected_keys</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">unwanted_key</span> <span class="ow">in</span> <span class="n">dict_keys</span> <span class="o">-</span> <span class="n">target_keys</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="n">unwanted_key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">excluded_keys</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">unwanted_key</span> <span class="ow">in</span> <span class="n">dict_keys</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">excluded_keys</span><span class="p">):</span>
+                    <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="n">unwanted_key</span><span class="p">]</span>
+
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;damaged&#39;</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;objective&#39;</span><span class="p">:</span> <span class="s1">&#39;not found&#39;</span><span class="p">}</span>
+
+        <span class="c1"># Json file</span>
+        <span class="k">if</span> <span class="n">export_type</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">title</span> <span class="o">+</span> <span class="s1">&#39;-export.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pretty_printing</span><span class="p">:</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
+                        <span class="s1">&#39;insertion_position&#39;</span><span class="p">:</span> <span class="n">insertion_position</span><span class="p">,</span>
+                        <span class="s1">&#39;insertion_key&#39;</span><span class="p">:</span> <span class="n">insertion_key</span><span class="p">,</span>
+                        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">BetterEncoder</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
+                        <span class="s1">&#39;insertion_position&#39;</span><span class="p">:</span> <span class="n">insertion_position</span><span class="p">,</span>
+                        <span class="s1">&#39;insertion_key&#39;</span><span class="p">:</span> <span class="n">insertion_key</span><span class="p">,</span>
+                        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">BetterEncoder</span><span class="p">)</span>
+
+        <span class="c1"># Binary file</span>
+        <span class="k">elif</span> <span class="n">export_type</span> <span class="o">==</span> <span class="s1">&#39;bytes&#39;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">title</span> <span class="o">+</span> <span class="s1">&#39;-export.p&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
+                    <span class="s1">&#39;insertion_position&#39;</span><span class="p">:</span> <span class="n">insertion_position</span><span class="p">,</span>
+                    <span class="s1">&#39;insertion_key&#39;</span><span class="p">:</span> <span class="n">insertion_key</span><span class="p">,</span>
+                    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LodegSystem.import_data"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.import_data">[docs]</a>    <span class="k">def</span> <span class="nf">import_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Import the whole system or a part of it</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): the filename (filepath) that we are importing;</span>
+<span class="sd">            overwrite (bool): if the imported information is already present in the system and overwrite = False then a message is returned and the file is not imported. Defaults to False.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            True if the import worked nominally; otherwise, False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Get the data to be imported</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Json file</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.json&#39;</span><span class="p">):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+            <span class="c1"># Binary file</span>
+            <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.p&#39;</span><span class="p">):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;File format not supported&#39;</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">insertion_position</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;insertion_position&#39;</span><span class="p">]</span>
+                <span class="n">insertion_key</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;insertion_key&#39;</span><span class="p">]</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;The file is corrupted and does not contain the appropriate metadata&#39;</span>
+
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;File not found: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># Try to see if the system can accept the data; if a key error is</span>
+        <span class="c1"># rised, do nothing.</span>
+        <span class="n">system_flag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">insertion_key</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">insertion_position</span> <span class="o">==</span> <span class="s1">&#39;session&#39;</span><span class="p">:</span>
+                <span class="n">insertion_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span>
+                    <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span>
+                <span class="n">insertion_key</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">insertion_position</span> <span class="o">==</span> <span class="s1">&#39;user&#39;</span><span class="p">:</span>
+                <span class="n">insertion_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span>
+                    <span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;users&#39;</span><span class="p">]</span>
+                <span class="n">insertion_key</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">insertion_position</span> <span class="o">==</span> <span class="s1">&#39;course&#39;</span><span class="p">:</span>
+                <span class="n">insertion_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span>
+                <span class="n">insertion_key</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">insertion_position</span> <span class="o">==</span> <span class="s1">&#39;system&#39;</span><span class="p">:</span>
+                <span class="n">insertion_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span>
+                <span class="n">system_flag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;Some layers above the </span><span class="si">{}</span><span class="s1"> you are inserting are not present in the system&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;Metadata are corrupted; the file cannot be imported&#39;</span>
+
+        <span class="k">if</span> <span class="n">system_flag</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">overwrite</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="s1">&#39;Trying to overwrite the whole system without permissions; try overwrite = True&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">overwrite</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">insertion_key</span> <span class="ow">in</span> <span class="n">inserting_position</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="s1">&#39;Import has overwrite conflict; try to launch with overwrite = True&#39;</span>
+            <span class="n">insertion_position</span><span class="p">[</span><span class="n">insertion_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+
+        <span class="c1"># Everything worked nominally</span>
+        <span class="k">return</span> <span class="s1">&#39;Done&#39;</span></div>
+
+<div class="viewcode-block" id="LodegSystem.getNumberOfUsers"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getNumberOfUsers">[docs]</a>    <span class="k">def</span> <span class="nf">getNumberOfUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the number of users saved in the system.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course(str): if specified, we are asking for course level info; otherwise, system level.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The total number of users if the information is known by the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">number_of_users</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">course</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="n">number_of_users</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">course</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">number_of_users</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">number_of_users</span> <span class="o">=</span> <span class="s1">&#39;Unknown&#39;</span>
+        <span class="k">return</span> <span class="n">number_of_users</span></div>
+
+<div class="viewcode-block" id="LodegSystem.getNumberOfSessions"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getNumberOfSessions">[docs]</a>    <span class="k">def</span> <span class="nf">getNumberOfSessions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the number of sessions.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): If set we are asking for courseLevel or userLevel info; otherwise, systemLevel info will be provided.</span>
+<span class="sd">            user (str): If both course and user are set we are asking for userLevel info; otherwise, courseLevel or systemLevel.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The appropriate number of sessions if the information is known by the system; otherwise, the string &#39;Unknown&#39;.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">course</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                    <span class="c1"># User level info</span>
+                    <span class="n">numberOfSessions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span>
+                                           <span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Course level info</span>
+                    <span class="n">numberOfSessions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span>
+                        <span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;number_of_sessions&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># System level info</span>
+                <span class="c1"># &lt;------------ Not implemented yet</span>
+                <span class="n">numberOfSessions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;number_of_sessions&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># We don&#39;t have the information in the system</span>
+            <span class="n">numberOfSessions</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+        <span class="k">return</span> <span class="n">numberOfSessions</span></div>
+
+<div class="viewcode-block" id="LodegSystem.getNumberOfLessons"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getNumberOfLessons">[docs]</a>    <span class="k">def</span> <span class="nf">getNumberOfLessons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the number of lessons for a specific course.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): the id of the course whose information we are interested in.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The total number of lessons if the information is known by the system; otherwise, the string &#39;Unknown&#39;.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;lessons_durations&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;Unknown&#39;</span></div>
+
+<div class="viewcode-block" id="LodegSystem.getUserCoveragePercentage"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getUserCoveragePercentage">[docs]</a>    <span class="k">def</span> <span class="nf">getUserCoveragePercentage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the coverage percentage of lessons that the user have watched over the lessons of the course.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (Str): The id of the course we are inspecting.</span>
+<span class="sd">            user (str): The id of the user whose coverage percentage we are asking for.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the coverage percentage if the information is known by the system; otherwise, the string &#39;Unknown&#39;.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">coverage_percentage</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span>
+                                      <span class="s1">&#39;coverage_percentage&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># We don&#39;t have this information in the system</span>
+            <span class="n">coverage_percentage</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+        <span class="k">return</span> <span class="n">coverage_percentage</span></div>
+
+<span class="c1">###############################################################################</span>
+<span class="c1">#                                  HEADERS                                    #</span>
+<span class="c1">###############################################################################</span>
+
+<div class="viewcode-block" id="LodegSystem.getUsers"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getUsers">[docs]</a>    <span class="k">def</span> <span class="nf">getUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the list of users</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): The id of the course we are interested in. If none we get all the users.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of str: the users ids if the course is present in the system; otherwise, the empty list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">course</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">users</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">courseInfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">users</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">users</span></div>
+
+<div class="viewcode-block" id="LodegSystem.getUserSessionsHeaders"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getUserSessionsHeaders">[docs]</a>    <span class="k">def</span> <span class="nf">getUserSessionsHeaders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a list of string headers (lesson_title:date) of the user sessions</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): The id of the course we are interested in.</span>
+<span class="sd">            user (str): The id of the user whose sessions dates we are asking for.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of str: the headers of the session if known by the system; otherwise, the empty list</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sessions_dates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">session</span><span class="p">,</span> <span class="n">sessionInfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">sessions_dates</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;session_id&#39;</span><span class="p">:</span> <span class="n">session</span><span class="p">,</span> <span class="s1">&#39;header&#39;</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;lesson_id&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;-&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]))})</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># We don&#39;t have this information in the system or the user has no</span>
+            <span class="c1"># session</span>
+            <span class="n">sessions_dates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">sessions_dates</span></div>
+
+<div class="viewcode-block" id="LodegSystem.getLessonsHeaders"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getLessonsHeaders">[docs]</a>    <span class="k">def</span> <span class="nf">getLessonsHeaders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the lessons headers of all uploaded lessons.</span>
+
+<span class="sd">         Args:</span>
+<span class="sd">            course (str): The id of the course we are interested in.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of str: the headers of the session if known by the system; otherwise, the empty list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;lessons_durations&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># We don&#39;t have this information in the system</span>
+            <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="LodegSystem.getCourses"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getCourses">[docs]</a>    <span class="k">def</span> <span class="nf">getCourses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the courses present in the system.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of str: the courses.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1">#                                  CHARTS                                     #</span>
+<span class="c1">###############################################################################</span>
+
+<div class="viewcode-block" id="LodegSystem.printSessionCoverage"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.printSessionCoverage">[docs]</a>    <span class="k">def</span> <span class="nf">printSessionCoverage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns an image of the session coverage as html string</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            This method requires the user (_systemInfo[&#39;users&#39;][user][&#39;sessions&#39;]) to be already initialized.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): The id of the course whose user session coverage we are asking for.</span>
+<span class="sd">            user (str): The id of the user whose session coverage we are asking for.</span>
+<span class="sd">            session (str): The demanded session.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the image representation of the session coverage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">course</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;users&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">user</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;sessions&#39;</span><span class="p">:</span> <span class="p">{}}}}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span>
+                    <span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sessions&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="c1"># Check if it is the first time we encounter this session</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sessionInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span>
+                <span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># We have never computed the sessionInfo for this user -&gt; execute a</span>
+            <span class="c1"># complete extraction for this session</span>
+            <span class="n">sessionInfo</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">data_extraction</span><span class="o">.</span><span class="n">execute_sessionInfo_extraction</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">,</span>
+                                                           <span class="n">logs_collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_logs</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span> <span class="n">keep_session_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;keep_session_data&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span>
+                <span class="n">user</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session</span><span class="p">]</span> <span class="o">=</span> <span class="n">sessionInfo</span>
+
+        <span class="c1"># Get the lesson duration for this session</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">lesson_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span>
+                <span class="s1">&#39;lessons_durations&#39;</span><span class="p">][</span><span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;lesson_id&#39;</span><span class="p">]]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># THIS MUST NOT HAPPEN -&gt; it implies that the lesson has not been</span>
+            <span class="c1"># registered when uploaded</span>
+            <span class="n">lesson_duration</span> <span class="o">=</span> <span class="mf">7200.0</span>
+
+        <span class="c1"># Check if the session_coverage has already been calculated</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="o">.</span><span class="n">printSessionCoverage</span><span class="p">(</span>
+                <span class="n">sessionInfo</span><span class="p">,</span> <span class="n">lesson_duration</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># We don&#39;t have this information in the system -&gt; extract it</span>
+            <span class="n">data_extraction</span><span class="o">.</span><span class="n">session_coverage_extraction</span><span class="p">(</span>
+                <span class="n">sessionInfo</span><span class="p">,</span> <span class="n">lesson_duration</span><span class="p">)</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="o">.</span><span class="n">printSessionCoverage</span><span class="p">(</span><span class="n">sessionInfo</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">image</span></div>
+
+<div class="viewcode-block" id="LodegSystem.printLessonCoverage"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.printLessonCoverage">[docs]</a>    <span class="k">def</span> <span class="nf">printLessonCoverage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lesson</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns an image of the session coverage as html string.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            This method requires the coverage to be already computed.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            lesson (str): The id of the lesson whose coverage we are asking for.</span>
+<span class="sd">            course (str): The course we are considering.</span>
+<span class="sd">            user (str): If set, we are asking for the lesson coverage of a specific user;</span>
+<span class="sd">                otherwise, courseLevel lesson coverage will be plotted.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the image representation of the session coverage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="c1"># User level lesson coverage</span>
+                <span class="n">coverage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span>
+                    <span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span><span class="s1">&#39;lessons_coverage&#39;</span><span class="p">][</span><span class="n">lesson</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># System level lesson coverage</span>
+                <span class="n">coverage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span>
+                    <span class="n">course</span><span class="p">][</span><span class="s1">&#39;global_coverage&#39;</span><span class="p">][</span><span class="n">lesson</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># We don&#39;t have this information in the system</span>
+            <span class="k">return</span><span class="p">(</span><span class="s1">&#39;&lt;h2 class=&quot;text-center&quot;&gt;Coverage unknown&lt;/h2&gt;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="o">.</span><span class="n">printLessonCoverage</span><span class="p">(</span><span class="n">coverage</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LodegSystem.printNotesBarChart"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.printNotesBarChart">[docs]</a>    <span class="k">def</span> <span class="nf">printNotesBarChart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a bar chart of the notes types distribution as html string.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Three charts can be plotted with this function, depending on the level (system, user, session).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): The course we are considering.</span>
+<span class="sd">            user (str): If set level &lt; course (user or session)</span>
+<span class="sd">            session (str): If set level = session, otherwise level = user</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the pie chart of the notes types distribution</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Select the data according to the level requested</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                    <span class="c1"># Session level chart</span>
+                    <span class="n">notes_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span>
+                        <span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session</span><span class="p">][</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># User level chart</span>
+                    <span class="n">notes_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span>
+                        <span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># System level chart</span>
+                <span class="n">notes_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span>
+                    <span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;notes_per_type&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># We don&#39;t have this information in the system</span>
+            <span class="k">return</span><span class="p">(</span><span class="s1">&#39;&lt;h2 class=&quot;text-center&quot;&gt;Notes statistics unknown&lt;/h2&gt;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="o">.</span><span class="n">printNotesBarChart</span><span class="p">(</span><span class="n">notes_types</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LodegSystem.printLessonsHistogram"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.printLessonsHistogram">[docs]</a>    <span class="k">def</span> <span class="nf">printLessonsHistogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the histogram that plots the number of users that have watched each lesson if level = system;</span>
+<span class="sd">        if level = user it plots the number of sessions that the user has spent watching the video</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): The course we are considering.</span>
+<span class="sd">            user (str): If set we are plotting the user histogram; otherwise, the course histogram.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the histogram</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="o">.</span><span class="n">printLessonsHistogram</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span><span class="s1">&#39;coverage_histogram&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="o">.</span><span class="n">printLessonsHistogram</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;coverage_histogram&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+             <span class="c1"># We don&#39;t have this information in the system</span>
+            <span class="k">return</span><span class="p">(</span><span class="s1">&#39;&lt;h2 class=&quot;text-center&quot;&gt;Histogram unknown&lt;/h2&gt;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LodegSystem.printDaySessionDistribution"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.printDaySessionDistribution">[docs]</a>    <span class="k">def</span> <span class="nf">printDaySessionDistribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a figure with a polar and a bar chart with the distribution of sessions throughout the day</span>
+<span class="sd">        if level = user user level info is plotted; otherwise, course level info</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            course (str): The course we are considering.</span>
+<span class="sd">            user (str): If set we are plotting the user distribution; otherwise, the course distribution.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the figure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="o">.</span><span class="n">printDaySessionDistribution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span><span class="s1">&#39;day_distribution&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="o">.</span><span class="n">printDaySessionDistribution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;day_distribution&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># We don&#39;t have this information in the system</span>
+            <span class="k">return</span><span class="p">(</span><span class="s1">&#39;&lt;h2 class=&quot;text-center&quot;&gt;Information unknown&lt;/h2&gt;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LodegSystem.printLessonUserCorrelationGraph"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.printLessonUserCorrelationGraph">[docs]</a>    <span class="k">def</span> <span class="nf">printLessonUserCorrelationGraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print a 3d graph of users lesson visualization.</span>
+
+<span class="sd">        The graph plots a function of the number of users against time and lessons: for every lesson,</span>
+<span class="sd">        a curve is plotted to show when and how many users have watched the lessons.</span>
+
+<span class="sd">        Time has two formats: abs and rel. It expresses whether each lesson curve is plotted agains its registration date (rel)</span>
+<span class="sd">        or against the registration date of the first lesson (abs).</span>
+
+<span class="sd">        Params:</span>
+<span class="sd">            lessons_visualization (dict): the dictionary of type {&#39;lesson_id&#39;:ordered_list(datetime)}</span>
+<span class="sd">            time_format (str): the time format (abs or rel). None == abs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">time_format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="o">.</span><span class="n">printLessonUserCorrelationGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;lessons_visualization&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;registration_dates&#39;</span><span class="p">],</span> <span class="n">time_format</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="o">.</span><span class="n">printLessonUserCorrelationGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;lessons_visualization&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;registration_dates&#39;</span><span class="p">],)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+             <span class="c1"># We don&#39;t have this information in the system</span>
+            <span class="k">return</span><span class="p">(</span><span class="s1">&#39;&lt;h2 class=&quot;text-center&quot;&gt;Correlation unknown&lt;/h2&gt;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LodegSystem.printClusteringResults"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.printClusteringResults">[docs]</a>    <span class="k">def</span> <span class="nf">printClusteringResults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print a 3d graph of user clusters in a 3d graph&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<span class="c1">###############################################################################</span>
+<span class="c1">#                               MACHINE LEARNING                              #</span>
+<span class="c1">###############################################################################</span>
+
+<div class="viewcode-block" id="LodegSystem.runMl"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.runMl">[docs]</a>    <span class="k">def</span> <span class="nf">runMl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the machine learning algorithms</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Run data migration first</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">migrateStatsToDataFrames</span><span class="p">()</span>
+        <span class="c1"># Run the clustering algorithm</span>
+        <span class="k">for</span> <span class="n">courseInfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">ml</span><span class="o">.</span><span class="n">executeUserClustering</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">)</span></div>
+
+    <span class="nd">@_takes_config</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;ml_mem_opt&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="LodegSystem.migrateStatsToDataFrames"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.migrateStatsToDataFrames">[docs]</a>    <span class="k">def</span> <span class="nf">migrateStatsToDataFrames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ml_mem_opt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new dataframe for each course with a row for each user and set courseInfo[&#39;stats_dframe&#39;] = DataFrame()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if we are asked to keep memory low we discard statistics in dicts and</span>
+        <span class="c1"># keep dataframes only</span>
+        <span class="k">for</span> <span class="n">courseInfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">ml</span><span class="o">.</span><span class="n">migrateStatsToDataFrames</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">,</span> <span class="n">ml_mem_opt</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Riccardo Capraro.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

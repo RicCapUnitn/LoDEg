@@ -1,7 +1,7 @@
-pythonML
-========
+lodegML
+=======
 
 .. toctree::
    :maxdepth: 4
 
-   pythonML
+   lodegML

@@ -1,0 +1,1439 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lodegML package &#8212; LoDEg 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="lodegML" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="lodegml-package">
+<h1>lodegML package<a class="headerlink" href="#lodegml-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-lodegML.auto_plot">
+<span id="lodegml-auto-plot-module"></span><h2>lodegML.auto_plot module<a class="headerlink" href="#module-lodegML.auto_plot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lodegML.auto_plot.AutoPlot">
+<em class="property">class </em><code class="descclassname">lodegML.auto_plot.</code><code class="descname">AutoPlot</code><span class="sig-paren">(</span><em>target='console'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="lodegML.auto_plot.AutoPlot.printDaySessionDistribution">
+<code class="descname">printDaySessionDistribution</code><span class="sig-paren">(</span><em>distribution: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printDaySessionDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printDaySessionDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>A polar chart with the distribution of sessions throughout the day</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>distribution</strong> (<em>list</em>) &#8211; a list of 24 values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.auto_plot.AutoPlot.printLessonCoverage">
+<code class="descname">printLessonCoverage</code><span class="sig-paren">(</span><em>coverage: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printLessonCoverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printLessonCoverage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lodegML.auto_plot.AutoPlot.printLessonUserCorrelationGraph">
+<code class="descname">printLessonUserCorrelationGraph</code><span class="sig-paren">(</span><em>lessons_visualization: dict</em>, <em>registration_dates: dict</em>, <em>time_format: str = 'abs'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printLessonUserCorrelationGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printLessonUserCorrelationGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a 3d graph of users lesson visualization.</p>
+<p>The graph plots a function of the number of users against time and lessons: for every lesson,
+a curve is plotted to show when and how many users have watched the lessons.</p>
+<p>Time has two formats: abs and rel. It expresses wheter each lesson curve is plotted agains its registration date (rel)
+or against the registration date of the first lesson (abs).</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd>lessons_visualization (dict): the dictionary of type {&#8216;lesson_id&#8217;:Counter(datetime)}.
+registration_dates (dict): the dates of registration of every lesson.
+time_format (str): the time format (abs or rel). Defaults to abs.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.auto_plot.AutoPlot.printLessonsHistogram">
+<code class="descname">printLessonsHistogram</code><span class="sig-paren">(</span><em>histogram: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printLessonsHistogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printLessonsHistogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>The histogram is of type {&#8216;lesson&#8217;:&#8217;number_of_users&#8217;}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.auto_plot.AutoPlot.printNotesBarChart">
+<code class="descname">printNotesBarChart</code><span class="sig-paren">(</span><em>notes_types: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printNotesBarChart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printNotesBarChart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lodegML.auto_plot.AutoPlot.printNotesPolarChart">
+<code class="descname">printNotesPolarChart</code><span class="sig-paren">(</span><em>notes_types: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printNotesPolarChart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printNotesPolarChart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lodegML.auto_plot.AutoPlot.printSessionCoverage">
+<code class="descname">printSessionCoverage</code><span class="sig-paren">(</span><em>sessionInfo: dict</em>, <em>lesson_duration: float</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printSessionCoverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printSessionCoverage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lodegML.cache">
+<span id="lodegml-cache-module"></span><h2>lodegML.cache module<a class="headerlink" href="#module-lodegML.cache" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lodegML.cache.Cache">
+<em class="property">class </em><code class="descclassname">lodegML.cache.</code><code class="descname">Cache</code><a class="reference internal" href="_modules/lodegML/cache.html#Cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.Cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>This class gives a black box for a generic caching system for the system</p>
+<p>Two implementations are provided at hte moment:
+- SQLite: the system work with the Django SQLite to cache data
+- MongoDB: the system works with a generic MongoDB implementation (not ready for production!!)</p>
+<dl class="method">
+<dt id="lodegML.cache.Cache.collectDataFromDb">
+<code class="descname">collectDataFromDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/lodegML/cache.html#Cache.collectDataFromDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.Cache.collectDataFromDb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queries the db for already computed information.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the user is defined we query only the userInfo. Otherwise, it means
+that the user is an administrator of the system: in this case we query
+the cache for the whole systemInfo.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose userInfo we are quering the db.</li>
+<li><strong>systemInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary where the information will be stored.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated SystemInfo dictionary.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.cache.Cache.saveDataToDb">
+<code class="descname">saveDataToDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/cache.html#Cache.saveDataToDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.Cache.saveDataToDb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the current information into the database.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the user is defined we save only the userInfo. Otherwise, it means
+that the user is an administrator of the system: in this case we save
+the whole systemInfo in the cache.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose userInfo we are saving. Defaults to None.</li>
+<li><strong>systemInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that contains the information we want to store.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lodegML.cache.CacheMongoDb">
+<em class="property">class </em><code class="descclassname">lodegML.cache.</code><code class="descname">CacheMongoDb</code><span class="sig-paren">(</span><em>collection</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/cache.html#CacheMongoDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.CacheMongoDb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lodegML.cache.Cache" title="lodegML.cache.Cache"><code class="xref py py-class docutils literal"><span class="pre">lodegML.cache.Cache</span></code></a></p>
+<p>A MongoDb implementation of the cache</p>
+<p>Note: Not ready for production: at the moment the implementation does not support huge data structures; use GridFS to break the structure or a relational DB instead</p>
+<dl class="method">
+<dt id="lodegML.cache.CacheMongoDb.collectDataFromDb">
+<code class="descname">collectDataFromDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/cache.html#CacheMongoDb.collectDataFromDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.CacheMongoDb.collectDataFromDb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lodegML.cache.CacheMongoDb.saveDataToDb">
+<code class="descname">saveDataToDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/cache.html#CacheMongoDb.saveDataToDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.CacheMongoDb.saveDataToDb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lodegML.cache.CacheSQLite">
+<em class="property">class </em><code class="descclassname">lodegML.cache.</code><code class="descname">CacheSQLite</code><a class="reference internal" href="_modules/lodegML/cache.html#CacheSQLite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.CacheSQLite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lodegML.cache.Cache" title="lodegML.cache.Cache"><code class="xref py py-class docutils literal"><span class="pre">lodegML.cache.Cache</span></code></a></p>
+<p>A SQLite implementation of the cache</p>
+<dl class="method">
+<dt id="lodegML.cache.CacheSQLite.collectDataFromDb">
+<code class="descname">collectDataFromDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/cache.html#CacheSQLite.collectDataFromDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.CacheSQLite.collectDataFromDb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lodegML.cache.CacheSQLite.saveDataToDb">
+<code class="descname">saveDataToDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/cache.html#CacheSQLite.saveDataToDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.CacheSQLite.saveDataToDb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lodegML.connection_to_mongo">
+<span id="lodegml-connection-to-mongo-module"></span><h2>lodegML.connection_to_mongo module<a class="headerlink" href="#module-lodegML.connection_to_mongo" title="Permalink to this headline">¶</a></h2>
+<p>This file contains the function connect_to_mongo, used to connect to the mongoDB instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">param url:</th><td class="field-body">url to the database (optional, default=&#8221;mongodb://127.0.0.1:27017&#8221;).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">param db_name:</th><td class="field-body">the name of the MongoDb (otional, default=&#8221;lodeg&#8221;).</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">param user:</th><td class="field-body">the username used to connect to the database (optional, not implemented yet).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">param password:</th><td class="field-body">the password used to connect to the database (otional, not implemented yet)  .</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns:</th><td class="field-body">the connection to the database</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">db</td>
+</tr>
+</tbody>
+</table>
+<dl class="function">
+<dt id="lodegML.connection_to_mongo.connect_to_mongo">
+<code class="descclassname">lodegML.connection_to_mongo.</code><code class="descname">connect_to_mongo</code><span class="sig-paren">(</span><em>url='mongodb://127.0.0.1:27017'</em>, <em>db_name='lodeg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/connection_to_mongo.html#connect_to_mongo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.connection_to_mongo.connect_to_mongo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lodegML.data_extraction">
+<span id="lodegml-data-extraction-module"></span><h2>lodegML.data_extraction module<a class="headerlink" href="#module-lodegML.data_extraction" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="lodegML.data_extraction.add_lesson_id_to_session">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">add_lesson_id_to_session</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#add_lesson_id_to_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.add_lesson_id_to_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds the lesson_id to the sessionInfo dictionary</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It requires a valid session.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.add_session_date">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">add_session_date</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#add_session_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.add_session_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds the session_date to the sessionInfo dictionary</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It requires a valid session.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.check_session_validity">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">check_session_validity</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#check_session_validity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.check_session_validity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the session meets the basic requirements in order not to raise exceptions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.compute_course_global_coverage">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">compute_course_global_coverage</code><span class="sig-paren">(</span><em>courseInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#compute_course_global_coverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.compute_course_global_coverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes the global coverage and the users histogram for a single course.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.compute_lessons_coverage_for_single_user">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">compute_lessons_coverage_for_single_user</code><span class="sig-paren">(</span><em>userInfo: dict</em>, <em>lessons_durations: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#compute_lessons_coverage_for_single_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.compute_lessons_coverage_for_single_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes the lesson coverage for all lessons of a user.</p>
+<p>Note: It computes the coverage_histogram as well</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</li>
+<li><strong>lessons_durations</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The systemInfo dictionary {&#8216;lesson_id&#8217;:&#8217;lesson_duration&#8217;}.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.compute_session_duration">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">compute_session_duration</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#compute_session_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.compute_session_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a session and calculates the session duration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.course_day_distribution_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">course_day_distribution_extraction</code><span class="sig-paren">(</span><em>courseInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#course_day_distribution_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.course_day_distribution_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the number of sessions for each hour of the day.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.course_lessons_visualization_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">course_lessons_visualization_extraction</code><span class="sig-paren">(</span><em>courseInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#course_lessons_visualization_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.course_lessons_visualization_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract for each course when the users watched the lessons.</p>
+<p>This function adds to the courseInfo a Counter of datetimes; the Counter is called called &#8216;lessons_visualization&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.course_notes_info_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">course_notes_info_extraction</code><span class="sig-paren">(</span><em>courseInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#course_notes_info_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.course_notes_info_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information of notes for the system.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><ul class="first last simple">
+<li>number of notes</li>
+<li>number of notes/type (click_or_drag,keyframe,note)</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It requires the user notes_info_extraction to be executed first.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.day_session_distribution_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">day_session_distribution_extraction</code><span class="sig-paren">(</span><em>userInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#day_session_distribution_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.day_session_distribution_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the number of sessions for each hour of the day.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.execute_complete_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">execute_complete_extraction</code><span class="sig-paren">(</span><em>logs_collection</em>, <em>lessons_collection</em>, <em>systemInfo</em>, <em>keep_session_data=False</em>, <em>keep_user_info=True</em>, <em>query_mem_opt=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#execute_complete_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.execute_complete_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a complete extraction of the whole system.</p>
+<p>This function extracts all the data from the collection, extracts the
+features we want, deletes the raw data and returns a dict of courseInfo, with
+one key(course_id) for each course in the database.</p>
+<dl class="docutils">
+<dt>Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.</dt>
+<dd>We have left the possibility of setting query_mem_opt to False though in practice we see
+that there is no relevant speed improvement with big datasets (might have with small ones).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
+<li><strong>lessons_collection</strong> &#8211; The MongoDb collection that containes the uploaded lessons logs.</li>
+<li><strong>systemInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>keep_user_info</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the statistics computed at the userInfo level. Defaults to True.</li>
+<li><strong>query_mem_opt</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Do only partial queries to keep memory usage low. Defaults to True.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.execute_courseInfo_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">execute_courseInfo_extraction</code><span class="sig-paren">(</span><em>logs_collection</em>, <em>lessons_collection</em>, <em>course: str</em>, <em>courseInfo: dict</em>, <em>keep_session_data=False</em>, <em>keep_user_info=True</em>, <em>query_mem_opt=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#execute_courseInfo_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.execute_courseInfo_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a complete extraction for a single course.</p>
+<dl class="docutils">
+<dt>Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.</dt>
+<dd>We have left the possibility of setting query_mem_opt to False though in practice we see
+that there is no relevant speed improvement with big datasets (might have with small ones).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
+<li><strong>lessons_collection</strong> &#8211; The MongoDb collection that containes the uploaded lessons logs.</li>
+<li><strong>course</strong> &#8211; The id of the course whose information we are extracting.</li>
+<li><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>keep_user_info</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the statistics computed at the userInfo level. Defaults to True.</li>
+<li><strong>query_mem_opt</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Do only partial queries to keep memory usage low. Defaults to True.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.execute_sessionInfo_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">execute_sessionInfo_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em>, <em>logs_collection=None</em>, <em>session=None</em>, <em>data_provided=False</em>, <em>keep_session_data=False</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/lodegML/data_extraction.html#execute_sessionInfo_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.execute_sessionInfo_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a complete extraction for a single session.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If data_provided = True, than the only required parameter is sessionInfo.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the session we are interested in.</li>
+<li><strong>data_provided</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Set to True if the sessionInfo has already been populated with the raw data. Defaults to False.</li>
+<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if everything worked nominally; false otherwise (you should remove this session).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.execute_userInfo_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">execute_userInfo_extraction</code><span class="sig-paren">(</span><em>logs_collection</em>, <em>lessons_durations: dict</em>, <em>course: str</em>, <em>user: str</em>, <em>userInfo: dict</em>, <em>keep_session_data=False</em>, <em>sessionInfo_provided=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#execute_userInfo_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.execute_userInfo_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a complete extraction for a single user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
+<li><strong>lessons_durations</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The systemInfo dictionary {&#8216;lesson_id&#8217;:&#8217;lesson_duration&#8217;}.</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Used if sessionInfo_provided = False (as default)</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose userInfo we are extracting.</li>
+<li><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>sessionInfo_provided</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Set to true if the sessionInfo has already been computed. Defaults to False.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.jumps_info_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">jumps_info_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#jumps_info_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.jumps_info_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information of jumps for the session.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><blockquote class="first">
+<div><ul class="simple">
+<li>average jump length</li>
+<li>number of jumps</li>
+<li>number of jumps/type (click_or_drag,keyframe,note)</li>
+<li>total jumps length</li>
+</ul>
+</div></blockquote>
+<dl class="last docutils">
+<dt>Args:</dt>
+<dd>sessionInfo (dict): The dictionary that will be populated with the computed statistic.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.notes_info_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">notes_info_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#notes_info_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.notes_info_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information of notes for the session.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><ul class="first last simple">
+<li>number of notes</li>
+<li>number of notes/type (click_or_drag,keyframe,note)</li>
+<li>notes / session_duration</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It requires the session_duration to be computed first.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.play_pause_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">play_pause_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#play_pause_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.play_pause_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information about of play and pauses.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><blockquote class="first">
+<div><ul class="simple">
+<li>plays intervals</li>
+<li>pauses intervals</li>
+<li>play/pause ration</li>
+</ul>
+</div></blockquote>
+<dl class="last docutils">
+<dt>Args:</dt>
+<dd>sessionInfo (dict): The dictionary that will be populated with the computed statistic.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.session_coverage_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">session_coverage_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#session_coverage_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.session_coverage_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts the video coverage of the session.</p>
+<p>Note: it adds the session_coverage and the total_time_watched to the sessionInfo</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Args:</dt>
+<dd>sessionInfo (dict): The dictionary that will be populated with the computed statistic.</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.user_jump_info_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">user_jump_info_extraction</code><span class="sig-paren">(</span><em>userInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#user_jump_info_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.user_jump_info_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information of jumps for the user.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><blockquote class="first">
+<div><ul class="simple">
+<li>number of jumps</li>
+<li>number of jumps/type (click_or_drag,keyframe,note)</li>
+<li>total jumps length</li>
+<li>average jumps length</li>
+</ul>
+</div></blockquote>
+<dl class="last docutils">
+<dt>Args:</dt>
+<dd>userSession (dict): The dictionary that will be populated with the computed statistic.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.user_lessons_visualization_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">user_lessons_visualization_extraction</code><span class="sig-paren">(</span><em>userInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#user_lessons_visualization_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.user_lessons_visualization_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract for each lesson when the user watched the lesson.</p>
+<p>This function adds to the userInfo a Counter of datetimes; the Counter is called called &#8216;lessons_visualization&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.user_notes_info_extraction">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">user_notes_info_extraction</code><span class="sig-paren">(</span><em>userInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#user_notes_info_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.user_notes_info_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts information of notes for the user.</p>
+<dl class="docutils">
+<dt>extracted_information :</dt>
+<dd><ul class="first last simple">
+<li>number of notes</li>
+<li>number of notes/type (click_or_drag,keyframe,note)</li>
+<li>notes / total_duration</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It requires the notes_info_extraction to be executed first.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lodegML.ml">
+<span id="lodegml-ml-module"></span><h2>lodegML.ml module<a class="headerlink" href="#module-lodegML.ml" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lodegML.ml.DataFrameSelector">
+<em class="property">class </em><code class="descclassname">lodegML.ml.</code><code class="descname">DataFrameSelector</code><span class="sig-paren">(</span><em>attribute_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/ml.html#DataFrameSelector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.ml.DataFrameSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>Selector used in pipelines along with dataframes</p>
+<dl class="method">
+<dt id="lodegML.ml.DataFrameSelector.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/ml.html#DataFrameSelector.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.ml.DataFrameSelector.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lodegML.ml.DataFrameSelector.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/ml.html#DataFrameSelector.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.ml.DataFrameSelector.transform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.ml.executeUserClustering">
+<code class="descclassname">lodegML.ml.</code><code class="descname">executeUserClustering</code><span class="sig-paren">(</span><em>courseInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/ml.html#executeUserClustering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.ml.executeUserClustering" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the clustering algorithm on the course users</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to allow this funtion to work, it has to be already populated with the stats_dframe (see migrateStatToDataFrate())</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.ml.migrateStatsToDataFrames">
+<code class="descclassname">lodegML.ml.</code><code class="descname">migrateStatsToDataFrames</code><span class="sig-paren">(</span><em>courseInfo: dict</em>, <em>ml_mem_opt: bool = True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/ml.html#migrateStatsToDataFrames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.ml.migrateStatsToDataFrames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Migrate user stats to course level dataframe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic;</li>
+<li><strong>mem_opt</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If set, user level statistics are discarded during the migration to the dataframe.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lodegML.system">
+<span id="lodegml-system-module"></span><h2>lodegML.system module<a class="headerlink" href="#module-lodegML.system" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lodegML.system.LodegSystem">
+<em class="property">class </em><code class="descclassname">lodegML.system.</code><code class="descname">LodegSystem</code><span class="sig-paren">(</span><em>modality: str = None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>The class that represents the system.</p>
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.collectDataFromDb">
+<code class="descname">collectDataFromDb</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.collectDataFromDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.collectDataFromDb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.executeCompleteExtraction">
+<code class="descname">executeCompleteExtraction</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.executeCompleteExtraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.executeCompleteExtraction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.export_data">
+<code class="descname">export_data</code><span class="sig-paren">(</span><em>export_type: str</em>, <em>course: str = None</em>, <em>user: str = None</em>, <em>session: str = None</em>, <em>selected_keys: list = None</em>, <em>excluded_keys: list = None</em>, <em>pretty_printing: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.export_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.export_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export the whole system or a part of it.</p>
+<p>The json and the binary .p formats are supported.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>export_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; &#8216;json&#8217; or &#8216;bytes&#8217; export types are supported;</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if set the target CourseInfo is exported;</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if both course and user are set, the target UserInfo is exported;</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if all course, user and session are set, the target SessionInfo is exported;</li>
+<li><strong>selected_keys</strong> (<em>list of str</em>) &#8211; the keys (stats) that you want to export. Defaults to all;</li>
+<li><strong>excluded_keys</strong> (<em>list of str</em>) &#8211; the keys (stats) that you do not want to export. Defaults to None;</li>
+<li><strong>pretty_printing</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True json will be formatted with 4-spaces indentation. Defaults to False.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.extractUserData">
+<code class="descname">extractUserData</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.extractUserData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.extractUserData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getCSV">
+<code class="descname">getCSV</code><span class="sig-paren">(</span><em>course: str</em><span class="sig-paren">)</span> &#x2192; django.http.response.HttpResponse<a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getCSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getCSV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an HttpResponse containing the courseInfo information formatted as CSV.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the course whose statistics we are exporting.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An HttpResponse with content MIME text/csv</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getCourses">
+<code class="descname">getCourses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getCourses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getCourses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the courses present in the system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the courses.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getData">
+<code class="descname">getData</code><span class="sig-paren">(</span><em>course: str = None</em>, <em>user: str = None</em>, <em>session: str = None</em>, <em>get_copy: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a reference of a part of the system (default is SystemInfo)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if set a CourseInfo is returned</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if both course and user are set then a UserInfo is returned</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if course, user and session are set then a SessionInfo is returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the target system part if present; otherwise, an empty dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getLastUpdate">
+<code class="descname">getLastUpdate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getLastUpdate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getLastUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the local time representation of the last data extraction</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getLessonsHeaders">
+<code class="descname">getLessonsHeaders</code><span class="sig-paren">(</span><em>course: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getLessonsHeaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getLessonsHeaders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the lessons headers of all uploaded lessons.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Args:</dt>
+<dd>course (str): The id of the course we are interested in.</dd>
+</dl>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the headers of the session if known by the system; otherwise, the empty list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getNumberOfLessons">
+<code class="descname">getNumberOfLessons</code><span class="sig-paren">(</span><em>course: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getNumberOfLessons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getNumberOfLessons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of lessons for a specific course.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the id of the course whose information we are interested in.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The total number of lessons if the information is known by the system; otherwise, the string &#8216;Unknown&#8217;.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getNumberOfSessions">
+<code class="descname">getNumberOfSessions</code><span class="sig-paren">(</span><em>course: str = None</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getNumberOfSessions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getNumberOfSessions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of sessions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set we are asking for courseLevel or userLevel info; otherwise, systemLevel info will be provided.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If both course and user are set we are asking for userLevel info; otherwise, courseLevel or systemLevel.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The appropriate number of sessions if the information is known by the system; otherwise, the string &#8216;Unknown&#8217;.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getNumberOfUsers">
+<code class="descname">getNumberOfUsers</code><span class="sig-paren">(</span><em>course: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getNumberOfUsers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getNumberOfUsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of users saved in the system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if specified, we are asking for course level info; otherwise, system level.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The total number of users if the information is known by the system.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getSystemSettings">
+<code class="descname">getSystemSettings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getSystemSettings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getSystemSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get system configuration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getUserCoveragePercentage">
+<code class="descname">getUserCoveragePercentage</code><span class="sig-paren">(</span><em>course: str</em>, <em>user: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getUserCoveragePercentage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getUserCoveragePercentage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the coverage percentage of lessons that the user have watched over the lessons of the course.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<em>Str</em>) &#8211; The id of the course we are inspecting.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose coverage percentage we are asking for.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the coverage percentage if the information is known by the system; otherwise, the string &#8216;Unknown&#8217;.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getUserSessionsHeaders">
+<code class="descname">getUserSessionsHeaders</code><span class="sig-paren">(</span><em>course: str</em>, <em>user: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getUserSessionsHeaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getUserSessionsHeaders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of string headers (lesson_title:date) of the user sessions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the course we are interested in.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose sessions dates we are asking for.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the headers of the session if known by the system; otherwise, the empty list</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.getUsers">
+<code class="descname">getUsers</code><span class="sig-paren">(</span><em>course: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getUsers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getUsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of users</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the course we are interested in. If none we get all the users.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the users ids if the course is present in the system; otherwise, the empty list</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.import_data">
+<code class="descname">import_data</code><span class="sig-paren">(</span><em>filename: str</em>, <em>overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.import_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import the whole system or a part of it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the filename (filepath) that we are importing;</li>
+<li><strong>overwrite</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if the imported information is already present in the system and overwrite = False then a message is returned and the file is not imported. Defaults to False.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if the import worked nominally; otherwise, False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.migrateStatsToDataFrames">
+<code class="descname">migrateStatsToDataFrames</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.migrateStatsToDataFrames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.migrateStatsToDataFrames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.modify_class_settings">
+<code class="descname">modify_class_settings</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.modify_class_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.modify_class_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tweak class params</p>
+<dl class="docutils">
+<dt>Note: default values for all parameters has already been provided before this function can be called;</dt>
+<dd>Only params that already exist can be modified (type checking is implemented to avoid inappropriate use).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> &#8211; keep_session_data (bool): Keep the raw session data in the system. Defaults to False.
+keep_user_info (bool): Keep the statistics computed at the userInfo level. Defaults to True.
+query_mem_opt (bool): Do only partial queries to keep memory usage low. Defaults to True.
+ml_mem_opt (bool): Keep data both in dataframes and dictionaries when clustering users. Defaults to False.
+ml_autorun (bool): Autorun the clustering algorith after data extraction. Defaults to True.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.printClusteringResults">
+<code class="descname">printClusteringResults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.printClusteringResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.printClusteringResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a 3d graph of user clusters in a 3d graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.printDaySessionDistribution">
+<code class="descname">printDaySessionDistribution</code><span class="sig-paren">(</span><em>course: str</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.printDaySessionDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.printDaySessionDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a figure with a polar and a bar chart with the distribution of sessions throughout the day
+if level = user user level info is plotted; otherwise, course level info</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set we are plotting the user distribution; otherwise, the course distribution.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the figure</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.printLessonCoverage">
+<code class="descname">printLessonCoverage</code><span class="sig-paren">(</span><em>lesson: str</em>, <em>course: str</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.printLessonCoverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.printLessonCoverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an image of the session coverage as html string.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method requires the coverage to be already computed.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lesson</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the lesson whose coverage we are asking for.</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set, we are asking for the lesson coverage of a specific user;
+otherwise, courseLevel lesson coverage will be plotted.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the image representation of the session coverage</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.printLessonUserCorrelationGraph">
+<code class="descname">printLessonUserCorrelationGraph</code><span class="sig-paren">(</span><em>course: str</em>, <em>time_format: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.printLessonUserCorrelationGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.printLessonUserCorrelationGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a 3d graph of users lesson visualization.</p>
+<p>The graph plots a function of the number of users against time and lessons: for every lesson,
+a curve is plotted to show when and how many users have watched the lessons.</p>
+<p>Time has two formats: abs and rel. It expresses whether each lesson curve is plotted agains its registration date (rel)
+or against the registration date of the first lesson (abs).</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd>lessons_visualization (dict): the dictionary of type {&#8216;lesson_id&#8217;:ordered_list(datetime)}
+time_format (str): the time format (abs or rel). None == abs.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.printLessonsHistogram">
+<code class="descname">printLessonsHistogram</code><span class="sig-paren">(</span><em>course: str</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.printLessonsHistogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.printLessonsHistogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the histogram that plots the number of users that have watched each lesson if level = system;
+if level = user it plots the number of sessions that the user has spent watching the video</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set we are plotting the user histogram; otherwise, the course histogram.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the histogram</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.printNotesBarChart">
+<code class="descname">printNotesBarChart</code><span class="sig-paren">(</span><em>course: str</em>, <em>user=None</em>, <em>session=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.printNotesBarChart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.printNotesBarChart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a bar chart of the notes types distribution as html string.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Three charts can be plotted with this function, depending on the level (system, user, session).</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set level &lt; course (user or session)</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set level = session, otherwise level = user</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the pie chart of the notes types distribution</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.printSessionCoverage">
+<code class="descname">printSessionCoverage</code><span class="sig-paren">(</span><em>course: str</em>, <em>user: str</em>, <em>session: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.printSessionCoverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.printSessionCoverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an image of the session coverage as html string</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method requires the user (_systemInfo[&#8216;users&#8217;][user][&#8216;sessions&#8217;]) to be already initialized.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the course whose user session coverage we are asking for.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose session coverage we are asking for.</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The demanded session.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the image representation of the session coverage</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.runMl">
+<code class="descname">runMl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.runMl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.runMl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the machine learning algorithms</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lodegML.system.LodegSystem.saveDataToDb">
+<code class="descname">saveDataToDb</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.saveDataToDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.saveDataToDb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lodegML.utility_queries">
+<span id="lodegml-utility-queries-module"></span><h2>lodegML.utility_queries module<a class="headerlink" href="#module-lodegML.utility_queries" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lodegML.utility_queries.BetterEncoder">
+<em class="property">class </em><code class="descclassname">lodegML.utility_queries.</code><code class="descname">BetterEncoder</code><span class="sig-paren">(</span><em>*</em>, <em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#BetterEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.BetterEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">json.encoder.JSONEncoder</span></code></p>
+<dl class="method">
+<dt id="lodegML.utility_queries.BetterEncoder.default">
+<code class="descname">default</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#BetterEncoder.default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.BetterEncoder.default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.add_interval">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">add_interval</code><span class="sig-paren">(</span><em>intervals: list</em>, <em>interval: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#add_interval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.add_interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an interval to a list of disjoint intervals.</p>
+<p>It guarantees disjunction between intervals (substituting the intersections with a new interval),
+the order intervals[i][end] &lt; intervals[i+1][start] and itervals[i][start] &lt; intervals[i][end].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>intervals</strong> (<em>list</em>) &#8211; The list of intervals to whom we have to add the interval;</li>
+<li><strong>interval</strong> (<em>list</em>) &#8211; the interval to add in the format [start,end].</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.getDateTimeFromISO8601String">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">getDateTimeFromISO8601String</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#getDateTimeFromISO8601String"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.getDateTimeFromISO8601String" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert ISO8601 to datetime.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.getTimeFromObjectId">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">getTimeFromObjectId</code><span class="sig-paren">(</span><em>oid: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#getTimeFromObjectId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.getTimeFromObjectId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the generation time from a MongoDB objcetId.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>oid</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the object id.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.get_all_courses">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_courses</code><span class="sig-paren">(</span><em>lessons_collection</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_courses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_courses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the course_ids that have been registered</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.get_all_records_for_session">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_records_for_session</code><span class="sig-paren">(</span><em>collection</em>, <em>session: str</em>, <em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_records_for_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_records_for_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate the specified sessionInfo with data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.get_all_records_for_user_and_course">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_records_for_user_and_course</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em>, <em>user: str</em>, <em>userInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_records_for_user_and_course"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_records_for_user_and_course" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate the specified userInfo with data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.get_all_sessions_for_course">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_sessions_for_course</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_sessions_for_course"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_sessions_for_course" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the session_ids for the specified course</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>collection</strong> &#8211; the collection of log records</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the course_id</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.get_all_sessions_for_user_and_course">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_sessions_for_user_and_course</code><span class="sig-paren">(</span><em>collection</em>, <em>user: str</em>, <em>course: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_sessions_for_user_and_course"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_sessions_for_user_and_course" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the session_ids of the course for the specified user</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.get_all_users_for_course">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_users_for_course</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_users_for_course"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_users_for_course" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the user_ids for the specified course.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>collection</strong> &#8211; the collection of log records;</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the course_id.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.get_all_users_records">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_users_records</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em>, <em>courseInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_users_records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_users_records" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve courseInfo data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>collection</strong> &#8211; the collection of log records</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the course_id we are interested in</li>
+<li><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the dictionary that will be populated with the data</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.get_lessons_durations_and_registration_dates">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_lessons_durations_and_registration_dates</code><span class="sig-paren">(</span><em>lessons_collection</em>, <em>course: str</em>, <em>courseInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_lessons_durations_and_registration_dates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_lessons_durations_and_registration_dates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set for a course the course lessons and their durations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lessons_collection</strong> &#8211; the MongoDB collection that contains the lessons records;</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the target course;</li>
+<li><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; the dictionary to be populated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.purify_list">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">purify_list</code><span class="sig-paren">(</span><em>data: list</em>, <em>filter_types: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#purify_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.purify_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function purifies a list of records, keeeping only the desired types of records.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>list</em>) &#8211; the raw data to filter as a list of records</li>
+<li><strong>filter_types</strong> (<em>list</em>) &#8211; the types of records we want to keep from the list</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The filtered list.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.utility_queries.utc_to_local_time">
+<code class="descclassname">lodegML.utility_queries.</code><code class="descname">utc_to_local_time</code><span class="sig-paren">(</span><em>utc: datetime.datetime</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#utc_to_local_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.utc_to_local_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lodegML">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lodegML" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">lodegML package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-lodegML.auto_plot">lodegML.auto_plot module</a></li>
+<li><a class="reference internal" href="#module-lodegML.cache">lodegML.cache module</a></li>
+<li><a class="reference internal" href="#module-lodegML.connection_to_mongo">lodegML.connection_to_mongo module</a></li>
+<li><a class="reference internal" href="#module-lodegML.data_extraction">lodegML.data_extraction module</a></li>
+<li><a class="reference internal" href="#module-lodegML.ml">lodegML.ml module</a></li>
+<li><a class="reference internal" href="#module-lodegML.system">lodegML.system module</a></li>
+<li><a class="reference internal" href="#module-lodegML.utility_queries">lodegML.utility_queries module</a></li>
+<li><a class="reference internal" href="#module-lodegML">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">lodegML</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">lodegML</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/lodegML.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Riccardo Capraro.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/lodegML.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
