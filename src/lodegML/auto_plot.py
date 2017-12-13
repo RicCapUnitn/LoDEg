@@ -16,12 +16,20 @@ import io
 # For correlation_graph test only
 # import test_utils  # migrate
 
+
 class AutoPlot:
+    """A helper class that holds all the library plotting capabilities"""
 
-    def __init__(self, target = 'console'):
+    def __init__(self, target: str = 'console', title_font_size: int = 14):
+        """
+        Params:
+            target (str): ['console','web'] the target of the plot function; if 'console' than the function plt.show() is used, otherwise it will be plotted as either html or png depending on the type of chart. Defaults to 'web'.
+            title_font_size (int): figures title font size. Defaults to 14.
+        """
         self._target = target
+        self._title_font_size = title_font_size
 
-    def _plot(self, figure, output_type = 'png'):
+    def _plot(self, figure, output_type='png'):
         if self._target == 'console':
             plt.show()
         elif self._target == 'web':
@@ -31,11 +39,17 @@ class AutoPlot:
             elif output_type == 'png':
                 f = io.BytesIO()
                 figure.savefig(f, format="png")
-                plt.clf() # Might break everything when parallelizing
+                plt.clf()  # Might break everything when parallelizing
                 return "data:image/png;base64," + base64.b64encode(f.getvalue()).decode()
 
-
+    # TODO pass the session_coverage instead of the sessionInfo
     def printSessionCoverage(self, sessionInfo: dict, lesson_duration: float):
+        """ Print the session coverage, i.e. which parts of the video have been watched.
+
+        Params:
+            sessionInfo (dict): the session that contains the session_coverage to be plotted.
+            lesson_duration (float): the duration of the lesson to be plotted.
+        """
         session_coverage = sessionInfo['session_coverage']
         fig, ax = plt.subplots()
         ax.plot([0, lesson_duration], [-2, -2], color='b', linewidth=20)
@@ -47,6 +61,8 @@ class AutoPlot:
             ax.plot([i[0], i[0]], [-2, k], "g--", linewidth=0.5)
             ax.plot([i[1], i[1]], [-2, k], "g--", linewidth=0.5)
         ax.grid(True)
+        ax.set_title('SESSION COVERAGE: which parts of the video have been watched',
+                     fontsize=self._title_font_size)
         ax.set_xlabel('Seconds')
         ax.set_ylabel('Inteval number')
         return self._plot(fig, 'html')
@@ -58,7 +74,6 @@ class AutoPlot:
         ax.set_ylabel('Number of users')
         bars = ax.bar(np.arange(len(coverage)), coverage)
         return self._plot(fig, 'html')
-
 
     def printNotesPolarChart(self, notes_types: dict):
         # Compute pie slices
@@ -82,37 +97,50 @@ class AutoPlot:
         return self._plot(fig, 'png')
 
     def printNotesBarChart(self, notes_types: dict):
+        """Plot a bar chart of the number of the notes per type.
+
+        Params:
+            notes_types (dict): the dictionary of type {'note_name': #notes}
+        """
+        number_of_types = np.arange(len(notes_types))
+        types = list(notes_types.keys())
+
         fig, ax = plt.subplots()
         colors = ['r', 'b']
-        bars = ax.bar(np.arange(len(notes_types)),
-                      notes_types.values(), color=colors)
+        bars = ax.bar(number_of_types, notes_types.values(),
+                      color=colors, align="center")
 
-        ax.set_title('Number of notes per type')
-        ax.legend((bars[0], bars[1]), ('Handwritten', 'Text'))
+        ax.set_title('Number of notes per type',
+                     fontsize=self._title_font_size)
+        ax.legend((bars[0], bars[1]), types)
+        plt.xticks(range(2), types)
         ax.grid(True)
 
         return self._plot(fig, 'html')
 
-
     def printLessonsHistogram(self, histogram: dict):
-        """The histogram is of type {'lesson':'number_of_users'}
+        """Plot a bar chart of the number of users that have watched each lesson.
+
+        Params:
+            histogram (dict): a dictionary of type {'lesson':'number_of_users'}
         """
         fig, ax = plt.subplots()
         colors = ['r', 'b']
         x = np.arange(len(histogram))
         bars = ax.bar(x, histogram.values(), color=colors)
 
+        ax.set_title('Number of users that have watched each lesson',
+                     fontsize=self._title_font_size)
         plt.xticks(x, histogram.keys())
         ax.grid(True)
 
         return self._plot(fig, 'html')
 
-
     def printDaySessionDistribution(self, distribution: list):
         """A polar chart with the distribution of sessions throughout the day
 
         Args:
-            distribution (list): a list of 24 values
+            distribution (list): a list of 24 values, i.e. the number of sessions for each time slice
         """
         # Check if the distribution has exactly 24 hours
         if len(distribution) == 24:
@@ -144,8 +172,11 @@ class AutoPlot:
                              '%d' % int(height), ha='center', va='bottom')
             ax2.set_xticks(range(0, 24, 2))
 
-        return self._plot(plt.gcf(), 'png')
+            fig = plt.gcf()
+            fig.suptitle("Day distribution of users' sessions",
+                         fontsize=self._title_font_size)
 
+        return self._plot(fig, 'png')
 
     def printLessonUserCorrelationGraph(self, lessons_visualization: dict, registration_dates: dict, time_format: str = 'abs'):
         """Print a 3d graph of users lesson visualization.

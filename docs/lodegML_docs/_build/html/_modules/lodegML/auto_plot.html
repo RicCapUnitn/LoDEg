@@ -60,12 +60,20 @@
 <span class="c1"># For correlation_graph test only</span>
 <span class="c1"># import test_utils  # migrate</span>
 
+
 <div class="viewcode-block" id="AutoPlot"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot">[docs]</a><span class="k">class</span> <span class="nc">AutoPlot</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A helper class that holds all the library plotting capabilities&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;console&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;console&#39;</span><span class="p">,</span> <span class="n">title_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">14</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Params:</span>
+<span class="sd">            target (str): [&#39;console&#39;,&#39;web&#39;] the target of the plot function; if &#39;console&#39; than the function plt.show() is used, otherwise it will be plotted as either html or png depending on the type of chart. Defaults to &#39;web&#39;.</span>
+<span class="sd">            title_font_size (int): figures title font size. Defaults to 14.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span> <span class="o">=</span> <span class="n">title_font_size</span>
 
-    <span class="k">def</span> <span class="nf">_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figure</span><span class="p">,</span> <span class="n">output_type</span> <span class="o">=</span> <span class="s1">&#39;png&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figure</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">==</span> <span class="s1">&#39;console&#39;</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">==</span> <span class="s1">&#39;web&#39;</span><span class="p">:</span>
@@ -75,11 +83,17 @@
             <span class="k">elif</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;png&#39;</span><span class="p">:</span>
                 <span class="n">f</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
                 <span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">)</span>
-                <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span> <span class="c1"># Might break everything when parallelizing</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>  <span class="c1"># Might break everything when parallelizing</span>
                 <span class="k">return</span> <span class="s2">&quot;data:image/png;base64,&quot;</span> <span class="o">+</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
 
-
+    <span class="c1"># TODO pass the session_coverage instead of the sessionInfo</span>
 <div class="viewcode-block" id="AutoPlot.printSessionCoverage"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printSessionCoverage">[docs]</a>    <span class="k">def</span> <span class="nf">printSessionCoverage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">lesson_duration</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Print the session coverage, i.e. which parts of the video have been watched.</span>
+
+<span class="sd">        Params:</span>
+<span class="sd">            sessionInfo (dict): the session that contains the session_coverage to be plotted.</span>
+<span class="sd">            lesson_duration (float): the duration of the lesson to be plotted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">session_coverage</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;session_coverage&#39;</span><span class="p">]</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">lesson_duration</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
@@ -91,6 +105,8 @@
             <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="s2">&quot;g--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="s2">&quot;g--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;SESSION COVERAGE: which parts of the video have been watched&#39;</span><span class="p">,</span>
+                     <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Seconds&#39;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Inteval number&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">)</span></div>
@@ -102,7 +118,6 @@
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Number of users&#39;</span><span class="p">)</span>
         <span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coverage</span><span class="p">)),</span> <span class="n">coverage</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="AutoPlot.printNotesPolarChart"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printNotesPolarChart">[docs]</a>    <span class="k">def</span> <span class="nf">printNotesPolarChart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">notes_types</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="c1"># Compute pie slices</span>
@@ -126,37 +141,50 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AutoPlot.printNotesBarChart"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printNotesBarChart">[docs]</a>    <span class="k">def</span> <span class="nf">printNotesBarChart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">notes_types</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot a bar chart of the number of the notes per type.</span>
+
+<span class="sd">        Params:</span>
+<span class="sd">            notes_types (dict): the dictionary of type {&#39;note_name&#39;: #notes}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">number_of_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">notes_types</span><span class="p">))</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">notes_types</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
         <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
-        <span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">notes_types</span><span class="p">)),</span>
-                      <span class="n">notes_types</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+        <span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">number_of_types</span><span class="p">,</span> <span class="n">notes_types</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span>
+                      <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
 
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Number of notes per type&#39;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">((</span><span class="n">bars</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bars</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="s1">&#39;Handwritten&#39;</span><span class="p">,</span> <span class="s1">&#39;Text&#39;</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Number of notes per type&#39;</span><span class="p">,</span>
+                     <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">((</span><span class="n">bars</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bars</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">types</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">types</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">)</span></div>
 
-
 <div class="viewcode-block" id="AutoPlot.printLessonsHistogram"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printLessonsHistogram">[docs]</a>    <span class="k">def</span> <span class="nf">printLessonsHistogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">histogram</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The histogram is of type {&#39;lesson&#39;:&#39;number_of_users&#39;}</span>
+        <span class="sd">&quot;&quot;&quot;Plot a bar chart of the number of users that have watched each lesson.</span>
+
+<span class="sd">        Params:</span>
+<span class="sd">            histogram (dict): a dictionary of type {&#39;lesson&#39;:&#39;number_of_users&#39;}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
         <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">histogram</span><span class="p">))</span>
         <span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">histogram</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Number of users that have watched each lesson&#39;</span><span class="p">,</span>
+                     <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">histogram</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">)</span></div>
 
-
 <div class="viewcode-block" id="AutoPlot.printDaySessionDistribution"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printDaySessionDistribution">[docs]</a>    <span class="k">def</span> <span class="nf">printDaySessionDistribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A polar chart with the distribution of sessions throughout the day</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            distribution (list): a list of 24 values</span>
+<span class="sd">            distribution (list): a list of 24 values, i.e. the number of sessions for each time slice</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check if the distribution has exactly 24 hours</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span> <span class="o">==</span> <span class="mi">24</span><span class="p">:</span>
@@ -188,8 +216,11 @@
                              <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
             <span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">(),</span> <span class="s1">&#39;png&#39;</span><span class="p">)</span></div>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Day distribution of users&#39; sessions&quot;</span><span class="p">,</span>
+                         <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span><span class="p">)</span>
 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AutoPlot.printLessonUserCorrelationGraph"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printLessonUserCorrelationGraph">[docs]</a>    <span class="k">def</span> <span class="nf">printLessonUserCorrelationGraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lessons_visualization</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">registration_dates</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">time_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;abs&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Print a 3d graph of users lesson visualization.</span>

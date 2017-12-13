@@ -51,8 +51,9 @@
 <span id="lodegml-auto-plot-module"></span><h2>lodegML.auto_plot module<a class="headerlink" href="#module-lodegML.auto_plot" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="lodegML.auto_plot.AutoPlot">
-<em class="property">class </em><code class="descclassname">lodegML.auto_plot.</code><code class="descname">AutoPlot</code><span class="sig-paren">(</span><em>target='console'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">lodegML.auto_plot.</code><code class="descname">AutoPlot</code><span class="sig-paren">(</span><em>target: str = 'console'</em>, <em>title_font_size: int = 14</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A helper class that holds all the library plotting capabilities</p>
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printDaySessionDistribution">
 <code class="descname">printDaySessionDistribution</code><span class="sig-paren">(</span><em>distribution: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printDaySessionDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printDaySessionDistribution" title="Permalink to this definition">¶</a></dt>
@@ -61,7 +62,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>distribution</strong> (<em>list</em>) &#8211; a list of 24 values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>distribution</strong> (<em>list</em>) &#8211; a list of 24 values, i.e. the number of sessions for each time slice</td>
 </tr>
 </tbody>
 </table>
@@ -91,13 +92,22 @@ time_format (str): the time format (abs or rel). Defaults to abs.</dd>
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printLessonsHistogram">
 <code class="descname">printLessonsHistogram</code><span class="sig-paren">(</span><em>histogram: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printLessonsHistogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printLessonsHistogram" title="Permalink to this definition">¶</a></dt>
-<dd><p>The histogram is of type {&#8216;lesson&#8217;:&#8217;number_of_users&#8217;}</p>
+<dd><p>Plot a bar chart of the number of users that have watched each lesson.</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd>histogram (dict): a dictionary of type {&#8216;lesson&#8217;:&#8217;number_of_users&#8217;}</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printNotesBarChart">
 <code class="descname">printNotesBarChart</code><span class="sig-paren">(</span><em>notes_types: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printNotesBarChart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printNotesBarChart" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Plot a bar chart of the number of the notes per type.</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd>notes_types (dict): the dictionary of type {&#8216;note_name&#8217;: #notes}</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printNotesPolarChart">
@@ -107,7 +117,13 @@ time_format (str): the time format (abs or rel). Defaults to abs.</dd>
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printSessionCoverage">
 <code class="descname">printSessionCoverage</code><span class="sig-paren">(</span><em>sessionInfo: dict</em>, <em>lesson_duration: float</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printSessionCoverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printSessionCoverage" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Print the session coverage, i.e. which parts of the video have been watched.</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd>sessionInfo (dict): the session that contains the session_coverage to be plotted.
+lesson_duration (float): the duration of the lesson to be plotted.</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
