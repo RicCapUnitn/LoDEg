@@ -1,9 +1,8 @@
 # Documentation
 
-This is the documentation folder of the project
-
-## [Library documentation](/docs/lodegML_docs/_build/html/index.html)
+- [Library documentation](https://riccap.github.io/LoDEg/lodegML_docs/_build/html/index.html)
+- [Tests coverage](https://riccap.github.io/LoDEg/testsCoverage/index.html)
 
 ## System structure
 
-![Structure](/docs/system_map.png)
+![Structure](system_map.png)
