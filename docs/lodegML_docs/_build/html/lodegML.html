@@ -71,7 +71,18 @@
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printLessonCoverage">
 <code class="descname">printLessonCoverage</code><span class="sig-paren">(</span><em>coverage: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printLessonCoverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printLessonCoverage" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Plot a bar chart of the number of users per time bucket for the lesson.</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd>notes_types (dict): the dictionary of type {&#8216;note_name&#8217;: #notes}</dd>
+</dl>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>add a bucket_length parameter and scale the ticks accordingly</li>
+</ul>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printLessonUserCorrelationGraph">
@@ -112,7 +123,13 @@ time_format (str): the time format (abs or rel). Defaults to abs.</dd>
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printNotesPolarChart">
 <code class="descname">printNotesPolarChart</code><span class="sig-paren">(</span><em>notes_types: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printNotesPolarChart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printNotesPolarChart" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>this method is never used and might be removed</li>
+</ul>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printSessionCoverage">
@@ -123,6 +140,12 @@ time_format (str): the time format (abs or rel). Defaults to abs.</dd>
 <dd>sessionInfo (dict): the session that contains the session_coverage to be plotted.
 lesson_duration (float): the duration of the lesson to be plotted.</dd>
 </dl>
+<div class="admonition-todo admonition" id="index-2">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>pass the session_coverage instead of the sessionInfo</li>
+</ul>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -140,7 +163,7 @@ lesson_duration (float): the duration of the lesson to be plotted.</dd>
 - MongoDB: the system works with a generic MongoDB implementation (not ready for production!!)</p>
 <dl class="method">
 <dt id="lodegML.cache.Cache.collectDataFromDb">
-<code class="descname">collectDataFromDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/lodegML/cache.html#Cache.collectDataFromDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.Cache.collectDataFromDb" title="Permalink to this definition">¶</a></dt>
+<code class="descname">collectDataFromDb</code><span class="sig-paren">(</span><em>systemInfo: dict</em>, <em>user: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/cache.html#Cache.collectDataFromDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.Cache.collectDataFromDb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries the db for already computed information.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>

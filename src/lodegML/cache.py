@@ -2,6 +2,11 @@ from abc import ABCMeta, abstractmethod
 import pickle
 import utility_queries as utils  # migrate
 
+try:
+    from ..models import Cache as DjangoCache, LodegUser
+except:
+    pass
+
 
 class Cache(metaclass=ABCMeta):
     """This class gives a black box for a generic caching system for the system
@@ -12,7 +17,7 @@ class Cache(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def collectDataFromDb(self, systemInfo: dict, user: str = None) -> dict:
+    def collectDataFromDb(self, systemInfo: dict, user: str = None):
         """Queries the db for already computed information.
 
         Note:
@@ -84,9 +89,6 @@ class CacheMongoDb(Cache):
 
 class CacheSQLite(Cache):
     """A SQLite implementation of the cache"""
-
-    def __init__(self):
-        from ..models import Cache as DjangoCache, LodegUser
 
     def collectDataFromDb(self, systemInfo: dict, user: str = None):
         if(user is None):

@@ -42,13 +42,15 @@ class AutoPlot:
                 plt.clf()  # Might break everything when parallelizing
                 return "data:image/png;base64," + base64.b64encode(f.getvalue()).decode()
 
-    # TODO pass the session_coverage instead of the sessionInfo
     def printSessionCoverage(self, sessionInfo: dict, lesson_duration: float):
         """ Print the session coverage, i.e. which parts of the video have been watched.
 
         Params:
             sessionInfo (dict): the session that contains the session_coverage to be plotted.
             lesson_duration (float): the duration of the lesson to be plotted.
+
+        Todo:
+            * pass the session_coverage instead of the sessionInfo
         """
         session_coverage = sessionInfo['session_coverage']
         fig, ax = plt.subplots()
@@ -68,6 +70,14 @@ class AutoPlot:
         return self._plot(fig, 'html')
 
     def printLessonCoverage(self, coverage: list):
+        """Plot a bar chart of the number of users per time bucket for the lesson.
+
+        Params:
+            notes_types (dict): the dictionary of type {'note_name': #notes}
+
+        Todo:
+            * add a bucket_length parameter and scale the ticks accordingly
+        """
         fig, ax = plt.subplots()
         ax.grid(True)
         ax.set_xlabel('Seconds')
@@ -76,6 +86,10 @@ class AutoPlot:
         return self._plot(fig, 'html')
 
     def printNotesPolarChart(self, notes_types: dict):
+        """
+        Todo:
+            * this method is never used and might be removed
+        """
         # Compute pie slices
         N = len(notes_types)
         theta = np.linspace(0.0, 2 * np.pi, N, endpoint=False)

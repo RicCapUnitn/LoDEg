@@ -46,6 +46,11 @@
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">utility_queries</span> <span class="k">as</span> <span class="nn">utils</span>  <span class="c1"># migrate</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">..models</span> <span class="k">import</span> <span class="n">Cache</span> <span class="k">as</span> <span class="n">DjangoCache</span><span class="p">,</span> <span class="n">LodegUser</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
 
 <div class="viewcode-block" id="Cache"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.Cache">[docs]</a><span class="k">class</span> <span class="nc">Cache</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This class gives a black box for a generic caching system for the system</span>
@@ -56,7 +61,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@abstractmethod</span>
-<div class="viewcode-block" id="Cache.collectDataFromDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.Cache.collectDataFromDb">[docs]</a>    <span class="k">def</span> <span class="nf">collectDataFromDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="Cache.collectDataFromDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.Cache.collectDataFromDb">[docs]</a>    <span class="k">def</span> <span class="nf">collectDataFromDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries the db for already computed information.</span>
 
 <span class="sd">        Note:</span>
@@ -128,9 +133,6 @@
 
 <div class="viewcode-block" id="CacheSQLite"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.CacheSQLite">[docs]</a><span class="k">class</span> <span class="nc">CacheSQLite</span><span class="p">(</span><span class="n">Cache</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A SQLite implementation of the cache&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">..models</span> <span class="k">import</span> <span class="n">Cache</span> <span class="k">as</span> <span class="n">DjangoCache</span><span class="p">,</span> <span class="n">LodegUser</span>
 
 <div class="viewcode-block" id="CacheSQLite.collectDataFromDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.CacheSQLite.collectDataFromDb">[docs]</a>    <span class="k">def</span> <span class="nf">collectDataFromDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span><span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
