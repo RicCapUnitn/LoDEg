@@ -1,3 +1,7 @@
+# Sensitive files
+test/exports/
+src/lodeg_website/db.sqlite3
+
 # Test temporary folder
 tools/tmp/
 
