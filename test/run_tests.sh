@@ -7,6 +7,8 @@ if [ "$1" == "i" ] || [ "$1" == "interactive" ]; then
   echo '>>> s to skip, ENTER to run'
   echo '>>> Integration test? s(skip) / ENTER'
   read integration
+  echo '>>> System test?'
+  read system
   echo '>>> Unit test?'
   read unit
   echo '>>> Coverage test?'
@@ -31,6 +33,15 @@ if [ "$integration" == "s" ]; then
 else
   echo ">>> INTEGRATION TESTS: running..."
   ./tools/check_migration.sh
+  echo '>>> Done!'
+  echo '#######################################################################################'
+fi
+
+if [ "$system" == "s" ]; then
+  echo '>>> SKIP system test'
+else
+  echo ">>> SYSTEM TESTS: running..."
+  python -m unittest discover -v -s ./test/system
   echo '>>> Done!'
   echo '#######################################################################################'
 fi

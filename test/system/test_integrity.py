@@ -13,7 +13,7 @@ class TestSystem(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._system = system.LodegSystem()
+        cls._system = system.LodegSystem(debug=False)
 
     def test_system_initialization(self):
         if self._system == None:
@@ -32,16 +32,6 @@ class TestSystem(unittest.TestCase):
         except:
             return self.fail()
 
-    def test_modify_class_settings(self):
-        try:
-            self._system.modify_class_settings(**self._system._config_console)
-            self.assertEqual(self._system._config_console,
-                             self._system._config)
-            # Restore system settings
-            self._system._config = self._system._config_default.copy()
-        except:
-            return self.fail()
-
     def test_get_data_all(self):
         try:
             data = self._system.getData()
@@ -57,6 +47,9 @@ class TestSystem(unittest.TestCase):
             self.assertNotEqual(data, {})
         except:
             return self.fail()
+
+    # def test_json_export(self):
+        #system.export_data(export_type='json', pretty_printing=True, course='course1',user='user1', selected_keys=['notes_per_type', 'number_of_notes'])
 
 
 if __name__ == '__main__':

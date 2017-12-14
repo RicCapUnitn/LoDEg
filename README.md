@@ -4,7 +4,7 @@ Log analytics for the LODE platform.
 
 ## The library: lodegML
 
-lodegML is the name of the library on which the project runs. It exposes a facade API through the class LodegSystem. Please refer to the library [documentation](/docs/lodegML_docs/_build/html/index.html).
+lodegML is the name of the library on which the project runs. It exposes a facade API through the class LodegSystem. Please refer to the library [documentation](https://riccap.github.io/LoDEg/).
 
 ## Requirements
 
@@ -67,8 +67,10 @@ The following tests are provided:
   $ make tests performance (todo)
   ```
 
-- Logs integrity check (todo)
+- Logs integrity check
 
   ```
-    $ make tests integrity (todo)
+    $ make tests i
   ```
+
+  and then select System test.
