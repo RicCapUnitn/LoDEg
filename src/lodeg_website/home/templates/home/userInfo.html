@@ -30,7 +30,7 @@
                     <option>{{course}}</option>
                     {% empty %}
                     <option>No course found: try the collectData button!</option>
-                    {% endfor %}    
+                    {% endfor %}
                 </select>
                 <span class="input-group-btn">
                     <button id ="courseSubmitButton" class="btn btn-success" type="submit" >Submit</button>
@@ -43,7 +43,7 @@
     </div>
 
     {% if course %}
-    <div class="row">       
+    <div class="row">
         <div class="col-md-3 col-sm-3"></div>
         <form class="col-md-6 col-sm-6" action="{% url 'setUser' %}" method="post">
             {% csrf_token %}
@@ -55,7 +55,7 @@
                     <option value="{{user}}">{{user}}</option>
                     {% empty %}
                     <option>No user found: try the collectData button!</option>
-                    {% endfor %}    
+                    {% endfor %}
                 </select>
                 <span class="input-group-btn">
                     <button id ="userSubmitButton" class="btn btn-success" type="submit" >Submit</button>
@@ -97,15 +97,22 @@
 
 <section class="row">
     <a class="anchor" id="statistics"></a>
-    <h1>Statistics</h1> 
+    <h1>Statistics</h1>
     <h2>You have selected: {{ course }} - {{ user }} - {{ lesson }}</h2>
     {% if course %}
     {% autoescape off %}
-    <div class="col-sm-6 col-md-6">
-        {% printNotesBarChart 'user' %}
+    <div class="row">
+      <div class="col-sm-6 col-md-6">
+          {% printNotesBarChart 'user' %}
+      </div>
+      <div class="col-sm-6 col-md-6">
+          {% printLessonsHistogram 'user' %}
+      </div>
     </div>
-    <div class="col-sm-6 col-md-6">
-        {% printLessonsHistogram 'user' %}
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <img class="img-responsive" src="{% printDaySessionDistribution 'user' %}">
+        </div>
     </div>
     {% endautoescape %}
     {% endif %}
@@ -113,7 +120,7 @@
 
 <section class="row">
     <a class="anchor" id="coverage"></a>
-    <h1>Lessons coverage</h1> 
+    <h1>Lessons coverage</h1>
 
     {% autoescape off %}
     <div class="col-sm-3 col-md-3"></div>

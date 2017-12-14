@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 from django.core.mail import send_mail
@@ -12,17 +12,20 @@ from django.contrib.auth.decorators import login_required
 from .lodegML.system import LodegSystem
 
 context = {
-    "system": LodegSystem(modality='web'),
+    "system": LodegSystem(modality='web', debug=False),
     "adminPermissions": False,
-    "contact_mail_address" : "capraroriccardo@gmail.com"
+    "contact_mail_address": "capraroriccardo@gmail.com"
 }
 
 # Useful decorators
+
+
 def set_context_user(func):
     def func_wrapper(request):
         context['user'] = request.user.lodeguser.lodeg_user_id
         return func(request)
     return func_wrapper
+
 
 def check_permissions(func):
     def func_wrapper(request):
@@ -33,13 +36,15 @@ def check_permissions(func):
         return func(request)
     return func_wrapper
 
+
 def course_required(func):
     def func_wrapper(request):
         if 'course' in context:
             return func(request)
         else:
-            return  HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     return func_wrapper
+
 
 @login_required
 @set_context_user
@@ -49,22 +54,27 @@ def index(request):
     context['template_name'] = template_name
     return render(request, 'home/index.html', context)
 
+
 @login_required
 def contact(request):
     return render(request, 'home/contact.html')
+
 
 @login_required
 @set_context_user
 def courseInfo(request):
     return render(request, 'home/courseInfo.html', context)
 
+
 @login_required
 def userInfo(request):
     return render(request, 'home/userInfo.html', context)
 
+
 @login_required
 def sessionInfo(request):
     return render(request, 'home/sessionInfo.html', context)
+
 
 @login_required
 @set_context_user
@@ -91,12 +101,14 @@ def saveDataToDb(request):
         context['system'].saveDataToDb(context['user'])
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
 @login_required
 @check_permissions
 @course_required
 def exportToCsv(request):
     # Need to add something here to prompt the user for course if not selected
     return context['system'].getCSV(context['course'])
+
 
 @login_required
 def extractUserData(request):
@@ -109,6 +121,7 @@ def executeCompleteExtraction(request):
     context['system'].executeCompleteExtraction()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
 @login_required
 @require_http_methods(["POST"])
 def setUser(request):
@@ -117,17 +130,20 @@ def setUser(request):
         del context['session']
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
 @login_required
 @require_http_methods(["POST"])
 def setSession(request):
     context['session'] = str(request.POST.get('selected_session'))
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
 @login_required
 @require_http_methods(["POST"])
 def setLesson(request):
     context['lesson'] = str(request.POST.get('selected_lesson'))
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 
 @login_required
 @require_http_methods(["POST"])
@@ -139,13 +155,15 @@ def setCourse(request):
         del context['session']
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
 @login_required
 @require_http_methods(["POST"])
 def sendEmail(request):
     message = EmailMessage(
         'LoDEg bug report by: ' + request.POST.get('name'),
         request.POST.get('comment'),
-        request.POST.get('mail') if request.POST.get('mail') is not None else 'not_specified@example.com',
+        request.POST.get('mail') if request.POST.get(
+            'mail') is not None else 'not_specified@example.com',
         [context['contact_mail_address']]
     )
 
@@ -158,12 +176,14 @@ def sendEmail(request):
 
     message.send(fail_silently=False)
 
-    #return render(request, 'home/index.html')
+    # return render(request, 'home/index.html')
+
 
 @login_required
 @check_permissions
 def settings(request):
     return render(request, 'home/settings.html', context)
+
 
 @login_required
 @check_permissions
@@ -184,5 +204,6 @@ def modifySystemSettings(request):
 @login_required
 @check_permissions
 def debuggingConsole(request):
-    import pdb; pdb.set_trace()
+    import pdb
+    pdb.set_trace()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
