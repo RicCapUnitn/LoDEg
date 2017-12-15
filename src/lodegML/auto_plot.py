@@ -181,13 +181,10 @@ class AutoPlot:
             for bar in bars:
                 height = bar.get_height()
                 bar.set_facecolor(plt.cm.viridis(height / 10.))
-                if height != 0:
-                    ax2.text(bar.get_x() + bar.get_width() / 2., height,
-                             '%d' % int(height), ha='center', va='bottom')
             ax2.set_xticks(range(0, 24, 2))
 
             fig = plt.gcf()
-            fig.suptitle("Day distribution of users' sessions",
+            fig.suptitle("Sessions day distribution",
                          fontsize=self._title_font_size)
 
         return self._plot(fig, 'png')
@@ -300,7 +297,7 @@ class AutoPlot:
         """
 
         # Create the figure
-        fig = plt.figure(figsize=(10, 10))
+        fig = plt.figure(figsize=(8, 8))
         ax = fig.gca(projection='3d')
 
         # Set z as lessons

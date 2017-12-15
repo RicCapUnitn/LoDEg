@@ -28,7 +28,7 @@ class LodegSystem:
         'plot_target': 'web',
         # Initialization only
         'cache': None,  # Default should be set to None or be always available
-        'debug': True # Needed for testing, Default should be False
+        'debug': True  # Needed for testing, Default should be False
     }
 
     # Low memory configuration
@@ -149,7 +149,8 @@ class LodegSystem:
             self._logs = self._db.get_collection('web_mockup_population')
             self._lessons = self._db.get_collection('web_mockup_lessons')
         else:
-            self._db = connection_to_mongo.connect_to_mongo(db_name = 'lode_real')
+            self._db = connection_to_mongo.connect_to_mongo(
+                db_name='lode_real')
             # should rename these collections <--------------------------------------
             self._logs = self._db.get_collection('web_mockup_population')
             self._lessons = self._db.get_collection('web_mockup_lessons')
@@ -298,7 +299,7 @@ class LodegSystem:
         """
         self._cache.saveDataToDb(self._systemInfo, user)
 
-    def getCSV(self, course: str) -> HttpResponse:
+    def getCSV(self, course: str):
         """ Get an HttpResponse containing the courseInfo information formatted as CSV.
 
         Args:
@@ -322,7 +323,7 @@ class LodegSystem:
         return response
 
     def export_data(self, export_type: str, course: str = None, user: str = None, session: str = None,
-                    selected_keys: list = None, excluded_keys:list = None, pretty_printing: bool = False):
+                    selected_keys: list = None, excluded_keys: list = None, pretty_printing: bool = False):
         """Export the whole system or a part of it.
 
         The json and the binary .p formats are supported.
@@ -395,12 +396,12 @@ class LodegSystem:
                     json.dump({
                         'insertion_position': insertion_position,
                         'insertion_key': insertion_key,
-                        'data': data}, fp, indent=4, skipkeys=True, cls = utils.BetterEncoder)
+                        'data': data}, fp, indent=4, skipkeys=True, cls=utils.BetterEncoder)
                 else:
                     json.dump({
                         'insertion_position': insertion_position,
                         'insertion_key': insertion_key,
-                        'data': data}, fp, skipkeys=True, cls = utils.BetterEncoder)
+                        'data': data}, fp, skipkeys=True, cls=utils.BetterEncoder)
 
         # Binary file
         elif export_type == 'bytes':
@@ -410,7 +411,7 @@ class LodegSystem:
                     'insertion_key': insertion_key,
                     'data': data}, fp)
 
-    def import_data(self, filename: str, overwrite: bool = False) -> str:
+    def import_data(self, filename: str, overwrite: bool = False):
         """Import the whole system or a part of it
 
         Args:
@@ -418,6 +419,9 @@ class LodegSystem:
             overwrite (bool): if the imported information is already present in the system and overwrite = False then a message is returned and the file is not imported. Defaults to False.
         Returns:
             True if the import worked nominally; otherwise, False.
+
+        Todo:
+            * update the returns section
         """
 
         # Get the data to be imported
@@ -575,21 +579,26 @@ class LodegSystem:
 ###############################################################################
 
     def getUsers(self, course: str = None):
-        """Get the list of users
+        """Get the list of users if course is set; otherwise return the number of users of the system
 
         Args:
             course (str): The id of the course we are interested in. If none we get all the users.
 
         Returns:
-            list of str: the users ids if the course is present in the system; otherwise, the empty list
+            if course is set  a list of the users ids if the course is present in the system; if not set,
+            the number of users of the system; if an error occurs, the empty list.
+
+        Todo:
+            * this method should be split, or at least the return value should be of only one type;
+            * use the method getNumberOfUsers instead
         """
         try:
             if course is not None:
                 users = self._systemInfo['courses'][course]['users'].keys()
             else:
                 users = 0
-                for courseInfo in self._systemInfo['courses'].items():
-                    users += len(courseInfo['users'])
+                for courseInfo in self._systemInfo['courses'].values():
+                    users += len(courseInfo['users'].keys())
         except KeyError:
             users = []
         return users

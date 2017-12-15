@@ -798,7 +798,7 @@ that there is no relevant speed improvement with big datasets (might have with s
 
 <dl class="method">
 <dt id="lodegML.system.LodegSystem.getCSV">
-<code class="descname">getCSV</code><span class="sig-paren">(</span><em>course: str</em><span class="sig-paren">)</span> &#x2192; django.http.response.HttpResponse<a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getCSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getCSV" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getCSV</code><span class="sig-paren">(</span><em>course: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getCSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getCSV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an HttpResponse containing the courseInfo information formatted as CSV.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -988,24 +988,30 @@ that there is no relevant speed improvement with big datasets (might have with s
 <dl class="method">
 <dt id="lodegML.system.LodegSystem.getUsers">
 <code class="descname">getUsers</code><span class="sig-paren">(</span><em>course: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.getUsers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.getUsers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the list of users</p>
+<dd><p>Get the list of users if course is set; otherwise return the number of users of the system</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the course we are interested in. If none we get all the users.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the users ids if the course is present in the system; otherwise, the empty list</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of str</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">if course is set  a list of the users ids if the course is present in the system; if not set,
+the number of users of the system; if an error occurs, the empty list.</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition-todo admonition" id="index-3">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>this method should be split, or at least the return value should be of only one type;</li>
+<li>use the method getNumberOfUsers instead</li>
+</ul>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="lodegML.system.LodegSystem.import_data">
-<code class="descname">import_data</code><span class="sig-paren">(</span><em>filename: str</em>, <em>overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.import_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">import_data</code><span class="sig-paren">(</span><em>filename: str</em>, <em>overwrite: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem.import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem.import_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import the whole system or a part of it</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1022,6 +1028,12 @@ that there is no relevant speed improvement with big datasets (might have with s
 </tr>
 </tbody>
 </table>
+<div class="admonition-todo admonition" id="index-4">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>update the returns section</li>
+</ul>
+</div>
 </dd></dl>
 
 <dl class="method">

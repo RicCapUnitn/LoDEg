@@ -72,7 +72,7 @@
         <span class="s1">&#39;plot_target&#39;</span><span class="p">:</span> <span class="s1">&#39;web&#39;</span><span class="p">,</span>
         <span class="c1"># Initialization only</span>
         <span class="s1">&#39;cache&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Default should be set to None or be always available</span>
-        <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="kc">True</span> <span class="c1"># Needed for testing, Default should be False</span>
+        <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="kc">True</span>  <span class="c1"># Needed for testing, Default should be False</span>
     <span class="p">}</span>
 
     <span class="c1"># Low memory configuration</span>
@@ -193,7 +193,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_logs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s1">&#39;web_mockup_population&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_lessons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s1">&#39;web_mockup_lessons&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">connection_to_mongo</span><span class="o">.</span><span class="n">connect_to_mongo</span><span class="p">(</span><span class="n">db_name</span> <span class="o">=</span> <span class="s1">&#39;lode_real&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">connection_to_mongo</span><span class="o">.</span><span class="n">connect_to_mongo</span><span class="p">(</span>
+                <span class="n">db_name</span><span class="o">=</span><span class="s1">&#39;lode_real&#39;</span><span class="p">)</span>
             <span class="c1"># should rename these collections &lt;--------------------------------------</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_logs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s1">&#39;web_mockup_population&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_lessons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s1">&#39;web_mockup_lessons&#39;</span><span class="p">)</span>
@@ -342,7 +343,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">saveDataToDb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="LodegSystem.getCSV"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getCSV">[docs]</a>    <span class="k">def</span> <span class="nf">getCSV</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span><span class="p">:</span>
+<div class="viewcode-block" id="LodegSystem.getCSV"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getCSV">[docs]</a>    <span class="k">def</span> <span class="nf">getCSV</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get an HttpResponse containing the courseInfo information formatted as CSV.</span>
 
 <span class="sd">        Args:</span>
@@ -366,7 +367,7 @@
         <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="LodegSystem.export_data"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.export_data">[docs]</a>    <span class="k">def</span> <span class="nf">export_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">export_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="n">selected_keys</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">excluded_keys</span><span class="p">:</span><span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pretty_printing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+                    <span class="n">selected_keys</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">excluded_keys</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pretty_printing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Export the whole system or a part of it.</span>
 
 <span class="sd">        The json and the binary .p formats are supported.</span>
@@ -439,12 +440,12 @@
                     <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
                         <span class="s1">&#39;insertion_position&#39;</span><span class="p">:</span> <span class="n">insertion_position</span><span class="p">,</span>
                         <span class="s1">&#39;insertion_key&#39;</span><span class="p">:</span> <span class="n">insertion_key</span><span class="p">,</span>
-                        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">BetterEncoder</span><span class="p">)</span>
+                        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">BetterEncoder</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
                         <span class="s1">&#39;insertion_position&#39;</span><span class="p">:</span> <span class="n">insertion_position</span><span class="p">,</span>
                         <span class="s1">&#39;insertion_key&#39;</span><span class="p">:</span> <span class="n">insertion_key</span><span class="p">,</span>
-                        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">BetterEncoder</span><span class="p">)</span>
+                        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">BetterEncoder</span><span class="p">)</span>
 
         <span class="c1"># Binary file</span>
         <span class="k">elif</span> <span class="n">export_type</span> <span class="o">==</span> <span class="s1">&#39;bytes&#39;</span><span class="p">:</span>
@@ -454,7 +455,7 @@
                     <span class="s1">&#39;insertion_key&#39;</span><span class="p">:</span> <span class="n">insertion_key</span><span class="p">,</span>
                     <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="LodegSystem.import_data"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.import_data">[docs]</a>    <span class="k">def</span> <span class="nf">import_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="LodegSystem.import_data"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.import_data">[docs]</a>    <span class="k">def</span> <span class="nf">import_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Import the whole system or a part of it</span>
 
 <span class="sd">        Args:</span>
@@ -462,6 +463,9 @@
 <span class="sd">            overwrite (bool): if the imported information is already present in the system and overwrite = False then a message is returned and the file is not imported. Defaults to False.</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            True if the import worked nominally; otherwise, False.</span>
+
+<span class="sd">        Todo:</span>
+<span class="sd">            * update the returns section</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Get the data to be imported</span>
@@ -619,21 +623,26 @@
 <span class="c1">###############################################################################</span>
 
 <div class="viewcode-block" id="LodegSystem.getUsers"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getUsers">[docs]</a>    <span class="k">def</span> <span class="nf">getUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the list of users</span>
+        <span class="sd">&quot;&quot;&quot;Get the list of users if course is set; otherwise return the number of users of the system</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            course (str): The id of the course we are interested in. If none we get all the users.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            list of str: the users ids if the course is present in the system; otherwise, the empty list</span>
+<span class="sd">            if course is set  a list of the users ids if the course is present in the system; if not set,</span>
+<span class="sd">            the number of users of the system; if an error occurs, the empty list.</span>
+
+<span class="sd">        Todo:</span>
+<span class="sd">            * this method should be split, or at least the return value should be of only one type;</span>
+<span class="sd">            * use the method getNumberOfUsers instead</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">course</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">users</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">courseInfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">users</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">courseInfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">users</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="n">users</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="n">users</span></div>

@@ -7,12 +7,22 @@ if [ "$1" == "i" ] || [ "$1" == "interactive" ]; then
   echo '>>> s to skip, ENTER to run'
   echo '>>> Integration test? s(skip) / ENTER'
   read integration
-  echo '>>> System test?'
-  read system
+  echo '>>> Logs integrity test?'
+  read integrity
   echo '>>> Unit test?'
   read unit
   echo '>>> Coverage test?'
   read coverage
+fi
+
+if [ "$1" == "system" ]; then
+  echo ">>> SYSTEM TESTS: running..."
+  cd test/unit/
+  python -m unittest -v test_system.py
+  cd ../..
+  echo '>>> Done!'
+  echo '#######################################################################################'
+  exit 0
 fi
 
 
@@ -37,10 +47,10 @@ else
   echo '#######################################################################################'
 fi
 
-if [ "$system" == "s" ]; then
+if [ "$integrity" == "s" ]; then
   echo '>>> SKIP system test'
 else
-  echo ">>> SYSTEM TESTS: running..."
+  echo ">>> LOGS INTEGRITY TESTS: running..."
   python -m unittest discover -v -s ./test/system
   echo '>>> Done!'
   echo '#######################################################################################'

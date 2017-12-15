@@ -14,49 +14,80 @@ class TestSystem(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls._system = system.LodegSystem()
-
-    def test_system_initialization(self):
-        if self._system == None:
-            return self.fail()
-
-    def test_system_complete_extraction(self):
-        try:
-            self._system.executeCompleteExtraction()
-        except:
-            return self.fail()
+        cls._test_valid_course = 'course1'
+        cls._test_invalid_course = 'CourseNotPresent'
+        cls._test_user = 'user0'
+        cls._system.executeCompleteExtraction()
 
     def test_get_system_settings(self):
-        try:
-            settings = self._system.getSystemSettings()
-            self.assertEqual(settings, self._system._config)
-        except:
-            return self.fail()
+        settings = self._system.getSystemSettings()
+        self.assertEqual(settings, self._system._config)
 
     def test_modify_class_settings(self):
-        try:
-            self._system.modify_class_settings(**self._system._config_console)
-            self.assertEqual(self._system._config_console,
-                             self._system._config)
-            # Restore system settings
-            self._system._config = self._system._config_default.copy()
-        except:
-            return self.fail()
+        self._system.modify_class_settings(**self._system._config_console)
+        self.assertEqual(self._system._config_console, self._system._config)
+        # Restore system settings
+        self._system._config = self._system._config_default.copy()
+
+    def test_getLastUpdate(self):
+        last_update = self._system.getLastUpdate()
+        self.assertRegex(last_update, r"\d+-\d+-\d+ \d+:\d+:\d+.*")
 
     def test_get_data_all(self):
-        try:
-            data = self._system.getData()
-            self.assertNotEqual(data, None)
-            self.assertNotEqual(data, {})
-        except:
-            return self.fail()
+        data = self._system.getData()
+        self.assertNotEqual(data, None)
+        self.assertNotEqual(data, {})
 
     def test_get_data_course(self):
-        try:
-            data = self._system.getData()
-            self.assertNotEqual(data, None)
-            self.assertNotEqual(data, {})
-        except:
-            return self.fail()
+        data = self._system.getData(course=self._test_valid_course)
+        self.assertNotEqual(data, None)
+        self.assertNotEqual(data, {})
+
+###############################################################################
+#                                  HEADERS                                    #
+###############################################################################
+
+    # getUsers
+    def test_getUsers_with_course_param_not_set(self):
+        """Get the number of users of the system"""
+        users = self._system.getUsers()
+        self.assertEqual(users, 3)
+
+    def test_getUsers_with_valid_course_param_set(self):
+        users = self._system.getUsers(self._test_valid_course)
+        self.assertEqual(sorted(users), ['user0', 'user1', 'user2'])
+
+    def test_getUsers_with_invalid_course_param_set(self):
+        users = self._system.getUsers(self._test_invalid_course)
+        self.assertEqual(users, [])
+
+    # getUserSessionsHeaders
+    def test_getUserSessionsHeaders_with_valid_course_and_valid_user(self):
+        session_headers = self._system.getUserSessionsHeaders(
+            self._test_valid_course, self._test_user)
+        self.assertEqual(len(session_headers), 3)
+
+    def test_getUserSessionsHeaders_with_invalid_course_and_valid_user(self):
+        sessions_headers = self._system.getUserSessionsHeaders(
+            self._test_invalid_course, self._test_user)
+        self.assertEqual(sessions_headers, [])
+
+    # getLessonsHeaders
+    def test_getLessonsHeaders_with_valid_course(self):
+        lessons_headers = self._system.getLessonsHeaders(
+            self._test_valid_course)
+        self.assertEqual(sorted(lessons_headers), [
+                         'lesson1', 'lesson2', 'lesson3'])
+
+    def test_getLessonsHeaders_with_invalid_course(self):
+        lessons_headers = self._system.getLessonsHeaders(
+            self._test_invalid_course)
+        self.assertEqual(lessons_headers, [])
+
+    # getCourses
+    def test_getCourses(self):
+        courses = self._system.getCourses()
+        self.assertEqual(sorted(courses), ['course1', 'course2'])
 
 
 if __name__ == '__main__':
