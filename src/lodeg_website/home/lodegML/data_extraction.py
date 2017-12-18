@@ -14,7 +14,7 @@ from ..lodegML import utility_queries as utils  # migrate
 def play_pause_extraction(sessionInfo: dict):
     """This function extracts information about of play and pauses.
 
-    extracted_information : 
+    extracted_information :
         - plays intervals
         - pauses intervals
         - play/pause ration
@@ -39,13 +39,13 @@ def play_pause_extraction(sessionInfo: dict):
         if play_pause_list[0]['type'] != 'play':
             valid = False
         for i in range(len(play_pause_list) - 1):
-            if play_pause_list[i]['type'] == play_pause_list[i+1]['type']:
+            if play_pause_list[i]['type'] == play_pause_list[i + 1]['type']:
                 valid = False
     else:
         valid = False
-        
+
     #######################################################
-        
+
     try:
         if valid:
             play_time = play_pause_list[0]['value2']
@@ -54,12 +54,14 @@ def play_pause_extraction(sessionInfo: dict):
             for item in play_pause_list[1:]:
                 if (item['type'] == 'play'):
                     play_time = item['value2']
-                    pauses.append((play_time - pause_time) /1000.0) # Since time_abs is in milliseconds
+                    # Since time_abs is in milliseconds
+                    pauses.append((play_time - pause_time) / 1000.0)
                     # Note that pause_time > play_time >= 0
                     pauses_ratio.append(plays[-1] / pauses[-1])
                 else:
                     pause_time = item['value2']
-                    plays.append((pause_time - play_time) /1000.0) # Since time_abs is in milliseconds
+                    # Since time_abs is in milliseconds
+                    plays.append((pause_time - play_time) / 1000.0)
     except IndexError:
         raise IndexError(sessionInfo)
 
@@ -71,7 +73,8 @@ def play_pause_extraction(sessionInfo: dict):
 def session_coverage_extraction(sessionInfo: dict):
     """This function extracts the video coverage of the session.
 
-    Note: it adds the session_coverage and the total_time_watched to the sessionInfo
+    Note: it adds the session_coverage and the total_time_watched to the sessionInfo;
+        intervals are added only if they have a duration of at least 5 secs (to improve performances)
 
      Args:
         sessionInfo (dict): The dictionary that will be populated with the computed statistic.
@@ -85,47 +88,87 @@ def session_coverage_extraction(sessionInfo: dict):
     previous_action = ''
     current_value1 = 0.0
 
+    # Muted intervals extraction
+    is_muted = False
+    is_paused = False
+    start_muted_interval = 0.0
+    muted_intervals = []
+
     play_pause_alive_jump_list = utils.purify_list(
-        sessionInfo['data'], ['play', 'pause', 'alive', 'jump', 'speed'])
+        sessionInfo['data'], ['play', 'pause', 'alive', 'jump', 'speed', 'mute'])
 
     for record in play_pause_alive_jump_list:
-        previous_action = current_action
-        current_action = record['type']
+
         current_value1 = record['value1']
 
-        if (current_action == 'play'):
-            if(previous_action != 'pause'):
-                start_interval = current_value1
+        # Mute records must not interfere with coverage computation
+        if record['type'] != 'mute':
+            previous_action = current_action
+            current_action = record['type']
 
-        elif (current_action == 'jump'):
-            # Add an interval only if it has a duration of at least
-            # 5 secs (to improve performances)
-            end_interval = current_value1
-            if (np.abs(end_interval - start_interval) > 5.0):
-                intervals = utils.add_interval(
-                    intervals, [start_interval, end_interval])
-            start_interval = record['value2']
+            if current_action == 'play':
+                is_paused = False
+                if previous_action != 'pause':  # TODO check this
+                    start_interval = current_value1
+                    start_muted_interval = current_value1
 
-        elif (current_action == 'alive'):
-            # Add a new interval only if we were playing
-            if(previous_action == 'play' or previous_action == 'speed'):
-                # Add an interval only if it has a duration of at least
-                # 5 secs (to improve performances)
+            elif current_action == 'pause':
+                is_paused = True
+                if is_muted and (np.abs(end_interval - start_muted_interval) > 5.0):
+                    muted_intervals = utils.add_interval(
+                        muted_intervals, [start_muted_interval, current_value1])
+
+            elif current_action == 'jump':
+
                 end_interval = current_value1
+                # Add coverage interval
                 if (np.abs(end_interval - start_interval) > 5.0):
                     intervals = utils.add_interval(
                         intervals, [start_interval, end_interval])
+                # Add muted interval
+                if is_muted and (not is_paused) and (np.abs(end_interval - start_muted_interval) > 5.0):
+                    muted_intervals = utils.add_interval(
+                        muted_intervals, [start_muted_interval, end_interval])
+                # Update coverage start_interval
+                start_interval = record['value2']
+                # Update start_muted_interval
+                start_muted_interval = record['value2']
 
-        elif (current_action == 'speed'):
-            # Add a new interval with the previous speed (without limitations)
-            end_interval = current_value1
-            intervals = utils.add_interval(
-                intervals, [start_interval, end_interval])
-            start_interval = end_interval
+            elif current_action == 'alive':
+                # Add a new interval only if we were playing
+                if not is_paused:
+                    end_interval = current_value1
+                    # Add coverage interval
+                    if (np.abs(end_interval - start_interval) > 5.0):
+                        intervals = utils.add_interval(
+                            intervals, [start_interval, end_interval])
+                    # Add muted interval
+                    if is_muted and (not is_paused) and (np.abs(end_interval - start_muted_interval) > 5.0):
+                        muted_intervals = utils.add_interval(
+                            muted_intervals, [start_muted_interval, end_interval])
+
+            elif current_action == 'speed':
+                # TODO extract some info about speed, such as avg_speed
+                pass
+
+        else:
+            if is_muted:
+                # We are unmuting the video => add a new muted interval
+                is_muted = False
+                if (not is_paused) and (np.abs(current_value1 - start_muted_interval) > 5.0):
+                    muted_intervals = utils.add_interval(
+                        muted_intervals, [start_muted_interval, current_value1])
+                start_muted_interval = current_value1
+            else:
+                # We are muting the video
+                is_muted = True
+                start_muted_interval = current_value1
 
     # Add last interval if the session ends with a pause
     if(current_action == 'pause'):
+        # Set the session end
         end_interval = current_value1
+        # Add coverage interval
         if (np.abs(end_interval - start_interval) > 5.0):
             intervals = utils.add_interval(
                 intervals, [start_interval, end_interval])
@@ -139,12 +182,14 @@ def session_coverage_extraction(sessionInfo: dict):
     sessionInfo['session_coverage'] = intervals
     # Add the total_time_watched
     sessionInfo['total_time_watched'] = total_time_watched
+    # Add the muted_intervals
+    sessionInfo['muted_intervals'] = muted_intervals
 
 
 def jumps_info_extraction(sessionInfo: dict):
     """This function extracts information of jumps for the session.
 
-    extracted_information : 
+    extracted_information :
         - average jump length
         - number of jumps
         - number of jumps/type (click_or_drag,keyframe,note)
@@ -163,7 +208,8 @@ def jumps_info_extraction(sessionInfo: dict):
         jumps_per_type[jump['value3']] = jumps_per_type[jump['value3']] + 1
 
     number_of_jumps = len(jump_list)
-    average_jumps_length = (total_jumps_length / number_of_jumps) if number_of_jumps > 0 else 0
+    average_jumps_length = (total_jumps_length /
+                            number_of_jumps) if number_of_jumps > 0 else 0
 
     # Add values to sessionInfo
     sessionInfo['number_of_jumps'] = number_of_jumps
@@ -218,7 +264,7 @@ def compute_session_duration(sessionInfo: dict):
 def notes_info_extraction(sessionInfo: dict):
     """This function extracts information of notes for the session.
 
-    extracted_information : 
+    extracted_information :
         - number of notes
         - number of notes/type (click_or_drag,keyframe,note)
         - notes / session_duration
@@ -282,7 +328,7 @@ def compute_lessons_coverage_for_single_user(userInfo: dict, lessons_durations: 
 def user_notes_info_extraction(userInfo: dict):
     """This function extracts information of notes for the user.
 
-    extracted_information : 
+    extracted_information :
         - number of notes
         - number of notes/type (click_or_drag,keyframe,note)
         - notes / total_duration
@@ -313,7 +359,7 @@ def user_notes_info_extraction(userInfo: dict):
 def user_jump_info_extraction(userInfo: dict):
     """This function extracts information of jumps for the user.
 
-    extracted_information : 
+    extracted_information :
         - number of jumps
         - number of jumps/type (click_or_drag,keyframe,note)
         - total jumps length
@@ -337,11 +383,12 @@ def user_jump_info_extraction(userInfo: dict):
         jumps_per_type['note'] += sessionInfo['jumps_per_type']['note']
         total_jumps_length += sessionInfo['total_jumps_length']
         total_duration += sessionInfo['session_duration']
-        
+
     userInfo['number_of_jumps'] = number_of_jumps
     userInfo['jumps_per_type'] = jumps_per_type
     userInfo['total_jumps_length'] = total_jumps_length
-    userInfo['average_jumps_length'] = (total_jumps_length / number_of_jumps ) if number_of_jumps > 0 else 0
+    userInfo['average_jumps_length'] = (
+        total_jumps_length / number_of_jumps) if number_of_jumps > 0 else 0
     userInfo['jumps_over_total_duration'] = number_of_jumps / total_duration
 
 
@@ -372,7 +419,7 @@ def day_session_distribution_extraction(userInfo: dict):
     """Extract the number of sessions for each hour of the day.
 
     Args:
-        userInfo (dict): The dictionaty that will be populated with the computed statistic. 
+        userInfo (dict): The dictionaty that will be populated with the computed statistic.
     """
     day_distribution = [0] * 24
     for sessionInfo in userInfo['sessions'].values():
@@ -423,7 +470,7 @@ def compute_course_global_coverage(courseInfo: dict):
 def course_notes_info_extraction(courseInfo: dict):
     """This function extracts information of notes for the system.
 
-    extracted_information : 
+    extracted_information :
         - number of notes
         - number of notes/type (click_or_drag,keyframe,note)
 
@@ -472,7 +519,7 @@ def course_day_distribution_extraction(courseInfo: dict):
     """Extract the number of sessions for each hour of the day.
 
     Args:
-        courseInfo (dict): The dictionaty that will be populated with the computed statistic. 
+        courseInfo (dict): The dictionaty that will be populated with the computed statistic.
     """
     day_distribution = [0] * 24
     for userInfo in courseInfo['users'].values():
@@ -503,19 +550,19 @@ def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, sess
         session (str): The id of the session we are interested in.
         data_provided (bool): Set to True if the sessionInfo has already been populated with the raw data. Defaults to False.
         keep_session_data (bool): Keep the raw session data in the system. Defaults to False.
-        
+
     Returns:
         True if everything worked nominally; false otherwise (you should remove this session).
-    """    
+    """
     if not data_provided:
         # Get the raw data from the database
         utils.get_all_records_for_session(
             logs_collection, session, sessionInfo)
-        
+
     # Check if we have a valid session
     if not check_session_validity(sessionInfo):
         return False
-    
+
     # Set session_id
     add_lesson_id_to_session(sessionInfo)
     # Add session date
@@ -535,6 +582,7 @@ def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, sess
         del sessionInfo['data']
     return True
 
+
 def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course: str,
                                 user: str, userInfo: dict, keep_session_data=False, sessionInfo_provided=False):
     """Execute a complete extraction for a single user.
@@ -552,10 +600,10 @@ def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course
         # Get the raw data from the database
         utils.get_all_records_for_user_and_course(
             logs_collection, course, user, userInfo)
-        
+
         invalid_sessions = []
-        
-        for session,sessionInfo in userInfo['sessions'].items():
+
+        for session, sessionInfo in userInfo['sessions'].items():
             # Extract sessionInfo information
             if not execute_sessionInfo_extraction(sessionInfo, data_provided=True, keep_session_data=keep_session_data):
                 invalid_sessions.append(session)
@@ -567,11 +615,10 @@ def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course
                         'total_time_watched'] / duration
                 except KeyError:
                     sessionInfo['coverage_percentage'] = 'unknown'
-                    
+
         # Discard invalid sessions
         for session in invalid_sessions:
             del userInfo['sessions'][session]
-                
 
     # Extract userInfo level statistics
     # user_lessons_coverage
@@ -591,7 +638,7 @@ def execute_courseInfo_extraction(logs_collection, lessons_collection, course: s
     """Execute a complete extraction for a single course.
 
     Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.
-        We have left the possibility of setting query_mem_opt to False though in practice we see 
+        We have left the possibility of setting query_mem_opt to False though in practice we see
         that there is no relevant speed improvement with big datasets (might have with small ones).
 
     Args:
@@ -616,10 +663,10 @@ def execute_courseInfo_extraction(logs_collection, lessons_collection, course: s
         utils.get_all_users_records(logs_collection, course, courseInfo)
         # Extract features
         for user, userInfo in courseInfo['users'].items():
-            
+
             # Compute statistics only if the session is valid
             invalid_sessions = []
-            
+
             for session, sessionInfo in userInfo['sessions'].items():
                 # Execute sessionInfo extraction
                 if not execute_sessionInfo_extraction(sessionInfo, data_provided=True, keep_session_data=keep_session_data):
@@ -661,7 +708,7 @@ def execute_courseInfo_extraction(logs_collection, lessons_collection, course: s
 
     if not keep_user_info:
         # Discard userInfo
-        pass#<------------------------------
+        pass  # <------------------------------
 
 
 def execute_complete_extraction(logs_collection, lessons_collection, systemInfo, keep_session_data=False, keep_user_info=True, query_mem_opt=True):
@@ -672,7 +719,7 @@ def execute_complete_extraction(logs_collection, lessons_collection, systemInfo,
     one key(course_id) for each course in the database.
 
     Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.
-        We have left the possibility of setting query_mem_opt to False though in practice we see 
+        We have left the possibility of setting query_mem_opt to False though in practice we see
         that there is no relevant speed improvement with big datasets (might have with small ones).
 
     Args:
@@ -714,4 +761,3 @@ def check_session_validity(sessionInfo: dict):
     except KeyError or IndexError:
         well_formed = False
     return well_formed
-        

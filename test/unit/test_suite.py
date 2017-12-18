@@ -1,7 +1,8 @@
 import unittest
 
 # Add path in order to be able to do imports
-import sys, os
+import sys
+import os
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath + '/../../src/lodegML')
 
@@ -27,11 +28,11 @@ class TestPausesExtraction(unittest.TestCase):
 
     def test_pauses(self):
         self.assertEqual(self._sessionInfo['pauses'], [
-                         (15.13 - 15.0)/1000, (19.0 - 17.0)/1000])
+                         (15.13 - 15.0) / 1000, (19.0 - 17.0) / 1000])
 
     def test_plays(self):
         self.assertEqual(self._sessionInfo['plays'], [
-                         (15.0 - 0.0)/1000, (17.0 - 15.13)/1000])
+                         (15.0 - 0.0) / 1000, (17.0 - 15.13) / 1000])
 
     def test_pauses_ratio(self):
         self.assertEqual(self._sessionInfo['pauses_ratio'], [
@@ -273,6 +274,70 @@ class TestSessionCoverageExtracion(unittest.TestCase):
         self.assertEqual(self._sessionInfo[
                          'session_coverage'], expected_output)
 
+    def test_session_coverage_mute_1_play_pause(self):
+        test_utils.session_coverage_extraction_test(
+            logs_collection, 'test1', self._sessionInfo)
+        expected_output = [[35.0, 50.0]]
+        data_extraction.session_coverage_extraction(self._sessionInfo)
+        self.assertEqual(self._sessionInfo[
+                         'muted_intervals'], expected_output)
+
+    def test_session_coverage_mute_2_play_pause_alive(self):
+        test_utils.session_coverage_extraction_test(
+            logs_collection, 'test2', self._sessionInfo)
+        expected_output = [[35.0, 150.0], [160.0, 180.0]]
+        data_extraction.session_coverage_extraction(self._sessionInfo)
+        self.assertEqual(self._sessionInfo[
+                         'muted_intervals'], expected_output)
+
+    def test_session_coverage_mute_3_play_pause_jump_forwards(self):
+        test_utils.session_coverage_extraction_test(
+            logs_collection, 'test3', self._sessionInfo)
+        expected_output = [[60.0, 70.0], [90.0, 100]]
+        data_extraction.session_coverage_extraction(self._sessionInfo)
+        self.assertEqual(self._sessionInfo[
+                         'muted_intervals'], expected_output)
+
+    def test_session_coverage_mute_4_play_pause_jump_backwards(self):
+        test_utils.session_coverage_extraction_test(
+            logs_collection, 'test4', self._sessionInfo)
+        expected_output = [[40.0, 50.0], [80.0, 90.0], [110.0, 120.0]]
+        data_extraction.session_coverage_extraction(self._sessionInfo)
+        self.assertEqual(self._sessionInfo[
+                         'muted_intervals'], expected_output)
+
+    def test_session_coverage_mute_5_play_pause_jump_backwards_alive(self):
+        test_utils.session_coverage_extraction_test(
+            logs_collection, 'test5', self._sessionInfo)
+        expected_output = [[10.0, 20.0], [30.0, 60.0], [80.0, 90.0]]
+        data_extraction.session_coverage_extraction(self._sessionInfo)
+        self.assertEqual(self._sessionInfo[
+                         'muted_intervals'], expected_output)
+
+    def test_session_coverage_mute_6_play_pause_jump_both(self):
+        test_utils.session_coverage_extraction_test(
+            logs_collection, 'test6', self._sessionInfo)
+        expected_output = []
+        data_extraction.session_coverage_extraction(self._sessionInfo)
+        self.assertEqual(self._sessionInfo[
+                         'muted_intervals'], expected_output)
+
+    def test_session_coverage_mute_7_play_pause_jump_both_alive(self):
+        test_utils.session_coverage_extraction_test(
+            logs_collection, 'test7', self._sessionInfo)
+        expected_output = []
+        data_extraction.session_coverage_extraction(self._sessionInfo)
+        self.assertEqual(self._sessionInfo[
+                         'muted_intervals'], expected_output)
+
+    def test_session_coverage_mute_8_play_pause_jump_both_alive_speed(self):
+        test_utils.session_coverage_extraction_test(
+            logs_collection, 'test8', self._sessionInfo)
+        expected_output = [[0.0, 60.0], [70.0, 90.0]]
+        data_extraction.session_coverage_extraction(self._sessionInfo)
+        self.assertEqual(self._sessionInfo[
+                         'muted_intervals'], expected_output)
+
 
 class TestQueries(unittest.TestCase):
 
@@ -282,7 +347,7 @@ class TestQueries(unittest.TestCase):
 
     def test_queries_2_get_all_users_for_course(self):
         self.assertEqual(
-            set(utils.get_all_users_for_course(logs_collection, 'course1')), set(['user1', 'user2', 'user3','play_pause_test','session_coverage_test','jumps_info_test']))
+            set(utils.get_all_users_for_course(logs_collection, 'course1')), set(['user1', 'user2', 'user3', 'play_pause_test', 'session_coverage_test', 'jumps_info_test']))
 
     def test_queries_3_get_all_sessions_for_user_and_course(self):
         self.assertEqual(
@@ -341,7 +406,7 @@ class TestJumpsInfoExtraction(unittest.TestCase):
             'click_or_drag': 3, 'keyframe': 1, 'note': 0}
         expected_output = {'number_of_jumps': number_of_jumps, 'average_jumps_length':
                            average_jumps_length, 'jumps_per_type': jumps_per_type,
-                           'total_jumps_length':total_jumps_length}
+                           'total_jumps_length': total_jumps_length}
 
         test_utils.jumps_info_test(
             logs_collection, 'jumps_info_test', self._sessionInfo)
@@ -379,7 +444,8 @@ class TestDataExtraction(unittest.TestCase):
         computed_output = {}
         expected_output = {}
         # Get the records
-        utils.get_all_users_records(logs_collection, self._test_course, self._courseInfo)
+        utils.get_all_users_records(
+            logs_collection, self._test_course, self._courseInfo)
         # Purify the records
         extracted_purified_records = utils.purify_list(
             self._courseInfo['users']['session_coverage_test']['sessions']['test7']['data'], ['play', 'pause', 'alive', 'jump'])
@@ -395,7 +461,8 @@ class TestDataExtraction(unittest.TestCase):
         computed_output = {}
         expected_output = {}
         # Get the records
-        utils.get_all_users_records(logs_collection, 'course1', self._courseInfo)
+        utils.get_all_users_records(
+            logs_collection, 'course1', self._courseInfo)
         # Purify the records
         extracted_purified_records = utils.purify_list(
             self._systemInfo['users']['jumps_info_test']['sessions']['jumps_info_test']['data'], ['jump'])
@@ -505,6 +572,7 @@ class TestDataExtraction(unittest.TestCase):
         self._systemInfo = data_extraction.execute_complete_extraction(
             logs_collection, self._systemInfo)
         # To be refined
+
 
 if __name__ == '__main__':
     unittest.main()

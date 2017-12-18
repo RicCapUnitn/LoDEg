@@ -60,6 +60,12 @@
     "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test1",
+    "type": "mute",
+    "value1": 35.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test1",
     "type": "pause",
     "value1": 50.0
 }{
@@ -77,6 +83,12 @@
     "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test2",
+    "type": "mute",
+    "value1": 35.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test2",
     "type": "pause",
     "value1": 130.0
 }{
@@ -85,6 +97,18 @@
     "session_id": "test2",
     "type": "play",
     "value1": 130.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test2",
+    "type": "mute",
+    "value1": 150.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test2",
+    "type": "mute",
+    "value1": 160.0
 }{
     "course_id": "course1",
     "user_id": "session_coverage_test",
@@ -113,6 +137,12 @@
     "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test3",
+    "type": "mute",
+    "value1": 60.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test3",
     "type": "pause",
     "value1": 70.0
 }{
@@ -132,6 +162,12 @@
     "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test3",
+    "type": "mute",
+    "value1": 100.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test3",
     "type": "pause",
     "value1": 120.0
 }{
@@ -145,6 +181,12 @@
     "session_id": "test4",
     "type": "play",
     "value1": 100.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test4",
+    "type": "mute",
+    "value1": 110.0
 }{
     "course_id": "course1",
     "user_id": "session_coverage_test",
@@ -175,6 +217,12 @@
     "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test4",
+    "type": "mute",
+    "value1": 50.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test4",
     "type": "pause",
     "value1": 60.0
 }{
@@ -199,6 +247,12 @@
     "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test5",
+    "type": "mute",
+    "value1": 80.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test5",
     "type": "pause",
     "value1": 90.0
 }{
@@ -214,6 +268,18 @@
     "session_id": "test5",
     "type": "play",
     "value1": 10.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test5",
+    "type": "mute",
+    "value1": 20.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test5",
+    "type": "mute",
+    "value1": 30.0
 }{
     "course_id": "course1",
     "user_id": "session_coverage_test",
@@ -304,6 +370,18 @@
     "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test7",
+    "type": "mute",
+    "value1": 30.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
+    "type": "mute",
+    "value1": 30.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test7",
     "type": "jump",
     "value1": 10.0,
     "value2": 70.0
@@ -367,6 +445,12 @@
     "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test8",
+    "type": "mute",
+    "value1": 0.0
+}{
+    "course_id": "course1",
+    "user_id": "session_coverage_test",
+    "session_id": "test8",
     "type": "speed",
     "value1": 10.0
 }{
@@ -396,12 +480,6 @@
     "type": "jump",
     "value1": 150.0,
     "value2": 80.0
-}{
-    "course_id": "course1",
-    "user_id": "session_coverage_test",
-    "session_id": "test8",
-    "type": "pause",
-    "value1": 100.0
 }{
     "course_id": "course1",
     "user_id": "session_coverage_test",

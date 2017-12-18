@@ -24,7 +24,7 @@ help:
 	$(SILENT)echo	"\t copy standalone library to WebApp"
 	$(SILENT)echo	"- check"
 	$(SILENT)echo	"\t check library integrity"
-	$(SILENT)echo	"- test i[interactive]"
+	$(SILENT)echo	"- tests [i,interactive]"
 	$(SILENT)echo	"\t test the library"
 
 website:

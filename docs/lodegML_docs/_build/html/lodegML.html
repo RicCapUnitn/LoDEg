@@ -620,13 +620,16 @@ that there is no relevant speed improvement with big datasets (might have with s
 <dt id="lodegML.data_extraction.session_coverage_extraction">
 <code class="descclassname">lodegML.data_extraction.</code><code class="descname">session_coverage_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#session_coverage_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.session_coverage_extraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function extracts the video coverage of the session.</p>
-<p>Note: it adds the session_coverage and the total_time_watched to the sessionInfo</p>
-<blockquote>
-<div><dl class="docutils">
+<dl class="docutils">
+<dt>Note: it adds the session_coverage and the total_time_watched to the sessionInfo;</dt>
+<dd><blockquote class="first">
+<div>intervals are added only if they have a duration of at least 5 secs (to improve performances)</div></blockquote>
+<dl class="last docutils">
 <dt>Args:</dt>
 <dd>sessionInfo (dict): The dictionary that will be populated with the computed statistic.</dd>
 </dl>
-</div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
