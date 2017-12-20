@@ -784,9 +784,9 @@ class LodegSystem:
         """
         try:
             if (user is not None):
-                return self._plot.printLessonsHistogram(self._systemInfo['courses'][course]['users'][user]['coverage_histogram'])
+                return self._plot.printLessonsHistogram(self._systemInfo['courses'][course]['users'][user]['coverage_histogram'], True)
             else:
-                return self._plot.printLessonsHistogram(self._systemInfo['courses'][course]['coverage_histogram'])
+                return self._plot.printLessonsHistogram(self._systemInfo['courses'][course]['coverage_histogram'], False)
         except KeyError:
              # We don't have this information in the system
             return('<h2 class="text-center">Histogram unknown</h2>')
@@ -809,7 +809,8 @@ class LodegSystem:
                 return self._plot.printDaySessionDistribution(self._systemInfo['courses'][course]['day_distribution'])
         except KeyError as e:
             # We don't have this information in the system
-            return('<h2 class="text-center">Information unknown</h2>')
+            # TODO might need to change this
+            return('')
 
     def printLessonUserCorrelationGraph(self, course: str, time_format: str = None):
         """Print a 3d graph of users lesson visualization.

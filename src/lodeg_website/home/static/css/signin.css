@@ -1,22 +1,21 @@
 body {
-    background-color: #eee;
+  background-color: #eee;
 }
 
 .form-signin {
-    max-width: 330px;
-    padding: 15px;
-    margin: 0 auto;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
 }
 
-.form-signin .form-signin-heading{
-    margin-bottom: 10px;
+.form-signin .form-signin-heading {
+  margin-bottom: 10px;
 }
 
-.signin-info{
-    margin-top: 10px;
-    margin-bottom: 10px;
-    background-color: rgba(0, 0, 255, 0.6);
-    border-radius: 25px;
-    padding: 5px;
-    text-align: center;
+.signin-info {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 25px;
+  padding: 5px;
+  text-align: center;
 }

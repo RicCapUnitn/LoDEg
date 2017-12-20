@@ -26,7 +26,7 @@
             {% endif %}
         </div>
         <h4>The number of users</h4>
-        <span class="text-muted">Some text</span>
+        <span class="text-muted"><!--This span is left for future use--></span>
     </div>
     <div class="col-md-3 col-sm-3 placeholder">
         <div class="textAboveImage">
@@ -68,7 +68,7 @@
                     <option>{{course}}</option>
                     {% empty %}
                     <option>No course found: try the collectData button!</option>
-                    {% endfor %}    
+                    {% endfor %}
                 </select>
                 <span class="input-group-btn">
                     <button id ="sessionSubmitButton" class="btn btn-success" type="submit" >Submit</button>
@@ -84,7 +84,7 @@
 {% if course %}
 <section class="row">
     <a class="anchor" id="statistics"></a>
-    <h1>Statistics</h1> 
+    <h1>Statistics</h1>
     <h2>You have selected: {{ course }}</h2>
     {% autoescape off %}
     <div class="row">
@@ -97,7 +97,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-12">
-            <img class="img-responsive" src="{% printDaySessionDistribution 'course' %}">
+            <img src="{% printDaySessionDistribution 'course' %}">
         </div>
     </div>
     {% endautoescape %}
@@ -105,7 +105,7 @@
 
 <section class="row">
     <a class="anchor" id="coverage"></a>
-    <h1>Lessons coverage</h1> 
+    <h1>Lessons coverage</h1>
     <h2>You have selected: {{ lesson }}</h2>
     <div class="row">
         <div class="col-sm-3 col-md-3"></div>

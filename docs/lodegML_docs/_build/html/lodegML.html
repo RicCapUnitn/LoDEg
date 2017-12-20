@@ -102,11 +102,15 @@ time_format (str): the time format (abs or rel). Defaults to abs.</dd>
 
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printLessonsHistogram">
-<code class="descname">printLessonsHistogram</code><span class="sig-paren">(</span><em>histogram: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printLessonsHistogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printLessonsHistogram" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot a bar chart of the number of users that have watched each lesson.</p>
+<code class="descname">printLessonsHistogram</code><span class="sig-paren">(</span><em>histogram: dict</em>, <em>user_level: bool</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.printLessonsHistogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.printLessonsHistogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a bar chart of the number of users/sessions per lesson.</p>
 <dl class="docutils">
 <dt>Params:</dt>
-<dd>histogram (dict): a dictionary of type {&#8216;lesson&#8217;:&#8217;number_of_users&#8217;}</dd>
+<dd><p class="first">histogram (dict): a dictionary of type {&#8216;lesson&#8217;:&#8217;number_of_users&#8217;}
+user_level (bool): if True we are plotting the number of sessions</p>
+<blockquote class="last">
+<div>per lesson for a given user; otherwise, the number of users per lesson for a given course.</div></blockquote>
+</dd>
 </dl>
 </dd></dl>
 

@@ -176,19 +176,29 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AutoPlot.printLessonsHistogram"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printLessonsHistogram">[docs]</a>    <span class="k">def</span> <span class="nf">printLessonsHistogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">histogram</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Plot a bar chart of the number of users that have watched each lesson.</span>
+<div class="viewcode-block" id="AutoPlot.printLessonsHistogram"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printLessonsHistogram">[docs]</a>    <span class="k">def</span> <span class="nf">printLessonsHistogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">histogram</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user_level</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot a bar chart of the number of users/sessions per lesson.</span>
 
 <span class="sd">        Params:</span>
 <span class="sd">            histogram (dict): a dictionary of type {&#39;lesson&#39;:&#39;number_of_users&#39;}</span>
+<span class="sd">            user_level (bool): if True we are plotting the number of sessions</span>
+<span class="sd">                per lesson for a given user; otherwise, the number of users per lesson for a given course.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
         <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">histogram</span><span class="p">))</span>
         <span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">histogram</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Number of users that have watched each lesson&#39;</span><span class="p">,</span>
-                     <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span><span class="p">)</span>
+        <span class="c1"># Set title according to the chart we aare plotting</span>
+        <span class="k">if</span> <span class="n">user_level</span><span class="p">:</span>
+            <span class="c1"># We are plotting the number of sessions per lesson</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Number of sessions per lesson&#39;</span><span class="p">,</span>
+                         <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># We are plotting the number of users per lesson</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Number of users that have watched each lesson&#39;</span><span class="p">,</span>
+                         <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span><span class="p">)</span>
+
         <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">histogram</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
@@ -215,16 +225,19 @@
             <span class="c1"># set labels</span>
             <span class="n">ax1</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;12&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;9&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">])</span>
 
+            <span class="c1"># Get max value of the distribution (for color scale normalization)</span>
+            <span class="n">max_radio</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span>
+
             <span class="c1"># Use custom colors and opacity</span>
             <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">bar</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">radii</span><span class="p">,</span> <span class="n">bars</span><span class="p">):</span>
-                <span class="n">bar</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">))</span>
+                <span class="n">bar</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="n">max_radio</span><span class="p">))</span>
 
             <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
             <span class="n">bars</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="n">distribution</span><span class="p">)</span>
             <span class="c1"># Add text</span>
             <span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">bars</span><span class="p">:</span>
                 <span class="n">height</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span>
-                <span class="n">bar</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">height</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">))</span>
+                <span class="n">bar</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">height</span> <span class="o">/</span> <span class="n">max_radio</span><span class="p">))</span>
             <span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
             <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>

@@ -132,19 +132,29 @@ class AutoPlot:
 
         return self._plot(fig, 'html')
 
-    def printLessonsHistogram(self, histogram: dict):
-        """Plot a bar chart of the number of users that have watched each lesson.
+    def printLessonsHistogram(self, histogram: dict, user_level: bool):
+        """Plot a bar chart of the number of users/sessions per lesson.
 
         Params:
             histogram (dict): a dictionary of type {'lesson':'number_of_users'}
+            user_level (bool): if True we are plotting the number of sessions
+                per lesson for a given user; otherwise, the number of users per lesson for a given course.
         """
         fig, ax = plt.subplots()
         colors = ['r', 'b']
         x = np.arange(len(histogram))
         bars = ax.bar(x, histogram.values(), color=colors)
 
-        ax.set_title('Number of users that have watched each lesson',
-                     fontsize=self._title_font_size)
+        # Set title according to the chart we aare plotting
+        if user_level:
+            # We are plotting the number of sessions per lesson
+            ax.set_title('Number of sessions per lesson',
+                         fontsize=self._title_font_size)
+        else:
+            # We are plotting the number of users per lesson
+            ax.set_title('Number of users that have watched each lesson',
+                         fontsize=self._title_font_size)
+
         plt.xticks(x, histogram.keys())
         ax.grid(True)
 
@@ -171,16 +181,19 @@ class AutoPlot:
             # set labels
             ax1.set_xticklabels(['12', '', '9', '', '6', '', '3'])
 
+            # Get max value of the distribution (for color scale normalization)
+            max_radio = max(distribution)
+
             # Use custom colors and opacity
             for r, bar in zip(radii, bars):
-                bar.set_facecolor(plt.cm.viridis(r / 10.))
+                bar.set_facecolor(plt.cm.viridis(r / max_radio))
 
             ax2 = plt.subplot(122)
             bars = ax2.bar(range(0, 24), distribution)
             # Add text
             for bar in bars:
                 height = bar.get_height()
-                bar.set_facecolor(plt.cm.viridis(height / 10.))
+                bar.set_facecolor(plt.cm.viridis(height / max_radio))
             ax2.set_xticks(range(0, 24, 2))
 
             fig = plt.gcf()

@@ -70,7 +70,7 @@ The following tests are provided:
 - Logs integrity check
 
   ```
-    $ make tests i
+  $ make tests i
   ```
 
   and then select System test.
