@@ -538,7 +538,7 @@ def course_day_distribution_extraction(courseInfo: dict):
 #######
 
 
-def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, session=None, data_provided=False, keep_session_data=False) -> bool:
+def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, session=None, data_provided=False, keep_session_data=False):
     """Execute a complete extraction for a single session.
 
     Note:

@@ -138,7 +138,7 @@ class AutoPlot:
         Params:
             histogram (dict): a dictionary of type {'lesson':'number_of_users'}
             user_level (bool): if True we are plotting the number of sessions
-                per lesson for a given user; otherwise, the number of users per lesson for a given course.
+            per lesson for a given user; otherwise, the number of users per lesson for a given course.
         """
         fig, ax = plt.subplots()
         colors = ['r', 'b']

@@ -47,12 +47,11 @@
 <span class="kn">import</span> <span class="nn">data_extraction</span>  <span class="c1"># migrate</span>
 <span class="kn">import</span> <span class="nn">connection_to_mongo</span>  <span class="c1"># migrate</span>
 <span class="kn">import</span> <span class="nn">ml</span>  <span class="c1"># migrate</span>
+<span class="kn">import</span> <span class="nn">import_export</span>  <span class="c1"># migrate</span>
 
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="k">import</span> <span class="n">HttpResponse</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">csv</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
 
 
 <div class="viewcode-block" id="LodegSystem"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem">[docs]</a><span class="k">class</span> <span class="nc">LodegSystem</span><span class="p">:</span>
@@ -381,79 +380,11 @@
 <span class="sd">            excluded_keys (list of str): the keys (stats) that you do not want to export. Defaults to None;</span>
 <span class="sd">            pretty_printing (bool): if True json will be formatted with 4-spaces indentation. Defaults to False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">insertion_level</span> <span class="o">=</span> <span class="s1">&#39;system&#39;</span>
-        <span class="n">insertion_key</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-
-        <span class="c1"># Localize the target data</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">course</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">session</span><span class="p">:</span>
-                        <span class="c1"># SessionInfo</span>
-                        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
-                        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">][</span>
-                            <span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session</span><span class="p">]</span>
-                        <span class="n">insertion_position</span> <span class="o">=</span> <span class="s1">&#39;session&#39;</span>
-                        <span class="n">insertion_key</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="c1"># UserInfo</span>
-                        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-                        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span>
-                            <span class="n">course</span><span class="p">][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user</span><span class="p">]</span>
-                        <span class="n">insertion_position</span> <span class="o">=</span> <span class="s1">&#39;user&#39;</span>
-                        <span class="n">insertion_key</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">course</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># CourseInfo</span>
-                    <span class="n">title</span> <span class="o">=</span> <span class="n">course</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">course</span><span class="p">]</span>
-                    <span class="n">insertion_position</span> <span class="o">=</span> <span class="s1">&#39;course&#39;</span>
-                    <span class="n">insertion_key</span> <span class="o">=</span> <span class="n">course</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># SystemInfo</span>
-                <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;system&#39;</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span>
-                <span class="n">insertion_position</span> <span class="o">=</span> <span class="s1">&#39;system&#39;</span>
-                <span class="n">insertion_key</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-
-            <span class="c1"># Select only requested keys</span>
-            <span class="n">dict_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-            <span class="k">if</span> <span class="n">selected_keys</span><span class="p">:</span>
-                <span class="n">target_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">selected_keys</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">unwanted_key</span> <span class="ow">in</span> <span class="n">dict_keys</span> <span class="o">-</span> <span class="n">target_keys</span><span class="p">:</span>
-                    <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="n">unwanted_key</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">excluded_keys</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">unwanted_key</span> <span class="ow">in</span> <span class="n">dict_keys</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">excluded_keys</span><span class="p">):</span>
-                    <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="n">unwanted_key</span><span class="p">]</span>
-
+            <span class="n">import_export</span><span class="o">.</span><span class="n">export_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">,</span> <span class="n">export_type</span><span class="p">,</span> <span class="n">course</span><span class="p">,</span>
+                                      <span class="n">user</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">selected_keys</span><span class="p">,</span> <span class="n">excluded_keys</span><span class="p">,</span> <span class="n">pretty_printing</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;damaged&#39;</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;objective&#39;</span><span class="p">:</span> <span class="s1">&#39;not found&#39;</span><span class="p">}</span>
-
-        <span class="c1"># Json file</span>
-        <span class="k">if</span> <span class="n">export_type</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">title</span> <span class="o">+</span> <span class="s1">&#39;-export.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">pretty_printing</span><span class="p">:</span>
-                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
-                        <span class="s1">&#39;insertion_position&#39;</span><span class="p">:</span> <span class="n">insertion_position</span><span class="p">,</span>
-                        <span class="s1">&#39;insertion_key&#39;</span><span class="p">:</span> <span class="n">insertion_key</span><span class="p">,</span>
-                        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">BetterEncoder</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
-                        <span class="s1">&#39;insertion_position&#39;</span><span class="p">:</span> <span class="n">insertion_position</span><span class="p">,</span>
-                        <span class="s1">&#39;insertion_key&#39;</span><span class="p">:</span> <span class="n">insertion_key</span><span class="p">,</span>
-                        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">BetterEncoder</span><span class="p">)</span>
-
-        <span class="c1"># Binary file</span>
-        <span class="k">elif</span> <span class="n">export_type</span> <span class="o">==</span> <span class="s1">&#39;bytes&#39;</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">title</span> <span class="o">+</span> <span class="s1">&#39;-export.p&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
-                    <span class="s1">&#39;insertion_position&#39;</span><span class="p">:</span> <span class="n">insertion_position</span><span class="p">,</span>
-                    <span class="s1">&#39;insertion_key&#39;</span><span class="p">:</span> <span class="n">insertion_key</span><span class="p">,</span>
-                    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">fp</span><span class="p">)</span></div>
+            <span class="k">pass</span>  <span class="c1"># TODO add a meaningful error message</span></div>
 
 <div class="viewcode-block" id="LodegSystem.import_data"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.import_data">[docs]</a>    <span class="k">def</span> <span class="nf">import_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Import the whole system or a part of it</span>
@@ -461,76 +392,15 @@
 <span class="sd">        Args:</span>
 <span class="sd">            filename (str): the filename (filepath) that we are importing;</span>
 <span class="sd">            overwrite (bool): if the imported information is already present in the system and overwrite = False then a message is returned and the file is not imported. Defaults to False.</span>
+
 <span class="sd">        Returns:</span>
-<span class="sd">            True if the import worked nominally; otherwise, False.</span>
-
-<span class="sd">        Todo:</span>
-<span class="sd">            * update the returns section</span>
+<span class="sd">            A message containing the import status; Done if sucessful</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># Get the data to be imported</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># Json file</span>
-            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.json&#39;</span><span class="p">):</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
-            <span class="c1"># Binary file</span>
-            <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.p&#39;</span><span class="p">):</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="s1">&#39;File format not supported&#39;</span>
-
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">insertion_position</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;insertion_position&#39;</span><span class="p">]</span>
-                <span class="n">insertion_key</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;insertion_key&#39;</span><span class="p">]</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
-            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="k">return</span> <span class="s1">&#39;The file is corrupted and does not contain the appropriate metadata&#39;</span>
-
-        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;File not found: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-
-        <span class="c1"># Try to see if the system can accept the data; if a key error is</span>
-        <span class="c1"># rised, do nothing.</span>
-        <span class="n">system_flag</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">insertion_key</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">insertion_position</span> <span class="o">==</span> <span class="s1">&#39;session&#39;</span><span class="p">:</span>
-                <span class="n">insertion_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">][</span>
-                    <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span>
-                <span class="n">insertion_key</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">insertion_position</span> <span class="o">==</span> <span class="s1">&#39;user&#39;</span><span class="p">:</span>
-                <span class="n">insertion_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span>
-                    <span class="s1">&#39;courses&#39;</span><span class="p">][</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;users&#39;</span><span class="p">]</span>
-                <span class="n">insertion_key</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">insertion_position</span> <span class="o">==</span> <span class="s1">&#39;course&#39;</span><span class="p">:</span>
-                <span class="n">insertion_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">]</span>
-                <span class="n">insertion_key</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">insertion_position</span> <span class="o">==</span> <span class="s1">&#39;system&#39;</span><span class="p">:</span>
-                <span class="n">insertion_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span>
-                <span class="n">system_flag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;Some layers above the </span><span class="si">{}</span><span class="s1"> you are inserting are not present in the system&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;Metadata are corrupted; the file cannot be imported&#39;</span>
-
-        <span class="k">if</span> <span class="n">system_flag</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">overwrite</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">[</span><span class="s1">&#39;courses&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="s1">&#39;Trying to overwrite the whole system without permissions; try overwrite = True&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">overwrite</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">insertion_key</span> <span class="ow">in</span> <span class="n">inserting_position</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="k">return</span> <span class="s1">&#39;Import has overwrite conflict; try to launch with overwrite = True&#39;</span>
-            <span class="n">insertion_position</span><span class="p">[</span><span class="n">insertion_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
-
-        <span class="c1"># Everything worked nominally</span>
-        <span class="k">return</span> <span class="s1">&#39;Done&#39;</span></div>
+        <span class="n">message</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">import_export</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">and</span> <span class="n">message</span> <span class="o">==</span> <span class="s1">&#39;Done&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_systemInfo</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">message</span></div>
 
 <div class="viewcode-block" id="LodegSystem.getNumberOfUsers"><a class="viewcode-back" href="../../lodegML.html#lodegML.system.LodegSystem.getNumberOfUsers">[docs]</a>    <span class="k">def</span> <span class="nf">getNumberOfUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the number of users saved in the system.</span>

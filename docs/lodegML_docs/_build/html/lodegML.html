@@ -106,11 +106,9 @@ time_format (str): the time format (abs or rel). Defaults to abs.</dd>
 <dd><p>Plot a bar chart of the number of users/sessions per lesson.</p>
 <dl class="docutils">
 <dt>Params:</dt>
-<dd><p class="first">histogram (dict): a dictionary of type {&#8216;lesson&#8217;:&#8217;number_of_users&#8217;}
-user_level (bool): if True we are plotting the number of sessions</p>
-<blockquote class="last">
-<div>per lesson for a given user; otherwise, the number of users per lesson for a given course.</div></blockquote>
-</dd>
+<dd>histogram (dict): a dictionary of type {&#8216;lesson&#8217;:&#8217;number_of_users&#8217;}
+user_level (bool): if True we are plotting the number of sessions
+per lesson for a given user; otherwise, the number of users per lesson for a given course.</dd>
 </dl>
 </dd></dl>
 
@@ -501,7 +499,7 @@ that there is no relevant speed improvement with big datasets (might have with s
 
 <dl class="function">
 <dt id="lodegML.data_extraction.execute_sessionInfo_extraction">
-<code class="descclassname">lodegML.data_extraction.</code><code class="descname">execute_sessionInfo_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em>, <em>logs_collection=None</em>, <em>session=None</em>, <em>data_provided=False</em>, <em>keep_session_data=False</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/lodegML/data_extraction.html#execute_sessionInfo_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.execute_sessionInfo_extraction" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">execute_sessionInfo_extraction</code><span class="sig-paren">(</span><em>sessionInfo: dict</em>, <em>logs_collection=None</em>, <em>session=None</em>, <em>data_provided=False</em>, <em>keep_session_data=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#execute_sessionInfo_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.execute_sessionInfo_extraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a complete extraction for a single session.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1030,17 +1028,11 @@ the number of users of the system; if an error occurs, the empty list.</td>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if the import worked nominally; otherwise, False.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A message containing the import status; Done if sucessful</p>
 </td>
 </tr>
 </tbody>
 </table>
-<div class="admonition-todo admonition" id="index-4">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>update the returns section</li>
-</ul>
-</div>
 </dd></dl>
 
 <dl class="method">

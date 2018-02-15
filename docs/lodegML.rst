@@ -36,6 +36,14 @@ lodegML\.data\_extraction module
     :undoc-members:
     :show-inheritance:
 
+lodegML\.import\_export module
+------------------------------
+
+.. automodule:: lodegML.import_export
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 lodegML\.ml module
 ------------------
 
