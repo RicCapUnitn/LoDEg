@@ -1,8 +1,8 @@
 import numpy as np
+
 from datetime import datetime
-from collections import Counter
-import dateutil.tz
 from bson.objectid import ObjectId
+from collections import Counter
 
 from ..lodegML import utility_queries as utils  # migrate
 

@@ -6,7 +6,6 @@ import ml  # migrate
 import import_export  # migrate
 
 from django.http import HttpResponse
-import pandas as pd
 import csv
 
 

@@ -3,38 +3,30 @@ from dateutil import tz
 import dateutil.parser
 from bson.objectid import ObjectId
 import json
-    
+
+
 class BetterEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, (datetime, date)):
             return obj.isoformat()
         # Let the base class default method raise the TypeError
-        # return json.JSONEncoder.default(self, obj)    
-        return {} 
-
-    
-def getTimeFromObjectId(oid: str):
-    """Get the generation time from a MongoDB objcetId.
-    
-    Args:
-        oid (str): the object id.
-    """
-    return ObjectId(oid).generation_time
+        # return json.JSONEncoder.default(self, obj)
+        return {}
 
 
-def getDateTimeFromISO8601String(string):
-    """Convert ISO8601 to datetime."""
-    dt = dateutil.parser.parse(string)
-    return dt
+def utc_to_local_time(utc: datetime):
+    from_zone = tz.tzutc()
+    to_zone = tz.tzlocal()
 
+    utc_tzaware_time = utc.replace(tzinfo=from_zone)
+    local_tzaware_time = utc_tzaware_time.astimezone(to_zone)
 
-def utc_to_local_time(utc: datetime):  # <-------------Not working
-    return utc.strftime('%Y-%m-%d %H:%M:%S %Z')
+    return local_tzaware_time.strftime('%Y-%m-%d %H:%M:%S %Z')
 
 
 def get_lessons_durations_and_registration_dates(lessons_collection, course: str, courseInfo: dict):
     """Set for a course the course lessons and their durations.
-    
+
     Args:
         lessons_collection : the MongoDB collection that contains the lessons records;
         course (str): the target course;
@@ -45,14 +37,16 @@ def get_lessons_durations_and_registration_dates(lessons_collection, course: str
     registration_dates = {}
     for lesson in cursor:
         lessons_durations[lesson['lesson_id']] = lesson['duration']
-        registration_dates[lesson['lesson_id']] = ObjectId(lesson['_id']).generation_time
+        registration_dates[lesson['lesson_id']] = ObjectId(
+            lesson['_id']).generation_time
     courseInfo['lessons_durations'] = lessons_durations
     courseInfo['registration_dates'] = registration_dates
-    
+
+
 def add_interval(intervals: list, interval: list):
     """Add an interval to a list of disjoint intervals.
 
-    It guarantees disjunction between intervals (substituting the intersections with a new interval), 
+    It guarantees disjunction between intervals (substituting the intersections with a new interval),
     the order intervals[i][end] < intervals[i+1][start] and itervals[i][start] < intervals[i][end].
 
     Args:
@@ -206,7 +200,7 @@ def get_all_sessions_for_user_and_course(collection, user: str, course: str):
 
 
 def get_all_users_records(collection, course: str, courseInfo: dict):
-    """ Retrieve courseInfo data 
+    """ Retrieve courseInfo data
 
     Args:
         collection: the collection of log records

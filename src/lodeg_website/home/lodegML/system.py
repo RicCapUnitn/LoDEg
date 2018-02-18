@@ -6,7 +6,6 @@ from ..lodegML import ml  # migrate
 from ..lodegML import import_export  # migrate
 
 from django.http import HttpResponse
-import pandas as pd
 import csv
 
 
