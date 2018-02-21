@@ -8,7 +8,7 @@
     
     
     <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-    <title>Coverage for src/lodegML/data_extraction.py: 91%</title>
+    <title>Coverage for src/lodegML/data_extraction.py: 94%</title>
     <link rel="stylesheet" href="style.css" type="text/css">
     
     <script type="text/javascript" src="jquery.min.js"></script>
@@ -24,15 +24,15 @@
 <div id="header">
     <div class="content">
         <h1>Coverage for <b>src/lodegML/data_extraction.py</b> :
-            <span class="pc_cov">91%</span>
+            <span class="pc_cov">94%</span>
         </h1>
 
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
 
         <h2 class="stats">
             317 statements &nbsp;
-            <span class="run hide_run shortkey_r button_toggle_run">290 run</span>
-            <span class="mis shortkey_m button_toggle_mis">27 missing</span>
+            <span class="run hide_run shortkey_r button_toggle_run">298 run</span>
+            <span class="mis shortkey_m button_toggle_mis">19 missing</span>
             <span class="exc shortkey_x button_toggle_exc">0 excluded</span>
 
             
@@ -729,24 +729,24 @@
 <p id="n660" class="pln"><a href="#n660">660</a></p>
 <p id="n661" class="stm run hide_run"><a href="#n661">661</a></p>
 <p id="n662" class="pln"><a href="#n662">662</a></p>
-<p id="n663" class="stm mis"><a href="#n663">663</a></p>
+<p id="n663" class="stm run hide_run"><a href="#n663">663</a></p>
 <p id="n664" class="pln"><a href="#n664">664</a></p>
-<p id="n665" class="stm mis"><a href="#n665">665</a></p>
+<p id="n665" class="stm run hide_run"><a href="#n665">665</a></p>
 <p id="n666" class="pln"><a href="#n666">666</a></p>
 <p id="n667" class="pln"><a href="#n667">667</a></p>
-<p id="n668" class="stm mis"><a href="#n668">668</a></p>
+<p id="n668" class="stm run hide_run"><a href="#n668">668</a></p>
 <p id="n669" class="pln"><a href="#n669">669</a></p>
-<p id="n670" class="stm mis"><a href="#n670">670</a></p>
+<p id="n670" class="stm run hide_run"><a href="#n670">670</a></p>
 <p id="n671" class="pln"><a href="#n671">671</a></p>
-<p id="n672" class="stm mis"><a href="#n672">672</a></p>
+<p id="n672" class="stm run hide_run"><a href="#n672">672</a></p>
 <p id="n673" class="stm mis"><a href="#n673">673</a></p>
 <p id="n674" class="pln"><a href="#n674">674</a></p>
-<p id="n675" class="stm mis"><a href="#n675">675</a></p>
+<p id="n675" class="stm run hide_run"><a href="#n675">675</a></p>
 <p id="n676" class="stm mis"><a href="#n676">676</a></p>
-<p id="n677" class="stm mis"><a href="#n677">677</a></p>
+<p id="n677" class="stm run hide_run"><a href="#n677">677</a></p>
 <p id="n678" class="pln"><a href="#n678">678</a></p>
 <p id="n679" class="pln"><a href="#n679">679</a></p>
-<p id="n680" class="stm mis"><a href="#n680">680</a></p>
+<p id="n680" class="stm run hide_run"><a href="#n680">680</a></p>
 <p id="n681" class="pln"><a href="#n681">681</a></p>
 <p id="n682" class="stm run hide_run"><a href="#n682">682</a></p>
 <p id="n683" class="pln"><a href="#n683">683</a></p>
@@ -1495,24 +1495,24 @@
 <p id="t660" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t661" class="stm run hide_run">    <span class="key">if</span> <span class="op">(</span><span class="key">not</span> <span class="nam">query_mem_opt</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t662" class="pln">        <span class="com"># Collect all raw data at once</span><span class="strut">&nbsp;</span></p>
-<p id="t663" class="stm mis">        <span class="nam">utils</span><span class="op">.</span><span class="nam">get_all_users_records</span><span class="op">(</span><span class="nam">logs_collection</span><span class="op">,</span> <span class="nam">course</span><span class="op">,</span> <span class="nam">courseInfo</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t663" class="stm run hide_run">        <span class="nam">utils</span><span class="op">.</span><span class="nam">get_all_users_records</span><span class="op">(</span><span class="nam">logs_collection</span><span class="op">,</span> <span class="nam">course</span><span class="op">,</span> <span class="nam">courseInfo</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t664" class="pln">        <span class="com"># Extract features</span><span class="strut">&nbsp;</span></p>
-<p id="t665" class="stm mis">        <span class="key">for</span> <span class="nam">user</span><span class="op">,</span> <span class="nam">userInfo</span> <span class="key">in</span> <span class="nam">courseInfo</span><span class="op">[</span><span class="str">'users'</span><span class="op">]</span><span class="op">.</span><span class="nam">items</span><span class="op">(</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t665" class="stm run hide_run">        <span class="key">for</span> <span class="nam">user</span><span class="op">,</span> <span class="nam">userInfo</span> <span class="key">in</span> <span class="nam">courseInfo</span><span class="op">[</span><span class="str">'users'</span><span class="op">]</span><span class="op">.</span><span class="nam">items</span><span class="op">(</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t666" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t667" class="pln">            <span class="com"># Compute statistics only if the session is valid</span><span class="strut">&nbsp;</span></p>
-<p id="t668" class="stm mis">            <span class="nam">invalid_sessions</span> <span class="op">=</span> <span class="op">[</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
+<p id="t668" class="stm run hide_run">            <span class="nam">invalid_sessions</span> <span class="op">=</span> <span class="op">[</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
 <p id="t669" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t670" class="stm mis">            <span class="key">for</span> <span class="nam">session</span><span class="op">,</span> <span class="nam">sessionInfo</span> <span class="key">in</span> <span class="nam">userInfo</span><span class="op">[</span><span class="str">'sessions'</span><span class="op">]</span><span class="op">.</span><span class="nam">items</span><span class="op">(</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t670" class="stm run hide_run">            <span class="key">for</span> <span class="nam">session</span><span class="op">,</span> <span class="nam">sessionInfo</span> <span class="key">in</span> <span class="nam">userInfo</span><span class="op">[</span><span class="str">'sessions'</span><span class="op">]</span><span class="op">.</span><span class="nam">items</span><span class="op">(</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t671" class="pln">                <span class="com"># Execute sessionInfo extraction</span><span class="strut">&nbsp;</span></p>
-<p id="t672" class="stm mis">                <span class="key">if</span> <span class="key">not</span> <span class="nam">execute_sessionInfo_extraction</span><span class="op">(</span><span class="nam">sessionInfo</span><span class="op">,</span> <span class="nam">data_provided</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">keep_session_data</span><span class="op">=</span><span class="nam">keep_session_data</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t672" class="stm run hide_run">                <span class="key">if</span> <span class="key">not</span> <span class="nam">execute_sessionInfo_extraction</span><span class="op">(</span><span class="nam">sessionInfo</span><span class="op">,</span> <span class="nam">data_provided</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">keep_session_data</span><span class="op">=</span><span class="nam">keep_session_data</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t673" class="stm mis">                    <span class="nam">invalid_sessions</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="nam">session</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t674" class="pln">                <span class="com"># Remove invalid sessions</span><span class="strut">&nbsp;</span></p>
-<p id="t675" class="stm mis">                <span class="key">for</span> <span class="nam">session</span> <span class="key">in</span> <span class="nam">invalid_sessions</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t675" class="stm run hide_run">                <span class="key">for</span> <span class="nam">session</span> <span class="key">in</span> <span class="nam">invalid_sessions</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t676" class="stm mis">                    <span class="key">del</span> <span class="nam">userInfo</span><span class="op">[</span><span class="str">'sessions'</span><span class="op">]</span><span class="op">[</span><span class="nam">session</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
-<p id="t677" class="stm mis">            <span class="nam">execute_userInfo_extraction</span><span class="op">(</span><span class="nam">logs_collection</span><span class="op">,</span> <span class="nam">courseInfo</span><span class="op">[</span><span class="strut">&nbsp;</span></p>
+<p id="t677" class="stm run hide_run">            <span class="nam">execute_userInfo_extraction</span><span class="op">(</span><span class="nam">logs_collection</span><span class="op">,</span> <span class="nam">courseInfo</span><span class="op">[</span><span class="strut">&nbsp;</span></p>
 <p id="t678" class="pln">                                        <span class="str">'lessons_durations'</span><span class="op">]</span><span class="op">,</span> <span class="nam">course</span><span class="op">,</span> <span class="nam">user</span><span class="op">,</span> <span class="nam">userInfo</span><span class="op">,</span> <span class="nam">keep_session_data</span><span class="op">=</span><span class="nam">keep_session_data</span><span class="op">,</span> <span class="nam">sessionInfo_provided</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t679" class="pln">            <span class="com"># Add this user sessions to the total counter</span><span class="strut">&nbsp;</span></p>
-<p id="t680" class="stm mis">            <span class="nam">total_number_of_sessions</span> <span class="op">+=</span> <span class="nam">len</span><span class="op">(</span><span class="nam">userInfo</span><span class="op">[</span><span class="str">'sessions'</span><span class="op">]</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t680" class="stm run hide_run">            <span class="nam">total_number_of_sessions</span> <span class="op">+=</span> <span class="nam">len</span><span class="op">(</span><span class="nam">userInfo</span><span class="op">[</span><span class="str">'sessions'</span><span class="op">]</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t681" class="pln">    <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t682" class="stm run hide_run">        <span class="nam">courseInfo</span><span class="op">[</span><span class="str">'users'</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="op">}</span><span class="strut">&nbsp;</span></p>
 <p id="t683" class="pln">        <span class="com"># Collect user ids</span><span class="strut">&nbsp;</span></p>
@@ -1606,7 +1606,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.4.2</a>,
-            created at 2018-02-18 14:12
+            created at 2018-02-21 16:55
         </p>
     </div>
 </div>

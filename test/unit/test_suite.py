@@ -10,6 +10,7 @@ import connection_to_mongo as connect
 import data_extraction
 import test_utils
 import utility_queries as utils
+import test_utils
 
 # Connect to the instance of MongoDB where the mockup_population
 # collection is located
@@ -18,7 +19,7 @@ logs_collection = db.get_collection('mockup_population')
 lessons_collection = db.get_collection('mockup_lessons')
 
 
-class TestPausesExtraction(unittest.TestCase):
+class TestPlayPausesExtraction(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -413,165 +414,6 @@ class TestJumpsInfoExtraction(unittest.TestCase):
         data_extraction.jumps_info_extraction(self._sessionInfo)
         del self._sessionInfo['data']
         self.assertEqual(self._sessionInfo, expected_output)
-
-
-@unittest.expectedFailure  # Need to update everything (structure has changed)
-class TestDataExtraction(unittest.TestCase):
-
-    def setUp(self):
-        self._courseInfo = {}
-        self._test_course = 'course1'
-
-    def test_data_extraction_1_purify_list_play_pause_extraction(self):
-        computed_output = {}
-        expected_output = {}
-        # Get the records
-        utils.get_all_users_records(
-            logs_collection, self._test_course, self._courseInfo)
-
-        # Purify the records
-        extracted_purified_records = utils.purify_list(
-            self._courseInfo['users']['play_pause_test']['sessions']['play_pause_test']['data'], ['play', 'pause'])
-        # Run the play_pause_extraction on the extracted data
-        data_extraction.play_pause_extraction(
-            computed_output, extracted_purified_records)
-        # Run the play_pause_extraction on the test data
-        data_extraction.play_pause_extraction(
-            expected_output, test_utils.get_play_and_pauses_test(logs_collection))
-        self.assertEqual(computed_output, expected_output)
-
-    def test_data_extraction_2_purify_list_session_coverage_extraction(self):
-        computed_output = {}
-        expected_output = {}
-        # Get the records
-        utils.get_all_users_records(
-            logs_collection, self._test_course, self._courseInfo)
-        # Purify the records
-        extracted_purified_records = utils.purify_list(
-            self._courseInfo['users']['session_coverage_test']['sessions']['test7']['data'], ['play', 'pause', 'alive', 'jump'])
-        # Run the session_coverage_extraction on the extracted data
-        data_extraction.session_coverage_extraction(
-            computed_output, extracted_purified_records)
-        # Run the session_coverage_extraction on the test data
-        data_extraction.session_coverage_extraction(
-            expected_output, test_utils.session_coverage_extraction_test(logs_collection, 'test7'))
-        self.assertEqual(computed_output, expected_output)
-
-    def test_data_extraction_3_purify_list_jumps_info_extraction(self):
-        computed_output = {}
-        expected_output = {}
-        # Get the records
-        utils.get_all_users_records(
-            logs_collection, 'course1', self._courseInfo)
-        # Purify the records
-        extracted_purified_records = utils.purify_list(
-            self._systemInfo['users']['jumps_info_test']['sessions']['jumps_info_test']['data'], ['jump'])
-        # Run the session_coverage_extraction on the extracted data
-        data_extraction.jumps_info_extraction(
-            computed_output, extracted_purified_records)
-        # Run the jumps_info_extraction on the test data
-        data_extraction.jumps_info_extraction(
-            expected_output, test_utils.jumps_info_test(logs_collection, 'jumps_info_test'))
-        self.assertEqual(computed_output, expected_output)
-
-    def test_data_extraction_4_compute_sessons_coverage_single_user(self):
-        raw_lessons_data_list = test_utils.get_lessons(
-            db.get_collection('lessons'))
-        lessons_durations = utils.create_lessons_durations_dict(
-            raw_lessons_data_list)
-        utils.get_all_users_records(logs_collection, self._systemInfo)
-        test_users = ['user1']
-        # Compute session coverage
-        for user in self._systemInfo['users'].keys():
-            if (user in test_users):
-                for session in self._systemInfo['users'][user]['sessions'].keys():
-                    data_extraction.add_lesson_id_to_session(
-                        self._systemInfo['users'][user]['sessions'][session])
-                    extracted_purified_records = utils.purify_list(
-                        self._systemInfo['users'][user]['sessions'][session]['data'], ['play', 'pause', 'alive', 'jump'])
-                    data_extraction.session_coverage_extraction(
-                        self._systemInfo['users'][user]['sessions'][session], extracted_purified_records)
-
-        # Compute lesson coverage
-        for user in self._systemInfo['users'].keys():
-            if(user in test_users):
-                data_extraction.compute_lessons_coverage_for_single_user(
-                    self._systemInfo['users'][user], lessons_durations)
-        # The expected ouput depends on the inteval_gap set in data_extraction
-        expected_output = [1, 1, 1, 0, 1] + ([0] * 235)
-        self.assertEqual(self._systemInfo['users']['user1']['lessons_coverage'][
-                         'lesson1'], expected_output)
-
-    def test_data_extraction_5_compute_global_coverage(self):
-        raw_lessons_data_list = test_utils.get_lessons(
-            db.get_collection('lessons'))
-        lessons_durations = test_utils.create_lessons_durations_dict(
-            raw_lessons_data_list)
-        utils.get_all_users_records(logs_collection, self._systemInfo)
-        test_users = ['user1', 'user2', 'user3']
-        # Compute session coverage
-        for user in self._systemInfo['users'].keys():
-            if (user in test_users):
-                for session in self._systemInfo['users'][user]['sessions'].keys():
-                    data_extraction.add_lesson_id_to_session(
-                        self._systemInfo['users'][user]['sessions'][session])
-                    extracted_purified_records = utils.purify_list(
-                        self._systemInfo['users'][user]['sessions'][session]['data'], ['play', 'pause', 'alive', 'jump'])
-                    data_extraction.session_coverage_extraction(
-                        self._systemInfo['users'][user]['sessions'][session], extracted_purified_records)
-
-        # Compute lesson coverage
-        for user in self._systemInfo['users'].keys():
-            if(user in test_users):
-                data_extraction.compute_lessons_coverage_for_single_user(
-                    self._systemInfo['users'][user], lessons_durations)
-        # Compute global coverage
-        data_extraction.compute_global_lesson_coverage(
-            self._systemInfo, lessons_durations)
-        # The expected ouput depends on the inteval_gap set in data_extraction
-        expected_output = [3, 0, 3, 0, 3] + ([0] * 235)
-        self.assertEqual(self._systemInfo['global_coverage'][
-                         'lesson2'], expected_output)
-
-    def test_data_extracion_6_notes_info_extraction(self):
-        raw_lessons_data_list = test_utils.get_lessons(
-            db.get_collection('lessons'))
-        lessons_durations = utils.create_lessons_durations_dict(
-            raw_lessons_data_list)
-        utils.get_all_users_records(logs_collection, self._systemInfo)
-        userInfo = self._systemInfo['users']['user4']
-        for sessionInfo in userInfo['sessions'].values():
-            data_extraction.compute_session_duration(sessionInfo)
-            notes = utils.purify_list(
-                sessionInfo['data'], ['note'])
-            data_extraction.notes_info_extraction(sessionInfo, notes)
-            self.assertEqual(sessionInfo['notes_per_type'], {
-                             'handwritten': 3, 'text': 2})
-            self.assertEqual(sessionInfo['number_of_notes'], 5)
-
-    def test_data_extracion_7_user_notes_info_extraction(self):
-        raw_lessons_data_list = test_utils.get_lessons(
-            db.get_collection('lessons'))
-        lessons_durations = utils.create_lessons_durations_dict(
-            raw_lessons_data_list)
-        utils.get_all_users_records(logs_collection, self._systemInfo)
-        test_users = ['user4', 'user5']
-        for user in test_users:
-            userInfo = self._systemInfo['users'][user]
-            for sessionInfo in userInfo['sessions'].values():
-                data_extraction.compute_session_duration(sessionInfo)
-                notes = utils.purify_list(
-                    sessionInfo['data'], ['note'])
-                data_extraction.notes_info_extraction(sessionInfo, notes)
-            data_extraction.user_notes_info_extraction(userInfo)
-            self.assertEqual(userInfo['notes_per_type'], {
-                             'handwritten': 9, 'text': 6})
-            self.assertEqual(userInfo['number_of_notes'], 15)
-
-    def test_data_extraction_7_complete_extraction(self):
-        self._systemInfo = data_extraction.execute_complete_extraction(
-            logs_collection, self._systemInfo)
-        # To be refined
 
 
 if __name__ == '__main__':
