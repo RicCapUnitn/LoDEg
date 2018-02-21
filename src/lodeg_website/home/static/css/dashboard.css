@@ -7,7 +7,7 @@ body {
 }
 
 .anchor {
-  padding-top: 15px;
+  padding-top: 25px;
 }
 
 .anchor+h1 {
@@ -206,6 +206,8 @@ placeholders {
 
 .placeholder img {
   display: inline-block;
+  min-width: 200px;
+  min-height: 200px;
 }
 
 .textAboveImage {
@@ -217,8 +219,8 @@ placeholders {
 .textAboveImage>h1 {
   position: absolute;
   top: 30%;
-  left: 0;
-  width: 100%;
+  left: 10%;
+  width: 80%;
 }
 
 #sidebar-cloud {
