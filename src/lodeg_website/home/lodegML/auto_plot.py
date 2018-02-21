@@ -179,8 +179,6 @@ class AutoPlot:
             max_radio = max(distribution)
             width = 2 * np.pi / 12.0
 
-            print(distribution)
-
             radii1 = list(reversed(np.append(radii[1:12], radii[0:1])))
             radii2 = list(reversed(np.append(radii[13:24], radii[12:13])))
 
@@ -232,102 +230,6 @@ class AutoPlot:
             registration_dates (dict): the dates of registration of every lesson.
             time_format (str): the time format (abs or rel). Defaults to abs.
         """
-
-        """
-        lessons_visualization = test_utils.correlation_graph_lessons_test()
-
-        # Create the figure
-        fig = plt.figure(figsize=(10,10))
-        ax = fig.gca(projection='3d')
-
-        # Set z as lessons
-        y_ticks = lessons_visualization.keys()
-        zs = np.arange(0, len(lessons_visualization))
-
-        # Dates formatters
-        months = mdates.MonthLocator()  # every month
-        days = mdates.DayLocator()  # every day
-        # Setup the DateFormatter for the x axis
-        date_format = mdates.DateFormatter('%D')
-
-        # Min/max for x ticks
-        datemin = datetime.datetime.now(
-            pytz.utc) + datetime.timedelta(days = -20) # Test
-        # datemin = min(registration_dates.values())
-        datemax = datetime.datetime.now(pytz.utc)
-
-        # Maxvalue for z axis
-        max_value = 0
-
-        verts = []
-        for lesson, dates_counter in lessons_visualization.items():
-            # Get the dates that are present in the counter
-            dates = sorted(dates_counter.keys())
-
-            # Compute datemin and datemax
-            max_date = max(dates)
-            # Select a relative mindate if time_format = rel
-            if (time_format == 'rel'):
-                min_date = min(dates)
-                if  min_date < datemin:
-                    datemin = min_date
-            else:
-                min_date = datemin
-
-            if max_date > datemax:
-                datemax = max_date
-
-            # Create verts adding a 0 before the first and after the last days
-            xs = np.asarray([mdates.date2num(min_date + datetime.timedelta(days=-1))] + list(mdates.date2num(dates))
-                            + [mdates.date2num(max_date + datetime.timedelta(days=1))])
-            ys = [0]
-            for date in dates:
-                ys.append(dates_counter[date])
-            ys.append(0)
-            verts.append(list(zip(xs, ys)))
-
-            # Update max_value
-            tmp = max(dates_counter.values())
-            if (tmp > max_value):
-                max_value = tmp
-
-        # Create PolyCollection
-        facecolors = [cm.jet(x) for x in np.linspace(0,1,5)]
-        # facecolors = [cm.jet(x) for x in np.linspace(0,1,len(registration_dates))]
-        poly = PolyCollection(verts, facecolors = facecolors,
-                              edgecolor='black', linewidth=0.6)
-        poly.set_alpha(0.7)
-
-
-        # Add the collection to the graph
-        ax.add_collection3d(poly, zs=zs, zdir='y')
-
-        # Set ticks
-        ax.set_yticklabels(y_ticks)
-
-        # format the ticks
-        # ax.xaxis_date()
-        ax.xaxis.set_major_locator(months)
-        ax.xaxis.set_minor_locator(days)
-        ax.xaxis.set_major_formatter(date_format)
-
-        # Set axis labels and limits
-        ax.set_xlim3d(datemin + datetime.timedelta(days=-1),
-                      datemax + datetime.timedelta(days=1))
-        ax.set_ylim3d(0, len(lessons_visualization))
-        ax.set_zlabel('Users')
-        ax.set_zlim3d(0, max_value)
-
-        # Convert the image to a base64 binary stream
-        if 'cStringIO' in sys.modules:
-            f = cStringIO.StringIO()   # Python 2
-        else:
-            f = io.BytesIO()           # Python 3
-        plt.savefig(f, format="png")
-        plt.clf()
-        return "data:image/png;base64," + base64.b64encode(f.getvalue()).decode()
-        """
-
         # Create the figure
         fig = plt.figure(figsize=(8, 8))
         ax = fig.gca(projection='3d')
@@ -344,7 +246,7 @@ class AutoPlot:
 
         # Min/max for x ticks
         datemin = min(registration_dates.values())
-        datemax = datetime.datetime.now(pytz.utc)
+        datemax = max(registration_dates.values())
 
         # Maxvalue for z axis
         max_value = 0
@@ -379,12 +281,8 @@ class AutoPlot:
             if (tmp > max_value):
                 max_value = tmp
 
-            ax.set_xlim3d([datemin + datetime.timedelta(days=-1),
-                           datemax + datetime.timedelta(days=1)])
-            ax.set_ylim3d([0, len(lessons_visualization)])
-            ax.set_zlim3d([0, max_value])
-
-            ax.bar(xs, ys, zs=next(zs), zdir='y', alpha=0.8)
+            current_z = next(zs)
+            ax.bar(xs, ys, zs=current_z, zdir='y', alpha=0.8)
 
         # Set ticks
         ax.set_yticklabels(y_ticks)
