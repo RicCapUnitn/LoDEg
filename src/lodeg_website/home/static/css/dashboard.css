@@ -223,6 +223,10 @@ placeholders {
   width: 80%;
 }
 
+.time>h1 {
+  top: 17%;
+}
+
 #sidebar-cloud {
   position: absolute;
   bottom: 45px;
