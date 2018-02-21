@@ -162,8 +162,8 @@ def sendEmail(request):
     message = EmailMessage(
         'LoDEg bug report by: ' + request.POST.get('name'),
         request.POST.get('comment'),
-        request.POST.get('mail') if request.POST.get(
-            'mail') is not None else 'not_specified@example.com',
+        request.POST.get('email') if request.POST.get(
+            'email') is not None else 'not_specified@example.com',
         [context['contact_mail_address']]
     )
 
@@ -176,7 +176,7 @@ def sendEmail(request):
 
     message.send(fail_silently=False)
 
-    # return render(request, 'home/index.html')
+    return render(request, 'home/contact.html')
 
 
 @login_required
