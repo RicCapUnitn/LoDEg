@@ -4,6 +4,7 @@ import data_extraction  # migrate
 import connection_to_mongo  # migrate
 import ml  # migrate
 import import_export  # migrate
+from configure import configure  # migrate
 
 from django.http import HttpResponse
 import csv
@@ -11,61 +12,6 @@ import csv
 
 class LodegSystem:
     """The class that represents the system."""
-
-    ##################
-    # CONFIGURATIONS #
-    ##################
-
-    # Default configuration (command line, python script, ...)
-    _config_default = {
-        'query_mem_opt': True,  # Might be false (need to benchmark)
-        'keep_user_info': True,
-        'keep_session_data': False,
-        'ml_mem_opt': False,  # Keep data both in dataframes and dictionaries
-        'ml_autorun': True,  # Autorun the clustering algorith
-        'plot_target': 'web',
-        # Initialization only
-        'cache': None,  # Default should be set to None or be always available
-        'debug': True  # Needed for testing, Default should be False
-    }
-
-    # Low memory configuration
-    _config_low_mem = {
-        'query_mem_opt': True,
-        'keep_user_info': False,  # Discard user statistics after computation
-        'keep_session_data': False,
-        'ml_mem_opt': True,
-        'ml_autorun': False,
-        'plot_target': 'web',
-        'cache': None,  # Default should be set to None or be always available
-        'debug': True
-    }
-
-    # Console configuration
-    _config_console = {
-        'query_mem_opt': True,
-        'keep_user_info': True,  # Discard user statistics after computation
-        'keep_session_data': False,
-        'ml_mem_opt': False,
-        'ml_autorun': False,
-        'plot_target': 'console',
-        'cache': None,  # Default should be set to None or be always available
-        'debug': True
-    }
-
-    # Web default configuration
-    _config_web = {
-        'query_mem_opt': True,
-        'keep_user_info': True,
-        'keep_session_data': False,
-        'ml_mem_opt': True,
-        'ml_autorun': False,
-        'plot_target': 'web',
-        'cache': 'sqlite',  # Default should be set to None or be always available,
-        'debug': True
-    }
-
-    _config = _config_default.copy()
 
     ##############
     # DECORATORS #
@@ -111,31 +57,15 @@ class LodegSystem:
     # CLASS METHODS #
     #################
 
-    def __init__(self, modality: str = None, **kwargs):
+    def __init__(self, modality: str = 'default', **kwargs):
         """ Object constructur, accepts config dictionary.
 
         Args:
             modality (str): Select a predefined configuration between [default, low_mem, web]
         """
+        self._config = configure.SystemConfigs(modality)
+        self._plot = auto_plot.AutoPlot(modality)
         self._systemInfo = {'courses': {}, 'last_update': 'never'}
-
-        # Set base settings and AutoPlot instance
-        if modality:
-            if modality == 'low_mem':
-                self._config = self._config_low_mem.copy()
-                self._plot = auto_plot.AutoPlot('web')
-            elif modality == 'web':
-                self._config = self._config_web.copy()
-                self._plot = auto_plot.AutoPlot('web')
-            elif modality == 'console':
-                self._config = self._config_console.copy()
-                self._plot = auto_plot.AutoPlot('console')
-            else:
-                self._config = self._config_default.copy()
-                self._plot = auto_plot.AutoPlot('web')
-        else:
-            self._config = self._config_default.copy()
-            self._plot = auto_plot.AutoPlot('web')
 
         # Update class settings if required during instantiation
         if (kwargs is not None):
@@ -149,7 +79,6 @@ class LodegSystem:
         else:
             self._db = connection_to_mongo.connect_to_mongo(
                 db_name='lode_real')
-            # should rename these collections <--------------------------------------
             self._logs = self._db.get_collection('web_mockup_population')
             self._lessons = self._db.get_collection('web_mockup_lessons')
 
@@ -168,7 +97,7 @@ class LodegSystem:
 
     def getSystemSettings(self):
         """Get system configuration"""
-        return self._config
+        return self._config.getSettings()
 
     def modify_class_settings(self, **kwargs):
         """Tweak class params

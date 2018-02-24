@@ -6,6 +6,7 @@ import os
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath + '/../../src/lodegML')
 
+from configure.configurations import DefaultConfigurationsHolder
 import system
 
 
@@ -14,6 +15,7 @@ class TestSystem(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls._system = system.LodegSystem(debug=False)
+        cls._default_configurations_holder = DefaultConfigurationsHolder()
 
     def test_system_initialization(self):
         if self._system == None:
@@ -28,7 +30,10 @@ class TestSystem(unittest.TestCase):
     def test_get_system_settings(self):
         try:
             settings = self._system.getSystemSettings()
-            self.assertEqual(settings, self._system._config)
+            default_settings = self._default_configurations_holder.get(
+                'default')
+            default_settings['debug'] = False
+            self.assertEqual(settings, default_settings)
         except:
             return self.fail()
 

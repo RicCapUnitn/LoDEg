@@ -6,6 +6,7 @@ import os
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath + '/../../src/lodegML')
 
+from configure.configurations import DefaultConfigurationsHolder
 import system
 
 
@@ -18,16 +19,21 @@ class TestSystem(unittest.TestCase):
         cls._test_invalid_course = 'CourseNotPresent'
         cls._test_user = 'user0'
         cls._system.executeCompleteExtraction()
+        cls._default_configurations_holder = DefaultConfigurationsHolder()
 
     def test_get_system_settings(self):
         settings = self._system.getSystemSettings()
-        self.assertEqual(settings, self._system._config)
+        default_settings = self._default_configurations_holder.get('default')
+        self.assertEqual(settings, default_settings)
 
     def test_modify_class_settings(self):
-        self._system.modify_class_settings(**self._system._config_console)
-        self.assertEqual(self._system._config_console, self._system._config)
+        self._system.modify_class_settings(
+            **self._default_configurations_holder.get('console'))
+        self.assertEqual(self._default_configurations_holder.get(
+            'console'), self._system._config.getSettings())
         # Restore system settings
-        self._system._config = self._system._config_default.copy()
+        self._system._config = self._default_configurations_holder.get(
+            'default')
 
     def test_getLastUpdate(self):
         last_update = self._system.getLastUpdate()

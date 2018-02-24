@@ -33,7 +33,7 @@ class AutoPlot:
     def _plot(self, figure, output_type='png'):
         if self._target == 'console':
             plt.show()
-        elif self._target == 'web':
+        elif self._target == 'web' or self._target == 'default':
             if output_type == 'html':
                 html = mpld3.fig_to_html(figure)
                 return html
@@ -281,7 +281,8 @@ class AutoPlot:
             if (tmp > max_value):
                 max_value = tmp
 
-            ax.bar(xs, ys, zs=next(zs), zdir='y', alpha=0.8)
+            current_z = next(zs)
+            ax.bar(xs, ys, zs=current_z, zdir='y', alpha=0.8)
 
         # Set ticks
         ax.set_yticklabels(y_ticks)

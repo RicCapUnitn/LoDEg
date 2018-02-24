@@ -30,13 +30,15 @@ help:
 website:
 	$(SILENT)cd src/lodeg_website; python manage.py runserver $(filter-out $@, $(MAKECMDGOALS))
 
-to_web:
-	$(SILENT)echo ">>> Starting migration from WebApp library to the standalone library..."
+to_web: clean
+	$(SILENT)echo ">>> Starting migration from the standalone library to the WebApp library..."
 	$(SILENT)./tools/lib_to_web.sh
 	$(SILENT)echo ">>> Done!\n"
 
-from_web:
+from_web: clean
+	$(SILENT)echo ">>> Starting migration from the WebApp library to the standalone library..."
 	$(SILENT)./tools/web_to_lib.sh
+	$(SILENT)echo ">>> Done!\n"
 
 check: clean
 	$(SILENT)echo ">>> Starting integrity test..."

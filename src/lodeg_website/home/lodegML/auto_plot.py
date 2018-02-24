@@ -15,7 +15,7 @@ import base64
 import io
 
 # For correlation_graph test only
-# from ..lodegML import test_utils  # migrate
+# import test_utils  # migrate
 
 
 class AutoPlot:
@@ -33,7 +33,7 @@ class AutoPlot:
     def _plot(self, figure, output_type='png'):
         if self._target == 'console':
             plt.show()
-        elif self._target == 'web':
+        elif self._target == 'web' or self._target == 'default':
             if output_type == 'html':
                 html = mpld3.fig_to_html(figure)
                 return html
