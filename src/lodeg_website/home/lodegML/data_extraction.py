@@ -95,7 +95,8 @@ def session_coverage_extraction(sessionInfo: dict):
     muted_intervals = []
 
     play_pause_alive_jump_list = utils.purify_list(
-        sessionInfo['data'], ['play', 'pause', 'alive', 'jump', 'speed', 'mute'])
+        sessionInfo['data'],
+        ['play', 'pause', 'alive', 'jump', 'speed', 'mute'])
 
     for record in play_pause_alive_jump_list:
 
@@ -114,9 +115,11 @@ def session_coverage_extraction(sessionInfo: dict):
 
             elif current_action == 'pause':
                 is_paused = True
-                if is_muted and (np.abs(end_interval - start_muted_interval) > 5.0):
+                if is_muted and(
+                        np.abs(end_interval - start_muted_interval) > 5.0):
                     muted_intervals = utils.add_interval(
-                        muted_intervals, [start_muted_interval, current_value1])
+                        muted_intervals,
+                        [start_muted_interval, current_value1])
 
             elif current_action == 'jump':
 
@@ -126,7 +129,9 @@ def session_coverage_extraction(sessionInfo: dict):
                     intervals = utils.add_interval(
                         intervals, [start_interval, end_interval])
                 # Add muted interval
-                if is_muted and (not is_paused) and (np.abs(end_interval - start_muted_interval) > 5.0):
+                if is_muted and(
+                        not is_paused) and(
+                        np.abs(end_interval - start_muted_interval) > 5.0):
                     muted_intervals = utils.add_interval(
                         muted_intervals, [start_muted_interval, end_interval])
                 # Update coverage start_interval
@@ -143,9 +148,12 @@ def session_coverage_extraction(sessionInfo: dict):
                         intervals = utils.add_interval(
                             intervals, [start_interval, end_interval])
                     # Add muted interval
-                    if is_muted and (not is_paused) and (np.abs(end_interval - start_muted_interval) > 5.0):
+                    if is_muted and(
+                            not is_paused) and(
+                            np.abs(end_interval - start_muted_interval) > 5.0):
                         muted_intervals = utils.add_interval(
-                            muted_intervals, [start_muted_interval, end_interval])
+                            muted_intervals,
+                            [start_muted_interval, end_interval])
 
             elif current_action == 'speed':
                 # TODO extract some info about speed, such as avg_speed
@@ -155,9 +163,11 @@ def session_coverage_extraction(sessionInfo: dict):
             if is_muted:
                 # We are unmuting the video => add a new muted interval
                 is_muted = False
-                if (not is_paused) and (np.abs(current_value1 - start_muted_interval) > 5.0):
+                if (not is_paused) and (
+                        np.abs(current_value1 - start_muted_interval) > 5.0):
                     muted_intervals = utils.add_interval(
-                        muted_intervals, [start_muted_interval, current_value1])
+                        muted_intervals,
+                        [start_muted_interval, current_value1])
                 start_muted_interval = current_value1
             else:
                 # We are muting the video
@@ -288,7 +298,8 @@ def notes_info_extraction(sessionInfo: dict):
 # User level extraction #
 #########################
 
-def compute_lessons_coverage_for_single_user(userInfo: dict, lessons_durations: dict):
+def compute_lessons_coverage_for_single_user(
+        userInfo: dict, lessons_durations: dict):
     """This function computes the lesson coverage for all lessons of a user.
 
     Note: It computes the coverage_histogram as well
@@ -459,9 +470,10 @@ def compute_course_global_coverage(courseInfo: dict):
                 histogram[lesson_title] += 1
                 # if lesson_title in userInfo['lessons_coverage']:
                 # If the user has watched the lesson
-                for i in range(len(userInfo['lessons_coverage'][lesson_title])):
-                    global_coverage[lesson_title][
-                        i] += (userInfo['lessons_coverage'][lesson_title][i] > 0)
+                for i in range(
+                        len(userInfo['lessons_coverage'][lesson_title])):
+                    global_coverage[lesson_title][i] += (
+                        userInfo['lessons_coverage'][lesson_title][i] > 0)
 
     courseInfo['global_coverage'] = global_coverage
     courseInfo['coverage_histogram'] = histogram
@@ -504,7 +516,8 @@ def course_lessons_visualization_extraction(courseInfo: dict):
     try:
         lessons_visualization = {}
         for userInfo in courseInfo['users'].values():
-            for lesson, dates_counter in userInfo['lessons_visualization'].items():
+            for lesson, dates_counter in userInfo['lessons_visualization'].items(
+            ):
                 if lesson not in lessons_visualization:
                     lessons_visualization[lesson] = dates_counter.copy()
                 else:
@@ -538,7 +551,9 @@ def course_day_distribution_extraction(courseInfo: dict):
 #######
 
 
-def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, session=None, data_provided=False, keep_session_data=False):
+def execute_sessionInfo_extraction(
+        sessionInfo: dict, logs_collection=None, session=None,
+        data_provided=False, keep_session_data=False):
     """Execute a complete extraction for a single session.
 
     Note:
@@ -583,8 +598,9 @@ def execute_sessionInfo_extraction(sessionInfo: dict, logs_collection=None, sess
     return True
 
 
-def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course: str,
-                                user: str, userInfo: dict, keep_session_data=False, sessionInfo_provided=False):
+def execute_userInfo_extraction(
+        logs_collection, lessons_durations: dict, course: str, user: str,
+        userInfo: dict, keep_session_data=False, sessionInfo_provided=False):
     """Execute a complete extraction for a single user.
 
     Args:
@@ -605,7 +621,9 @@ def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course
 
         for session, sessionInfo in userInfo['sessions'].items():
             # Extract sessionInfo information
-            if not execute_sessionInfo_extraction(sessionInfo, data_provided=True, keep_session_data=keep_session_data):
+            if not execute_sessionInfo_extraction(
+                    sessionInfo, data_provided=True,
+                    keep_session_data=keep_session_data):
                 invalid_sessions.append(session)
             else:
                 # Add coverage percentage
@@ -633,8 +651,9 @@ def execute_userInfo_extraction(logs_collection, lessons_durations: dict, course
     day_session_distribution_extraction(userInfo)
 
 
-def execute_courseInfo_extraction(logs_collection, lessons_collection, course: str, courseInfo: dict,
-                                  keep_session_data=False, keep_user_info=True, query_mem_opt=True):
+def execute_courseInfo_extraction(
+        logs_collection, lessons_collection, course: str, courseInfo: dict,
+        keep_session_data=False, keep_user_info=True, query_mem_opt=True):
     """Execute a complete extraction for a single course.
 
     Note: query_mem_opt will keep a lot of data in memory due to mongoDb query caching mechanism.
@@ -669,13 +688,21 @@ def execute_courseInfo_extraction(logs_collection, lessons_collection, course: s
 
             for session, sessionInfo in userInfo['sessions'].items():
                 # Execute sessionInfo extraction
-                if not execute_sessionInfo_extraction(sessionInfo, data_provided=True, keep_session_data=keep_session_data):
+                if not execute_sessionInfo_extraction(
+                        sessionInfo, data_provided=True,
+                        keep_session_data=keep_session_data):
                     invalid_sessions.append(session)
                 # Remove invalid sessions
                 for session in invalid_sessions:
                     del userInfo['sessions'][session]
-            execute_userInfo_extraction(logs_collection, courseInfo[
-                                        'lessons_durations'], course, user, userInfo, keep_session_data=keep_session_data, sessionInfo_provided=True)
+            execute_userInfo_extraction(
+                logs_collection,
+                courseInfo['lessons_durations'],
+                course,
+                user,
+                userInfo,
+                keep_session_data=keep_session_data,
+                sessionInfo_provided=True)
             # Add this user sessions to the total counter
             total_number_of_sessions += len(userInfo['sessions'])
     else:
@@ -685,8 +712,14 @@ def execute_courseInfo_extraction(logs_collection, lessons_collection, course: s
         # Extract features
         for user in users:
             userInfo = {}
-            execute_userInfo_extraction(logs_collection, courseInfo[
-                                        'lessons_durations'], course, user, userInfo, keep_session_data=keep_session_data, sessionInfo_provided=False)
+            execute_userInfo_extraction(
+                logs_collection,
+                courseInfo['lessons_durations'],
+                course,
+                user,
+                userInfo,
+                keep_session_data=keep_session_data,
+                sessionInfo_provided=False)
             # Add this user sessions to the total counter
             total_number_of_sessions += len(userInfo['sessions'])
             # Add this user to the systemInfo
@@ -711,7 +744,9 @@ def execute_courseInfo_extraction(logs_collection, lessons_collection, course: s
         pass  # <------------------------------
 
 
-def execute_complete_extraction(logs_collection, lessons_collection, systemInfo, keep_session_data=False, keep_user_info=True, query_mem_opt=True):
+def execute_complete_extraction(
+        logs_collection, lessons_collection, systemInfo,
+        keep_session_data=False, keep_user_info=True, query_mem_opt=True):
     """Execute a complete extraction of the whole system.
 
     This function extracts all the data from the collection, extracts the
@@ -737,8 +772,14 @@ def execute_complete_extraction(logs_collection, lessons_collection, systemInfo,
     for course in courses:
         courseInfo = {}
         # Extract features
-        execute_courseInfo_extraction(logs_collection, lessons_collection, course, courseInfo,
-                                      keep_session_data=keep_session_data, keep_user_info=keep_user_info, query_mem_opt=query_mem_opt)
+        execute_courseInfo_extraction(
+            logs_collection,
+            lessons_collection,
+            course,
+            courseInfo,
+            keep_session_data=keep_session_data,
+            keep_user_info=keep_user_info,
+            query_mem_opt=query_mem_opt)
         # Add this course to the systemInfo
         systemInfo['courses'][course] = courseInfo
 

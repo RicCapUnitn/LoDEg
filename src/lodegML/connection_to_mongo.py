@@ -14,7 +14,8 @@ from pymongo import MongoClient
 import urllib.parse
 
 
-def connect_to_mongo(uri="mongodb://127.0.0.1:27017", db_name="lodeg", username=None, password=None):
+def connect_to_mongo(uri="mongodb://127.0.0.1:27017",
+                     db_name="lodeg", username=None, password=None):
 
     if (username is not None) and (password is not None):
         username = urllib.parse.quote_plus(username)

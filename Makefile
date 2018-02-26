@@ -40,6 +40,12 @@ from_web: clean
 	$(SILENT)./tools/web_to_lib.sh
 	$(SILENT)echo ">>> Done!\n"
 
+pep8_check:
+	$(SILENT) pep8 .
+
+pep8_reformat:
+	$(SILENT) autopep8 --in-place --aggressive --experimental -r .
+
 check: clean
 	$(SILENT)echo ">>> Starting integrity test..."
 	$(SILENT)./tools/check_migration.sh

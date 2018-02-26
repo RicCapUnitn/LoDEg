@@ -4,7 +4,7 @@ import utility_queries as utils  # migrate
 
 try:
     from ..models import Cache as DjangoCache, LodegUser
-except:
+except BaseException:
     pass
 
 

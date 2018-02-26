@@ -41,7 +41,8 @@ class AutoPlot:
                 f = io.BytesIO()
                 figure.savefig(f, format="png")
                 plt.clf()  # Might break everything when parallelizing
-                return "data:image/png;base64," + base64.b64encode(f.getvalue()).decode()
+                return "data:image/png;base64," + \
+                    base64.b64encode(f.getvalue()).decode()
 
     def printSessionCoverage(self, sessionInfo: dict, lesson_duration: float):
         """ Print the session coverage, i.e. which parts of the video have been watched.
@@ -72,8 +73,9 @@ class AutoPlot:
                     [-2, y], "g--", linewidth=0.5)
 
         ax.grid(True)
-        ax.set_title('SESSION COVERAGE: which parts of the video have been watched',
-                     fontsize=self._title_font_size)
+        ax.set_title(
+            'SESSION COVERAGE: which parts of the video have been watched',
+            fontsize=self._title_font_size)
         ax.set_xlabel('minutes')
         ax.set_ylabel('Inteval number')
         return self._plot(fig, 'html')
@@ -224,7 +226,9 @@ class AutoPlot:
 
         return self._plot(fig, 'png')
 
-    def printLessonUserCorrelationGraph(self, lessons_visualization: dict, registration_dates: dict, time_format: str='abs'):
+    def printLessonUserCorrelationGraph(
+            self, lessons_visualization: dict, registration_dates: dict,
+            time_format: str='abs'):
         """Print a 3d graph of users lesson visualization.
 
         The graph plots a function of the number of users against time and lessons: for every lesson,
@@ -277,8 +281,10 @@ class AutoPlot:
                 datemax = max_date
 
             # Create verts adding a 0 before the first and after the last days
-            xs = np.asarray([mdates.date2num(min_date + datetime.timedelta(days=-1))] + list(mdates.date2num(dates))
-                            + [mdates.date2num(max_date + datetime.timedelta(days=1))])
+            xs = np.asarray(
+                [mdates.date2num(min_date + datetime.timedelta(days=-1))] +
+                list(mdates.date2num(dates)) +
+                [mdates.date2num(max_date + datetime.timedelta(days=1))])
             ys = [0]
             for date in dates:
                 ys.append(dates_counter[date])

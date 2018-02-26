@@ -6,14 +6,19 @@ from home.models import LodegUser
 
 # Define an inline admin descriptor for Employee model
 # which acts a bit like a singleton
+
+
 class UserInline(admin.StackedInline):
     model = LodegUser
     can_delete = False
     verbose_name_plural = 'lodeguser'
 
 # Define a new User admin
+
+
 class UserAdmin(BaseUserAdmin):
     inlines = (UserInline, )
+
 
 # Re-register UserAdmin
 admin.site.unregister(User)

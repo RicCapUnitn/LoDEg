@@ -18,13 +18,13 @@ class TestSystem(unittest.TestCase):
         cls._default_configurations_holder = DefaultConfigurationsHolder()
 
     def test_system_initialization(self):
-        if self._system == None:
+        if self._system is None:
             return self.fail()
 
     def test_system_complete_extraction(self):
         try:
             self._system.executeCompleteExtraction()
-        except:
+        except BaseException:
             return self.fail()
 
     def test_get_system_settings(self):
@@ -34,7 +34,7 @@ class TestSystem(unittest.TestCase):
                 'default')
             default_settings['debug'] = False
             self.assertEqual(settings, default_settings)
-        except:
+        except BaseException:
             return self.fail()
 
     def test_get_data_all(self):
@@ -42,7 +42,7 @@ class TestSystem(unittest.TestCase):
             data = self._system.getData()
             self.assertNotEqual(data, None)
             self.assertNotEqual(data, {})
-        except:
+        except BaseException:
             return self.fail()
 
     def test_get_data_course(self):
@@ -50,7 +50,7 @@ class TestSystem(unittest.TestCase):
             data = self._system.getData()
             self.assertNotEqual(data, None)
             self.assertNotEqual(data, {})
-        except:
+        except BaseException:
             return self.fail()
 
     # def test_json_export(self):

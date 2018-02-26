@@ -23,6 +23,7 @@ class DataFrameSelector(BaseEstimator, TransformerMixin):
     def transform(self, X):
         return X[self.attribute_names].values
 
+
 _stats_whitelist = [
     'number_of_notes',
     'notes_over_session_duration',
@@ -99,8 +100,8 @@ def executeUserClustering(courseInfo: dict):
     dataframe = courseInfo['stats_dframe']
 
     # Add noise for testing
-    #noise = np.random.normal(100,10, dataframe.shape)
-    #dataframe += noise
+    # noise = np.random.normal(100,10, dataframe.shape)
+    # dataframe += noise
 
     # Run pipeline
     if _num_attribs != [] and _cat_attribs != []:
@@ -144,14 +145,19 @@ def executeUserClustering(courseInfo: dict):
     #ms = cluster.MeanShift(bandwidth=bandwidth, bin_seeding=True)
     two_means = cluster.MiniBatchKMeans(n_clusters=params['n_clusters'])
     ward = cluster.AgglomerativeClustering(
-        n_clusters=params['n_clusters'], linkage='ward', connectivity=connectivity)
-    spectral = cluster.SpectralClustering(n_clusters=params[
-                                          'n_clusters'], eigen_solver='arpack', affinity="nearest_neighbors")
+        n_clusters=params['n_clusters'],
+        linkage='ward', connectivity=connectivity)
+    spectral = cluster.SpectralClustering(
+        n_clusters=params['n_clusters'],
+        eigen_solver='arpack',
+        affinity="nearest_neighbors")
     dbscan = cluster.DBSCAN(eps=params['eps'])
     affinity_propagation = cluster.AffinityPropagation(
         damping=params['damping'], preference=params['preference'])
-    average_linkage = cluster.AgglomerativeClustering(linkage="average", affinity="cityblock", n_clusters=params[
-                                                      'n_clusters'],         connectivity=connectivity)
+    average_linkage = cluster.AgglomerativeClustering(
+        linkage="average", affinity="cityblock",
+        n_clusters=params['n_clusters'],
+        connectivity=connectivity)
     birch = cluster.Birch(n_clusters=params['n_clusters'])
     gmm = mixture.GaussianMixture(
         n_components=params['n_clusters'], covariance_type='full')

@@ -85,16 +85,17 @@
 <p id="n16" class="pln"><a href="#n16">16</a></p>
 <p id="n17" class="stm run hide_run"><a href="#n17">17</a></p>
 <p id="n18" class="pln"><a href="#n18">18</a></p>
-<p id="n19" class="stm run hide_run"><a href="#n19">19</a></p>
+<p id="n19" class="pln"><a href="#n19">19</a></p>
 <p id="n20" class="stm run hide_run"><a href="#n20">20</a></p>
 <p id="n21" class="stm run hide_run"><a href="#n21">21</a></p>
 <p id="n22" class="stm run hide_run"><a href="#n22">22</a></p>
 <p id="n23" class="stm run hide_run"><a href="#n23">23</a></p>
-<p id="n24" class="pln"><a href="#n24">24</a></p>
-<p id="n25" class="stm run hide_run"><a href="#n25">25</a></p>
+<p id="n24" class="stm run hide_run"><a href="#n24">24</a></p>
+<p id="n25" class="pln"><a href="#n25">25</a></p>
 <p id="n26" class="stm run hide_run"><a href="#n26">26</a></p>
-<p id="n27" class="pln"><a href="#n27">27</a></p>
-<p id="n28" class="stm run hide_run"><a href="#n28">28</a></p>
+<p id="n27" class="stm run hide_run"><a href="#n27">27</a></p>
+<p id="n28" class="pln"><a href="#n28">28</a></p>
+<p id="n29" class="stm run hide_run"><a href="#n29">29</a></p>
 
             </td>
             <td class="text">
@@ -114,18 +115,19 @@
 <p id="t14" class="stm run hide_run"><span class="key">import</span> <span class="nam">urllib</span><span class="op">.</span><span class="nam">parse</span><span class="strut">&nbsp;</span></p>
 <p id="t15" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t16" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t17" class="stm run hide_run"><span class="key">def</span> <span class="nam">connect_to_mongo</span><span class="op">(</span><span class="nam">uri</span><span class="op">=</span><span class="str">"mongodb://127.0.0.1:27017"</span><span class="op">,</span> <span class="nam">db_name</span><span class="op">=</span><span class="str">"lodeg"</span><span class="op">,</span> <span class="nam">username</span><span class="op">=</span><span class="key">None</span><span class="op">,</span> <span class="nam">password</span><span class="op">=</span><span class="key">None</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t18" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t19" class="stm run hide_run">    <span class="key">if</span> <span class="op">(</span><span class="nam">username</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">)</span> <span class="key">and</span> <span class="op">(</span><span class="nam">password</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t20" class="stm run hide_run">        <span class="nam">username</span> <span class="op">=</span> <span class="nam">urllib</span><span class="op">.</span><span class="nam">parse</span><span class="op">.</span><span class="nam">quote_plus</span><span class="op">(</span><span class="nam">username</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t21" class="stm run hide_run">        <span class="nam">password</span> <span class="op">=</span> <span class="nam">urllib</span><span class="op">.</span><span class="nam">parse</span><span class="op">.</span><span class="nam">quote_plus</span><span class="op">(</span><span class="nam">password</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t22" class="stm run hide_run">        <span class="nam">host</span> <span class="op">=</span> <span class="nam">uri</span><span class="op">.</span><span class="nam">split</span><span class="op">(</span><span class="str">'//'</span><span class="op">)</span><span class="op">[</span><span class="num">1</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
-<p id="t23" class="stm run hide_run">        <span class="nam">uri</span> <span class="op">=</span> <span class="str">"mongodb://"</span> <span class="op">+</span> <span class="str">"%s:%s@"</span> <span class="op">%</span> <span class="op">(</span><span class="nam">username</span><span class="op">,</span> <span class="nam">password</span><span class="op">)</span> <span class="op">+</span> <span class="nam">host</span><span class="strut">&nbsp;</span></p>
-<p id="t24" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t25" class="stm run hide_run">    <span class="nam">client</span> <span class="op">=</span> <span class="nam">MongoClient</span><span class="op">(</span><span class="nam">uri</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t26" class="stm run hide_run">    <span class="nam">db</span> <span class="op">=</span> <span class="nam">client</span><span class="op">.</span><span class="nam">get_database</span><span class="op">(</span><span class="nam">db_name</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t27" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t28" class="stm run hide_run">    <span class="key">return</span> <span class="nam">db</span><span class="strut">&nbsp;</span></p>
+<p id="t17" class="stm run hide_run"><span class="key">def</span> <span class="nam">connect_to_mongo</span><span class="op">(</span><span class="nam">uri</span><span class="op">=</span><span class="str">"mongodb://127.0.0.1:27017"</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
+<p id="t18" class="pln">                     <span class="nam">db_name</span><span class="op">=</span><span class="str">"lodeg"</span><span class="op">,</span> <span class="nam">username</span><span class="op">=</span><span class="key">None</span><span class="op">,</span> <span class="nam">password</span><span class="op">=</span><span class="key">None</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t19" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t20" class="stm run hide_run">    <span class="key">if</span> <span class="op">(</span><span class="nam">username</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">)</span> <span class="key">and</span> <span class="op">(</span><span class="nam">password</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t21" class="stm run hide_run">        <span class="nam">username</span> <span class="op">=</span> <span class="nam">urllib</span><span class="op">.</span><span class="nam">parse</span><span class="op">.</span><span class="nam">quote_plus</span><span class="op">(</span><span class="nam">username</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t22" class="stm run hide_run">        <span class="nam">password</span> <span class="op">=</span> <span class="nam">urllib</span><span class="op">.</span><span class="nam">parse</span><span class="op">.</span><span class="nam">quote_plus</span><span class="op">(</span><span class="nam">password</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t23" class="stm run hide_run">        <span class="nam">host</span> <span class="op">=</span> <span class="nam">uri</span><span class="op">.</span><span class="nam">split</span><span class="op">(</span><span class="str">'//'</span><span class="op">)</span><span class="op">[</span><span class="num">1</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
+<p id="t24" class="stm run hide_run">        <span class="nam">uri</span> <span class="op">=</span> <span class="str">"mongodb://"</span> <span class="op">+</span> <span class="str">"%s:%s@"</span> <span class="op">%</span> <span class="op">(</span><span class="nam">username</span><span class="op">,</span> <span class="nam">password</span><span class="op">)</span> <span class="op">+</span> <span class="nam">host</span><span class="strut">&nbsp;</span></p>
+<p id="t25" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t26" class="stm run hide_run">    <span class="nam">client</span> <span class="op">=</span> <span class="nam">MongoClient</span><span class="op">(</span><span class="nam">uri</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t27" class="stm run hide_run">    <span class="nam">db</span> <span class="op">=</span> <span class="nam">client</span><span class="op">.</span><span class="nam">get_database</span><span class="op">(</span><span class="nam">db_name</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t28" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t29" class="stm run hide_run">    <span class="key">return</span> <span class="nam">db</span><span class="strut">&nbsp;</span></p>
 
             </td>
         </tr>
@@ -136,7 +138,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.4.2</a>,
-            created at 2018-02-21 11:03
+            created at 2018-02-26 12:07
         </p>
     </div>
 </div>

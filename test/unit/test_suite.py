@@ -344,15 +344,19 @@ class TestQueries(unittest.TestCase):
 
     def test_queries_1_get_all_courses(self):
         self.assertEqual(
-            set(utils.get_all_courses(lessons_collection)), set(['course1', 'course2']))
+            set(utils.get_all_courses(lessons_collection)),
+            set(['course1', 'course2']))
 
     def test_queries_2_get_all_users_for_course(self):
-        self.assertEqual(
-            set(utils.get_all_users_for_course(logs_collection, 'course1')), set(['user1', 'user2', 'user3', 'play_pause_test', 'session_coverage_test', 'jumps_info_test']))
+        self.assertEqual(set(utils.get_all_users_for_course(logs_collection, 'course1')), set(
+            ['user1', 'user2', 'user3', 'play_pause_test', 'session_coverage_test', 'jumps_info_test']))
 
     def test_queries_3_get_all_sessions_for_user_and_course(self):
         self.assertEqual(
-            set(utils.get_all_sessions_for_user_and_course(logs_collection, 'user1', 'course1')), set(['user1-session1', 'user1-session2', 'user1-session3']))
+            set(
+                utils.get_all_sessions_for_user_and_course(
+                    logs_collection, 'user1', 'course1')),
+            set(['user1-session1', 'user1-session2', 'user1-session3']))
 
     def test_queries_4_get_all_users_records(self):
         courseInfo = {}
@@ -405,9 +409,11 @@ class TestJumpsInfoExtraction(unittest.TestCase):
         average_jumps_length = total_jumps_length / 4.0
         jumps_per_type = jumps_per_type = {
             'click_or_drag': 3, 'keyframe': 1, 'note': 0}
-        expected_output = {'number_of_jumps': number_of_jumps, 'average_jumps_length':
-                           average_jumps_length, 'jumps_per_type': jumps_per_type,
-                           'total_jumps_length': total_jumps_length}
+        expected_output = {
+            'number_of_jumps': number_of_jumps,
+            'average_jumps_length': average_jumps_length,
+            'jumps_per_type': jumps_per_type,
+            'total_jumps_length': total_jumps_length}
 
         test_utils.jumps_info_test(
             logs_collection, 'jumps_info_test', self._sessionInfo)

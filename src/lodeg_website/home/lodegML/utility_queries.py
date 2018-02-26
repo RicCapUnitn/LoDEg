@@ -24,7 +24,8 @@ def utc_to_local_time(utc: datetime):
     return local_tzaware_time.strftime('%Y-%m-%d %H:%M:%S %Z')
 
 
-def get_lessons_durations_and_registration_dates(lessons_collection, course: str, courseInfo: dict):
+def get_lessons_durations_and_registration_dates(
+        lessons_collection, course: str, courseInfo: dict):
     """Set for a course the course lessons and their durations.
 
     Args:
@@ -63,33 +64,33 @@ def add_interval(intervals: list, interval: list):
     end_index = -1
     concatenating = False
 
-    if (intervals == None or intervals == []):
+    if (intervals is None) or (intervals == []):
         return [[start, end]]
 
     for i in range(0, len(intervals)):
         i_start = (intervals[i][0])
         i_end = (intervals[i][1])
-        if (i_start <= start and i_end >= end):
+        if (i_start <= start) and (i_end >= end):
             return intervals
-        elif (start < i_start):
-            if (end >= i_start):
-                if(start_index == -1):
+        elif start < i_start:
+            if end >= i_start:
+                if start_index == -1:
                     start_index = i
                     concatenating = True
-                if (end < i_end):
+                if end < i_end:
                     end = i_end
             else:
                 concatenating = False
-            if (end < i_end):
-                if(not concatenating):
-                    if(end_index == -1):
+            if end < i_end:
+                if not concatenating:
+                    if end_index == -1:
                         concatenating = True
                         end_index = i
-                if (concatenating):
+                if concatenating:
                     end_index = i
         else:  # (start >= i_start)
-            if (start <= i_end):
-                if(start_index == -1):
+            if start <= i_end:
+                if start_index == -1:
                     start_index = i
                     start = i_start
                     concatenating = True
@@ -102,12 +103,12 @@ def add_interval(intervals: list, interval: list):
         return intervals
 
     # disjoint_start and disjoint_middle
-    elif (start_index == -1):
+    elif start_index == -1:
         intervals.insert(end_index, [start, end])
         return intervals
 
     # strict_end and boundary_end
-    elif (end_index == -1):
+    elif end_index == -1:
         return intervals[:start_index] + [[start, end]]
 
     # the interval intersects some other intervals
@@ -246,7 +247,8 @@ def get_all_records_for_session(collection, session: str, sessionInfo: dict):
     sessionInfo['data'] = list(collection.find({'session_id': session}))
 
 
-def get_all_records_for_user_and_course(collection, course: str, user: str, userInfo: dict):
+def get_all_records_for_user_and_course(
+        collection, course: str, user: str, userInfo: dict):
     """Populate the specified userInfo with data"""
     # Retrieve course sessions
     matching_sessions = get_all_sessions_for_course(collection, course)

@@ -15,19 +15,14 @@ class Migration(migrations.Migration):
     operations = [
         migrations.CreateModel(
             name='Cache',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('data', models.BinaryField()),
-            ],
-        ),
+            fields=[('id', models.AutoField(
+                auto_created=True, primary_key=True, serialize=False,
+                verbose_name='ID')),
+                ('data', models.BinaryField()), ],),
         migrations.AlterField(
-            model_name='lodeguser',
-            name='lodeg_user_id',
-            field=models.CharField(max_length=100, unique=True),
-        ),
+            model_name='lodeguser', name='lodeg_user_id',
+            field=models.CharField(max_length=100, unique=True),),
         migrations.AddField(
-            model_name='cache',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='home.LodegUser'),
-        ),
-    ]
+            model_name='cache', name='user', field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='home.LodegUser'),), ]

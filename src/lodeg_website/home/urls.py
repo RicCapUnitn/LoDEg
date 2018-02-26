@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^userInfo/', views.userInfo, name='userInfo'),
     url(r'^sessionInfo/', views.sessionInfo, name='sessionInfo'),
     url(r'^collectDataFromDb/', views.collectDataFromDb, name='collectDataFromDb'),
-    url(r'^saveDataToDb/', views.saveDataToDb, name='saveDataToDb'),   
+    url(r'^saveDataToDb/', views.saveDataToDb, name='saveDataToDb'),
     url(r'^exportToCsv/', views.exportToCsv, name='exportToCsv'),
     url(r'^setUser/', views.setUser, name='setUser'),
     url(r'^setSession/', views.setSession, name='setSession'),
@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^extractUserData/', views.extractUserData, name='extractUserData'),
     url(r'^executeCompleteExtraction/', views.executeCompleteExtraction, name='executeCompleteExtraction'),
     url(r'^$', views.index, name='index'),
-    
+
     url(r'^settings/', views.settings, name='settings'),
     url(r'^modifySystemSettings/', views.modifySystemSettings, name='modifySystemSettings'),
     url(r'^debuggingConsole/', views.debuggingConsole, name='debuggingConsole')

@@ -64,17 +64,18 @@ def import_data(systemInfo: dict, filename: str, overwrite: bool = False):
             insertion_position = systemInfo
             system_flag = True
     except KeyError:
-        return 'Some layers above the {} you are inserting are not present in the system'.format(location)
+        return 'Some layers above the {} you are inserting are not present in the system'.format(
+            location)
     except IndexError:
         return 'Metadata are corrupted; the file cannot be imported'
 
     if system_flag:
-        if overwrite == False:
+        if not overwrite:
             if len(systemInfo['courses']) != 0:
                 return 'Trying to overwrite the whole system without permissions; try overwrite = True'
         systemInfo = data
     else:
-        if overwrite == False:
+        if not overwrite:
             if insertion_key in inserting_position.keys():
                 return 'Import has overwrite conflict; try to launch with overwrite = True'
         insertion_position[insertion_key] = data
@@ -83,8 +84,10 @@ def import_data(systemInfo: dict, filename: str, overwrite: bool = False):
     return 'Done', systemInfo
 
 
-def export_data(systemInfo: dict, export_type: str, course: str = None, user: str = None, session: str = None,
-                selected_keys: list = None, excluded_keys: list = None, pretty_printing: bool = False):
+def export_data(
+        systemInfo: dict, export_type: str, course: str=None, user: str=None,
+        session: str=None, selected_keys: list=None, excluded_keys: list=None,
+        pretty_printing: bool=False):
     """Export the whole system or a part of it.
 
     The json and the binary .p formats are supported.
@@ -158,10 +161,9 @@ def export_data(systemInfo: dict, export_type: str, course: str = None, user: st
     if export_type == 'json':
         with open(title + '-export.json', 'w') as fp:
             if pretty_printing:
-                json.dump({
-                    'insertion_position': insertion_position,
-                    'insertion_key': insertion_key,
-                    'data': data}, fp, indent=4, skipkeys=True, cls=utils.BetterEncoder)
+                json.dump({'insertion_position': insertion_position,
+                           'insertion_key': insertion_key, 'data': data},
+                          fp, indent=4, skipkeys=True, cls=utils.BetterEncoder)
             else:
                 json.dump({
                     'insertion_position': insertion_position,

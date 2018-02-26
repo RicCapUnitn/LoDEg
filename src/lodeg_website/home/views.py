@@ -171,7 +171,7 @@ def sendEmail(request):
     if attachment is not None:
         try:
             message.attach_file(attachment)
-        except:
+        except BaseException:
             pass
 
     message.send(fail_silently=False)
