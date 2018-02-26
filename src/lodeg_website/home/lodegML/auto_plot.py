@@ -48,25 +48,33 @@ class AutoPlot:
 
         Params:
             sessionInfo (dict): the session that contains the session_coverage to be plotted.
-            lesson_duration (float): the duration of the lesson to be plotted.
+            lesson_duration (float): the duration of the lesson to be plotted in seconds.
 
         Todo:
             * pass the session_coverage instead of the sessionInfo
         """
         session_coverage = sessionInfo['session_coverage']
         fig, ax = plt.subplots()
-        ax.plot([0, lesson_duration], [-2, -2], color='b', linewidth=20)
-        k = 0
-        for i in session_coverage:
-            k = k + 1
-            ax.plot(i, [-2, -2], color='r', linewidth=20)
-            ax.plot(i, [k, k], color='r', linewidth=6)
-            ax.plot([i[0], i[0]], [-2, k], "g--", linewidth=0.5)
-            ax.plot([i[1], i[1]], [-2, k], "g--", linewidth=0.5)
+
+        lesson_duration_in_minutes = lesson_duration / 60.
+
+        ax.plot([0, lesson_duration_in_minutes],
+                [-2, -2], color='b', linewidth=20)
+        y = 0
+        for interval in session_coverage:
+            y = y + 1
+            interval_in_minutes = (interval[0] / 60., interval[1] / 60)
+            ax.plot(interval_in_minutes, [-2, -2], color='r', linewidth=20)
+            ax.plot(interval_in_minutes, [y, y], color='r', linewidth=6)
+            ax.plot([interval_in_minutes[0], interval_in_minutes[0]],
+                    [-2, y], "g--", linewidth=0.5)
+            ax.plot([interval_in_minutes[1], interval_in_minutes[1]],
+                    [-2, y], "g--", linewidth=0.5)
+
         ax.grid(True)
         ax.set_title('SESSION COVERAGE: which parts of the video have been watched',
                      fontsize=self._title_font_size)
-        ax.set_xlabel('Seconds')
+        ax.set_xlabel('minutes')
         ax.set_ylabel('Inteval number')
         return self._plot(fig, 'html')
 
@@ -81,7 +89,7 @@ class AutoPlot:
         """
         fig, ax = plt.subplots()
         ax.grid(True)
-        ax.set_xlabel('Seconds')
+        ax.set_xlabel('Slots (30s)')
         ax.set_ylabel('Number of users')
         bars = ax.bar(np.arange(len(coverage)), coverage)
         return self._plot(fig, 'html')
