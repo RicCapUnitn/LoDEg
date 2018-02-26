@@ -4,7 +4,7 @@ from ..lodegML import data_extraction  # migrate
 from ..lodegML import connection_to_mongo  # migrate
 from ..lodegML import ml  # migrate
 from ..lodegML import import_export  # migrate
-from configure import configure  # migrate
+from ..lodegML.configure import configure  # migrate
 
 from django.http import HttpResponse
 import csv
@@ -85,7 +85,7 @@ class LodegSystem:
         # Get appropriate cache (or set default one if available)
         requested_cache = self._config['cache']
         if requested_cache is not None:
-            import cache  # migrate
+            from ..lodegML import cache
             # self.check_available_caches()
             # if requested_cache in available_caches:
             # pass # get the appropriate cache somehow

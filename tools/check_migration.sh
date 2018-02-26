@@ -1,7 +1,7 @@
 # Migrate a temp library
 cp -rf src/lodegML/* tools/tmp/migration_backups
-find tools/tmp/migration_backups -type f -name "*.py" -print0 | xargs -0 sed -i "s/from \.\(configure\.configurations\) import\(.*migrate\)/from ...lodegML\1 import\2/g"
-find tools/tmp/migration_backups -type f -name "*.py" -print0 | xargs -0 sed -i "s/from \.\(configure\) import\(.*migrate\)/from ..lodegML\1 import\2/g"
+find tools/tmp/migration_backups -type f -name "*.py" -print0 | xargs -0 sed -i "s/from \(configure\.configurations\) import\(.*migrate\)/from ...lodegML\.\1 import\2/g"
+find tools/tmp/migration_backups -type f -name "*.py" -print0 | xargs -0 sed -i "s/from \(configure\) import\(.*migrate\)/from ..lodegML\.\1 import\2/g"
 find tools/tmp/migration_backups -type f -name "*.py" -print0 | xargs -0 sed -i "s/^import\(.*migrate\)/from ..lodegML import\1/g"
 
 # Compute md5 for the lib dir

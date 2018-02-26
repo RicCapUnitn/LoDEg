@@ -1,4 +1,4 @@
-from configure.configurations import DefaultConfigurationsHolder  # migrate
+from ...lodegML.configure.configurations import DefaultConfigurationsHolder  # migrate
 
 
 class SystemConfigs():
