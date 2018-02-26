@@ -5,6 +5,7 @@ from ..lodegML import connection_to_mongo  # migrate
 from ..lodegML import ml  # migrate
 from ..lodegML import import_export  # migrate
 from ..lodegML.configure import configure  # migrate
+from ..lodegML.exceptions import ImportException, ExportException  # migrate
 
 from django.http import HttpResponse
 import csv
@@ -296,11 +297,12 @@ class LodegSystem:
         Returns:
             A message containing the import status; Done if sucessful
         """
-        message, result = import_export.import_data(
-            self._systemInfo, filename, overwrite)
-        if result and message == 'Done':
-            self._systemInfo = result
-        return message
+        try:
+            self._systemInfo = import_export.import_data(
+                self._systemInfo, filename, overwrite)
+        except ImportException as exc:
+            pass
+        return 'Done'
 
     def getNumberOfUsers(self, course: str = None):
         """Get the number of users saved in the system.

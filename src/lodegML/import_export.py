@@ -1,4 +1,6 @@
 import utility_queries as utils  # migrate
+import exceptions  # migrate
+from exceptions import ImportException, ExportException  # migrate
 
 import json
 import pickle
@@ -18,33 +20,28 @@ def import_data(systemInfo: dict, filename: str, overwrite: bool = False):
         * update the returns section
     """
 
-    # Get the data to be imported
     data = None
 
     try:
-        # Json file
         if filename.endswith('.json'):
             with open(filename, 'r') as fp:
                 data = json.load(fp)
-        # Binary file
         elif filename.endswith('.p'):
             with open(filename, 'rb') as fp:
                 data = pickle.load(fp)
         else:
-            return 'File format not supported'
+            raise ImportException('File format not supported')
+    except FileNotFoundError as exc:
+        raise ImportException('File not found: {}'.format(filename)) from exc
 
-        try:
-            insertion_position = data['insertion_position']
-            insertion_key = data['insertion_key']
-            data = data['data']
-        except KeyError:
-            return 'The file is corrupted and does not contain the appropriate metadata'
+    try:
+        insertion_position = data['insertion_position']
+        insertion_key = data['insertion_key']
+        data = data['data']
+    except KeyError as exc:
+        raise ImportException(
+            'The file is corrupted and does not contain the appropriate metadata') from exc
 
-    except FileNotFoundError:
-        return 'File not found: {}'.format(filename)
-
-    # Try to see if the system can accept the data; if a key error is
-    # rised, do nothing.
     system_flag = False
     tokens = insertion_key.split()
 
@@ -63,25 +60,27 @@ def import_data(systemInfo: dict, filename: str, overwrite: bool = False):
         elif insertion_position == 'system':
             insertion_position = systemInfo
             system_flag = True
-    except KeyError:
-        return 'Some layers above the {} you are inserting are not present in the system'.format(
-            location)
-    except IndexError:
-        return 'Metadata are corrupted; the file cannot be imported'
+    except KeyError as exc:
+        raise ImportException(
+            'Some layers above the level you are inserting are not present in the system') from exc
+    except IndexError or TypeError as exc:
+        raise ImportException(
+            'Metadata are corrupted; the file cannot be imported') from exc
 
     if system_flag:
         if not overwrite:
-            if len(systemInfo['courses']) != 0:
-                return 'Trying to overwrite the whole system without permissions; try overwrite = True'
+            if len(systemInfo['courses']) > 0:
+                raise ImportException(
+                    'Trying to overwrite the whole system without permissions; try overwrite = True')
         systemInfo = data
     else:
         if not overwrite:
-            if insertion_key in inserting_position.keys():
-                return 'Import has overwrite conflict; try to launch with overwrite = True'
+            if insertion_key in insertion_position.keys():
+                raise ImportException(
+                    'Import has overwrite conflict; try to launch with overwrite = True')
         insertion_position[insertion_key] = data
 
-    # Everything worked nominally
-    return 'Done', systemInfo
+    return systemInfo
 
 
 def export_data(

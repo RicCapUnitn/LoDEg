@@ -1,0 +1,10 @@
+{
+  "insertion_position": "session",
+  "insertion_key": "test_course test_user",
+  "data": {
+    "notes_per_type": {
+      "handwritten": 0,
+      "text": 0
+    }
+  }
+}
