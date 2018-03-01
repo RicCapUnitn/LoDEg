@@ -53,6 +53,9 @@ check: clean
 
 .SILENT: tests
 
+requirements:
+	$(SILENT)pipreqs --force --savepath ./requirements.txt ./src/lodegML
+
 doc:
 	$(SILENT)sphinx-apidoc -f -o docs/ src/lodegML/
 	$(SILENT)cd docs/lodegML_docs && $(MAKE) html
