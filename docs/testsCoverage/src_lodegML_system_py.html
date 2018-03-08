@@ -8,7 +8,7 @@
     
     
     <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-    <title>Coverage for src/lodegML/system.py: 48%</title>
+    <title>Coverage for src/lodegML/system.py: 49%</title>
     <link rel="stylesheet" href="style.css" type="text/css">
     
     <script type="text/javascript" src="jquery.min.js"></script>
@@ -24,15 +24,15 @@
 <div id="header">
     <div class="content">
         <h1>Coverage for <b>src/lodegML/system.py</b> :
-            <span class="pc_cov">48%</span>
+            <span class="pc_cov">49%</span>
         </h1>
 
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
 
         <h2 class="stats">
             244 statements &nbsp;
-            <span class="run hide_run shortkey_r button_toggle_run">117 run</span>
-            <span class="mis shortkey_m button_toggle_mis">127 missing</span>
+            <span class="run hide_run shortkey_r button_toggle_run">120 run</span>
+            <span class="mis shortkey_m button_toggle_mis">124 missing</span>
             <span class="exc shortkey_x button_toggle_exc">0 excluded</span>
 
             
@@ -150,10 +150,10 @@
 <p id="n81" class="stm run hide_run"><a href="#n81">81</a></p>
 <p id="n82" class="stm run hide_run"><a href="#n82">82</a></p>
 <p id="n83" class="pln"><a href="#n83">83</a></p>
-<p id="n84" class="stm mis"><a href="#n84">84</a></p>
+<p id="n84" class="stm run hide_run"><a href="#n84">84</a></p>
 <p id="n85" class="pln"><a href="#n85">85</a></p>
-<p id="n86" class="stm mis"><a href="#n86">86</a></p>
-<p id="n87" class="stm mis"><a href="#n87">87</a></p>
+<p id="n86" class="stm run hide_run"><a href="#n86">86</a></p>
+<p id="n87" class="stm run hide_run"><a href="#n87">87</a></p>
 <p id="n88" class="pln"><a href="#n88">88</a></p>
 <p id="n89" class="pln"><a href="#n89">89</a></p>
 <p id="n90" class="stm run hide_run"><a href="#n90">90</a></p>
@@ -851,10 +851,10 @@
 <p id="t81" class="stm run hide_run">            <span class="nam">self</span><span class="op">.</span><span class="nam">_logs</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_db</span><span class="op">.</span><span class="nam">get_collection</span><span class="op">(</span><span class="str">'web_mockup_population'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t82" class="stm run hide_run">            <span class="nam">self</span><span class="op">.</span><span class="nam">_lessons</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_db</span><span class="op">.</span><span class="nam">get_collection</span><span class="op">(</span><span class="str">'web_mockup_lessons'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t83" class="pln">        <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t84" class="stm mis">            <span class="nam">self</span><span class="op">.</span><span class="nam">_db</span> <span class="op">=</span> <span class="nam">connection_to_mongo</span><span class="op">.</span><span class="nam">connect_to_mongo</span><span class="op">(</span><span class="strut">&nbsp;</span></p>
-<p id="t85" class="pln">                <span class="nam">db_name</span><span class="op">=</span><span class="str">'lode_real'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t86" class="stm mis">            <span class="nam">self</span><span class="op">.</span><span class="nam">_logs</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_db</span><span class="op">.</span><span class="nam">get_collection</span><span class="op">(</span><span class="str">'web_mockup_population'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t87" class="stm mis">            <span class="nam">self</span><span class="op">.</span><span class="nam">_lessons</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_db</span><span class="op">.</span><span class="nam">get_collection</span><span class="op">(</span><span class="str">'web_mockup_lessons'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t84" class="stm run hide_run">            <span class="nam">self</span><span class="op">.</span><span class="nam">_db</span> <span class="op">=</span> <span class="nam">connection_to_mongo</span><span class="op">.</span><span class="nam">connect_to_mongo</span><span class="op">(</span><span class="strut">&nbsp;</span></p>
+<p id="t85" class="pln">                <span class="nam">db_name</span><span class="op">=</span><span class="str">'lodelogs'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t86" class="stm run hide_run">            <span class="nam">self</span><span class="op">.</span><span class="nam">_logs</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_db</span><span class="op">.</span><span class="nam">get_collection</span><span class="op">(</span><span class="str">'logs'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t87" class="stm run hide_run">            <span class="nam">self</span><span class="op">.</span><span class="nam">_lessons</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_db</span><span class="op">.</span><span class="nam">get_collection</span><span class="op">(</span><span class="str">'lessons_metadata'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t88" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t89" class="pln">        <span class="com"># Get appropriate cache (or set default one if available)</span><span class="strut">&nbsp;</span></p>
 <p id="t90" class="stm run hide_run">        <span class="nam">requested_cache</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_config</span><span class="op">[</span><span class="str">'cache'</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
@@ -1476,7 +1476,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.4.2</a>,
-            created at 2018-02-27 16:19
+            created at 2018-03-08 13:46
         </p>
     </div>
 </div>

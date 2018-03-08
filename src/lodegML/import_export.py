@@ -86,7 +86,7 @@ def import_data(systemInfo: dict, filename: str, overwrite: bool = False):
 def export_data(
         systemInfo: dict, export_type: str, course: str=None, user: str=None,
         session: str=None, selected_keys: list=None, excluded_keys: list=None,
-        pretty_printing: bool=False):
+        pretty_printing: bool=False, folder: str= './'):
     """Export the whole system or a part of it.
 
     The json and the binary .p formats are supported.
@@ -100,6 +100,7 @@ def export_data(
         selected_keys (list of str): the keys (stats) that you want to export. Defaults to all;
         excluded_keys (list of str): the keys (stats) that you do not want to export. Defaults to None;
         pretty_printing (bool): if True json will be formatted with 4-spaces indentation. Defaults to False.
+        folder (str): the folder where to save the file.
 
     Raises:
         KeyError: if the objective (the data to be exported) is not found.
@@ -158,7 +159,7 @@ def export_data(
 
     # Json file
     if export_type == 'json':
-        with open(title + '-export.json', 'w') as fp:
+        with open(folder + title + '-export.json', 'w') as fp:
             if pretty_printing:
                 json.dump({'insertion_position': insertion_position,
                            'insertion_key': insertion_key, 'data': data},
@@ -171,7 +172,7 @@ def export_data(
 
     # Binary file
     elif export_type == 'bytes':
-        with open(title + '-export.p', 'wb') as fp:
+        with open(folder + title + '-export.p', 'wb') as fp:
             pickle.dump({
                 'insertion_position': insertion_position,
                 'insertion_key': insertion_key,

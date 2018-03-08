@@ -692,9 +692,9 @@ def execute_courseInfo_extraction(
                         sessionInfo, data_provided=True,
                         keep_session_data=keep_session_data):
                     invalid_sessions.append(session)
-                # Remove invalid sessions
-                for session in invalid_sessions:
-                    del userInfo['sessions'][session]
+            # Remove invalid sessions
+            for session in invalid_sessions:
+                del userInfo['sessions'][session]
             execute_userInfo_extraction(
                 logs_collection,
                 courseInfo['lessons_durations'],

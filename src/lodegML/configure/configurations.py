@@ -9,7 +9,7 @@ class DefaultConfigurationsHolder():
             'ml_autorun': True,
             'plot_target': 'web',
             'cache': None,
-            'debug': True
+            'debug': False
         },
         'low_mem': {
             'query_mem_opt': True,
@@ -39,7 +39,7 @@ class DefaultConfigurationsHolder():
             'ml_autorun': False,
             'plot_target': 'web',
             'cache': 'sqlite',  # Default should be set to None or be always available,
-            'debug': True
+            'debug': False
         }
     }
 

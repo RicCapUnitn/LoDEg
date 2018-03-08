@@ -14,7 +14,7 @@ class TestSystem(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._system = system.LodegSystem()
+        cls._system = system.LodegSystem(debug=True)
         cls._test_valid_course = 'course1'
         cls._test_invalid_course = 'CourseNotPresent'
         cls._test_user = 'user0'
@@ -23,6 +23,7 @@ class TestSystem(unittest.TestCase):
 
     def test_get_system_settings(self):
         settings = self._system.getSystemSettings()
+        settings['debug'] = False
         default_settings = self._default_configurations_holder.get('default')
         self.assertEqual(settings, default_settings)
 

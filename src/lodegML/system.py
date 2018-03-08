@@ -82,9 +82,9 @@ class LodegSystem:
             self._lessons = self._db.get_collection('web_mockup_lessons')
         else:
             self._db = connection_to_mongo.connect_to_mongo(
-                db_name='lode_real')
-            self._logs = self._db.get_collection('web_mockup_population')
-            self._lessons = self._db.get_collection('web_mockup_lessons')
+                db_name='lodelogs')
+            self._logs = self._db.get_collection('logs')
+            self._lessons = self._db.get_collection('lessons_metadata')
 
         # Get appropriate cache (or set default one if available)
         requested_cache = self._config['cache']
