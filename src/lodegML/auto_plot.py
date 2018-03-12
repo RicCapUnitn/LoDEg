@@ -16,6 +16,7 @@ import io
 
 # For correlation_graph test only
 # import test_utils  # migrate
+from exceptions import AutoPlotException  # migrate
 
 
 class AutoPlot:
@@ -30,6 +31,20 @@ class AutoPlot:
         self._target = target
         self._title_font_size = title_font_size
 
+    def _save(func):
+        def func_wrapper(self, *args, **kwargs):
+            if self._save_next_figure:
+                self._save_next_figure = False
+                try:
+                    figure = args[0]
+                    figure.savefig(self._save_path)
+                except Exception as exc:
+                    raise AutoPlotException(
+                        'Error while saving figure') from exc
+            return func(self, *args, **kwargs)
+        return func_wrapper
+
+    @_save
     def _plot(self, figure, output_type='png'):
         if self._target == 'console':
             plt.show()
@@ -43,6 +58,11 @@ class AutoPlot:
                 plt.clf()  # Might break everything when parallelizing
                 return "data:image/png;base64," + \
                     base64.b64encode(f.getvalue()).decode()
+
+    def saveNextFigure(self, filename, folder='./'):
+        self._save_next_figure = True
+        self._save_path = folder + filename
+        return self
 
     def printSessionCoverage(self, sessionInfo: dict, lesson_duration: float):
         """ Print the session coverage, i.e. which parts of the video have been watched.

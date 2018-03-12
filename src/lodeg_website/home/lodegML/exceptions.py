@@ -4,3 +4,7 @@ class ImportException(Exception):
 
 class ExportException(Exception):
     pass
+
+
+class AutoPlotException(Exception):
+    pass

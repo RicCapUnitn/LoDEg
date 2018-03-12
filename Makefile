@@ -60,7 +60,7 @@ doc:
 	$(SILENT)sphinx-apidoc -f -o docs/ src/lodegML/
 	$(SILENT)cd docs/lodegML_docs && $(MAKE) html
 
-tests:
+tests: clean
 	$(SILENT)echo ">>> Starting testing..."
 	$(SILENT)./test/run_tests.sh $(filter-out $@, $(MAKECMDGOALS))
 	$(SILENT)echo ">>> Done!\n"
