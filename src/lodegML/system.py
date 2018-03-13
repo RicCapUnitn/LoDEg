@@ -1,4 +1,5 @@
 import utility_queries as utils  # migrate
+import mongo_queries  # migrate
 import auto_plot  # migrate
 import data_extraction  # migrate
 import connection_to_mongo  # migrate
@@ -173,7 +174,7 @@ class LodegSystem:
         courseInfo = self._systemInfo['courses'][course]
         # Check if the lessons_durations have already been computed
         if ('lessons_durations' not in courseInfo.keys()):
-            utils.get_lessons_durations_and_registration_dates(
+            mongo_queries.get_lessons_durations_and_registration_dates(
                 self._lessons, course, courseInfo)
         lessons_durations = courseInfo['lessons_durations']
         # Extract user data

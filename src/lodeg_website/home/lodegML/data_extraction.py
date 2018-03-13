@@ -5,6 +5,7 @@ from bson.objectid import ObjectId
 from collections import Counter
 
 from ..lodegML import utility_queries as utils  # migrate
+from ..lodegML import mongo_queries  # migrate
 
 ############################
 # Session level extraction #
@@ -300,17 +301,16 @@ def compute_lessons_coverage_for_single_user(
         userInfo (dict): The dictionary that will be populated with the computed statistic.
         lessons_durations (dict) : The systemInfo dictionary {'lesson_id':'lesson_duration'}.
     """
-    interval_gap = 30  # seconds
-
+    interval_gap_in_seconds = 30
     lessons_coverage = {}
     histogram = {}
+
     # Initialize lessons lists
     for lesson_id, duration in lessons_durations.items():
-        number_of_buckets = int(duration) // interval_gap
+        number_of_buckets = int(duration) // interval_gap_in_seconds
         lessons_coverage[lesson_id] = [0] * number_of_buckets
         histogram[lesson_id] = 0
 
-    # Compute lessons coverage
     for session, sessionInfo in userInfo['sessions'].items():
         lesson = sessionInfo['lesson_id']
         # Add this session to the histogram
@@ -321,8 +321,8 @@ def compute_lessons_coverage_for_single_user(
             # TODO find a better way to handle this
             continue
         for interval in sessionInfo['session_coverage']:
-            left_bucket = int(interval[0]) // interval_gap
-            right_bucket = int(interval[1]) // interval_gap
+            left_bucket = int(interval[0]) // interval_gap_in_seconds
+            right_bucket = int(interval[1]) // interval_gap_in_seconds
             if(right_bucket == left_bucket):
                 lessons_coverage[lesson][right_bucket] += 1
             else:
@@ -447,14 +447,14 @@ def compute_course_global_coverage(courseInfo: dict):
      Args:
         courseInfo (dict): The dictionary that will be populated with the computed statistic.
     """
-    interval_gap = 30  # seconds
+    interval_gap_in_seconds = 30
     global_coverage = {}
     histogram = {}
     lessons_durations = courseInfo['lessons_durations']
 
     # Initialize lessons lists
     for lesson_id, duration in lessons_durations.items():
-        number_of_buckets = int(duration) // interval_gap
+        number_of_buckets = int(duration) // interval_gap_in_seconds
         global_coverage[lesson_id] = [0] * number_of_buckets
         histogram[lesson_id] = 0
 
@@ -568,16 +568,13 @@ def execute_sessionInfo_extraction(
     """
     if not data_provided:
         # Get the raw data from the database
-        utils.get_all_records_for_session(
+        mongo_queries.get_all_records_for_session(
             logs_collection, session, sessionInfo)
 
-    # Check if we have a valid session
-    if not check_session_validity(sessionInfo):
+    if not is_valid_session(sessionInfo):
         return False
 
-    # Set session_id
     add_lesson_id_to_session(sessionInfo)
-    # Add session date
     add_session_date(sessionInfo)
     # Execute play_pause_extraction
     play_pause_extraction(sessionInfo)
@@ -590,7 +587,6 @@ def execute_sessionInfo_extraction(
     # Notes_info_extraction
     notes_info_extraction(sessionInfo)
     if not keep_session_data:
-        # Delete raw data for all users
         del sessionInfo['data']
     return True
 
@@ -611,7 +607,7 @@ def execute_userInfo_extraction(
     """
     if not sessionInfo_provided:
         # Get the raw data from the database
-        utils.get_all_records_for_user_and_course(
+        mongo_queries.get_all_records_for_user_and_course(
             logs_collection, course, user, userInfo)
 
         invalid_sessions = []
@@ -669,14 +665,15 @@ def execute_courseInfo_extraction(
 
     # Check if the lessons_durations has already been extracted
     if 'lessons_durations' not in courseInfo.keys():
-        utils.get_lessons_durations_and_registration_dates(
+        mongo_queries.get_lessons_durations_and_registration_dates(
             lessons_collection, course, courseInfo)
-    # Create a counter for the total number of sessions
+
     total_number_of_sessions = 0
 
-    if (not query_mem_opt):
+    if not query_mem_opt:
         # Collect all raw data at once
-        utils.get_all_users_records(logs_collection, course, courseInfo)
+        mongo_queries.get_all_users_records(
+            logs_collection, course, courseInfo)
         # Extract features
         for user, userInfo in courseInfo['users'].items():
 
@@ -689,9 +686,11 @@ def execute_courseInfo_extraction(
                         sessionInfo, data_provided=True,
                         keep_session_data=keep_session_data):
                     invalid_sessions.append(session)
+
             # Remove invalid sessions
             for session in invalid_sessions:
                 del userInfo['sessions'][session]
+
             execute_userInfo_extraction(
                 logs_collection,
                 courseInfo['lessons_durations'],
@@ -705,7 +704,7 @@ def execute_courseInfo_extraction(
     else:
         courseInfo['users'] = {}
         # Collect user ids
-        users = utils.get_all_users_for_course(logs_collection, course)
+        users = mongo_queries.get_all_users_for_course(logs_collection, course)
         # Extract features
         for user in users:
             userInfo = {}
@@ -733,7 +732,6 @@ def execute_courseInfo_extraction(
     course_lessons_visualization_extraction(courseInfo)
     # Get sessions day distribution
     course_day_distribution_extraction(courseInfo)
-    # Add update time
     courseInfo['last_update'] = datetime.utcnow()
 
     if not keep_user_info:
@@ -764,7 +762,7 @@ def execute_complete_extraction(
     """
 
     # Get courses headers
-    courses = utils.get_all_courses(lessons_collection)
+    courses = mongo_queries.get_all_courses(lessons_collection)
 
     for course in courses:
         courseInfo = {}
@@ -785,10 +783,9 @@ def execute_complete_extraction(
 # Miscellaneous #
 #################
 
-def check_session_validity(sessionInfo: dict):
+def is_valid_session(sessionInfo: dict):
     """ Check if the session meets the basic requirements in order not to raise exceptions.
     """
-    # Check if every session is well formed
     well_formed = False
     try:
         if sessionInfo['data'][0]['type'] == 'title':

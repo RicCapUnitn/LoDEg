@@ -10,7 +10,7 @@ import connection_to_mongo as connect
 import data_extraction
 import test_utils
 import utility_queries as utils
-import test_utils
+import mongo_queries
 
 # Connect to the instance of MongoDB where the mockup_population
 # collection is located
@@ -344,34 +344,35 @@ class TestQueries(unittest.TestCase):
 
     def test_queries_1_get_all_courses(self):
         self.assertEqual(
-            set(utils.get_all_courses(lessons_collection)),
+            set(mongo_queries.get_all_courses(lessons_collection)),
             set(['course1', 'course2']))
 
     def test_queries_2_get_all_users_for_course(self):
-        self.assertEqual(set(utils.get_all_users_for_course(logs_collection, 'course1')), set(
+        self.assertEqual(set(mongo_queries.get_all_users_for_course(logs_collection, 'course1')), set(
             ['user1', 'user2', 'user3', 'play_pause_test', 'session_coverage_test', 'jumps_info_test']))
 
     def test_queries_3_get_all_sessions_for_user_and_course(self):
         self.assertEqual(
             set(
-                utils.get_all_sessions_for_user_and_course(
+                mongo_queries.get_all_sessions_for_user_and_course(
                     logs_collection, 'user1', 'course1')),
             set(['user1-session1', 'user1-session2', 'user1-session3']))
 
     def test_queries_4_get_all_users_records(self):
         courseInfo = {}
-        utils.get_all_users_records(logs_collection, 'course1', courseInfo)
+        mongo_queries.get_all_users_records(
+            logs_collection, 'course1', courseInfo)
         self.assertNotEqual(courseInfo, {})
 
     def test_queries_5_get_all_records_for_session(self):
         sessionInfo = {}
-        utils.get_all_records_for_session(
+        mongo_queries.get_all_records_for_session(
             logs_collection, 'user1-session1', sessionInfo)
         self.assertNotEqual(sessionInfo, {})
 
     def test_queries_6_get_all_records_for_user_and_course(self):
         userInfo = {}
-        utils.get_all_records_for_user_and_course(
+        mongo_queries.get_all_records_for_user_and_course(
             logs_collection, 'course1', 'user1', userInfo)
         self.assertNotEqual(userInfo, {})
 
