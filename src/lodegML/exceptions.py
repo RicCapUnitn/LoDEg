@@ -8,3 +8,7 @@ class ExportException(Exception):
 
 class AutoPlotException(Exception):
     pass
+
+
+class InvalidSessionException(Exception):
+    pass

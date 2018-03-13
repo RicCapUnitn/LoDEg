@@ -6,6 +6,7 @@ from collections import Counter
 
 from ..lodegML import utility_queries as utils  # migrate
 from ..lodegML import mongo_queries  # migrate
+from ..lodegML.exceptions import InvalidSessionException  # migrate
 
 ############################
 # Session level extraction #
@@ -50,7 +51,7 @@ def play_pause_extraction(sessionInfo: dict):
             pause_time = 0
 
             for item in play_pause_list[1:]:
-                if (item['type'] == 'play'):
+                if item['type'] == 'play':
                     play_time = item['value2']
                     # Since time_abs is in milliseconds
                     pauses.append((play_time - pause_time) / 1000.0)
@@ -173,7 +174,7 @@ def session_coverage_extraction(sessionInfo: dict):
                 start_muted_interval = current_value1
 
     # Add last interval if the session ends with a pause
-    if(current_action == 'pause'):
+    if current_action == 'pause':
         # Set the session end
         end_interval = current_value1
         # Add coverage interval
@@ -542,12 +543,6 @@ def course_day_distribution_extraction(courseInfo: dict):
 # System level extraction #
 ###########################
 
-
-#######
-# API #
-#######
-
-
 def execute_sessionInfo_extraction(
         sessionInfo: dict, logs_collection=None, session=None,
         data_provided=False, keep_session_data=False):
@@ -572,7 +567,7 @@ def execute_sessionInfo_extraction(
             logs_collection, session, sessionInfo)
 
     if not is_valid_session(sessionInfo):
-        return False
+        raise InvalidSessionException('The given session is not well formed')
 
     add_lesson_id_to_session(sessionInfo)
     add_session_date(sessionInfo)
@@ -588,7 +583,6 @@ def execute_sessionInfo_extraction(
     notes_info_extraction(sessionInfo)
     if not keep_session_data:
         del sessionInfo['data']
-    return True
 
 
 def execute_userInfo_extraction(
@@ -613,19 +607,21 @@ def execute_userInfo_extraction(
         invalid_sessions = []
 
         for session, sessionInfo in userInfo['sessions'].items():
-            # Extract sessionInfo information
-            if not execute_sessionInfo_extraction(
+            try:
+                execute_sessionInfo_extraction(
                     sessionInfo, data_provided=True,
-                    keep_session_data=keep_session_data):
+                    keep_session_data=keep_session_data)
+            except InvalidSessionException:
                 invalid_sessions.append(session)
-            else:
-                # Add coverage percentage
-                try:
-                    duration = lessons_durations[sessionInfo['lesson_id']]
-                    sessionInfo['coverage_percentage'] = sessionInfo[
-                        'total_time_watched'] / duration
-                except KeyError:
-                    sessionInfo['coverage_percentage'] = 'unknown'
+                continue
+
+            try:
+                # TODO same problem of issue #52
+                duration = lessons_durations[sessionInfo['lesson_id']]
+                sessionInfo['coverage_percentage'] = sessionInfo[
+                    'total_time_watched'] / duration
+            except KeyError:
+                sessionInfo['coverage_percentage'] = 'unknown'
 
         # Discard invalid sessions
         for session in invalid_sessions:
@@ -681,10 +677,11 @@ def execute_courseInfo_extraction(
             invalid_sessions = []
 
             for session, sessionInfo in userInfo['sessions'].items():
-                # Execute sessionInfo extraction
-                if not execute_sessionInfo_extraction(
+                try:
+                    execute_sessionInfo_extraction(
                         sessionInfo, data_provided=True,
-                        keep_session_data=keep_session_data):
+                        keep_session_data=keep_session_data)
+                except InvalidSessionException:
                     invalid_sessions.append(session)
 
             # Remove invalid sessions
@@ -716,9 +713,8 @@ def execute_courseInfo_extraction(
                 userInfo,
                 keep_session_data=keep_session_data,
                 sessionInfo_provided=False)
-            # Add this user sessions to the total counter
+
             total_number_of_sessions += len(userInfo['sessions'])
-            # Add this user to the systemInfo
             courseInfo['users'][user] = userInfo
 
     # Save the total number of sessions

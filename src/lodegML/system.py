@@ -138,7 +138,10 @@ class LodegSystem:
         try:
             if course:
                 if user:
-                    data = self._systemInfo['courses'][course]['users'][user]
+                    if session:
+                        data = self._systemInfo['courses'][course]['users'][user]['sessions'][session]
+                    else:
+                        data = self._systemInfo['courses'][course]['users'][user]
                 else:
                     data = self._systemInfo['courses'][course]
             else:

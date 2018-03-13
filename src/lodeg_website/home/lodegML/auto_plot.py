@@ -71,9 +71,6 @@ class AutoPlot:
         Params:
             sessionInfo (dict): the session that contains the session_coverage to be plotted.
             lesson_duration (float): the duration of the lesson to be plotted in seconds.
-
-        Todo:
-            * pass the session_coverage instead of the sessionInfo
         """
         session_coverage = sessionInfo['session_coverage']
         fig, ax = plt.subplots()
