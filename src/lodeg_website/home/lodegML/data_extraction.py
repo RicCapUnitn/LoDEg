@@ -25,12 +25,9 @@ def play_pause_extraction(sessionInfo: dict):
 
     play_pause_list = utils.purify_list(sessionInfo['data'], ['play', 'pause'])
 
-    # List of pauses for this session
     pauses = []
-    # List of play intervals for this session
     plays = []
-    # List of fractions play_time/ pause_time;
-    pauses_ratio = []
+    play_over_pauses_ratio = []
 
     #######################################################
     # Check sessionValidity (should not be necessary!!!!!)
@@ -57,7 +54,7 @@ def play_pause_extraction(sessionInfo: dict):
                     # Since time_abs is in milliseconds
                     pauses.append((play_time - pause_time) / 1000.0)
                     # Note that pause_time > play_time >= 0
-                    pauses_ratio.append(plays[-1] / pauses[-1])
+                    play_over_pauses_ratio.append(plays[-1] / pauses[-1])
                 else:
                     pause_time = item['value2']
                     # Since time_abs is in milliseconds
@@ -67,7 +64,7 @@ def play_pause_extraction(sessionInfo: dict):
 
     sessionInfo['pauses'] = pauses
     sessionInfo['plays'] = plays
-    sessionInfo['pauses_ratio'] = pauses_ratio
+    sessionInfo['pauses_ratio'] = play_over_pauses_ratio
 
 
 def session_coverage_extraction(sessionInfo: dict):
@@ -183,16 +180,12 @@ def session_coverage_extraction(sessionInfo: dict):
             intervals = utils.add_interval(
                 intervals, [start_interval, end_interval])
 
-    # Computer total_time_watched
     total_time_watched = 0.
     for interval in intervals:
         total_time_watched += interval[1] - interval[0]
 
-    # Add the video coverage
     sessionInfo['session_coverage'] = intervals
-    # Add the total_time_watched
     sessionInfo['total_time_watched'] = total_time_watched
-    # Add the muted_intervals
     sessionInfo['muted_intervals'] = muted_intervals
 
 
@@ -221,7 +214,6 @@ def jumps_info_extraction(sessionInfo: dict):
     average_jumps_length = (total_jumps_length /
                             number_of_jumps) if number_of_jumps > 0 else 0
 
-    # Add values to sessionInfo
     sessionInfo['number_of_jumps'] = number_of_jumps
     sessionInfo['average_jumps_length'] = average_jumps_length
     sessionInfo['jumps_per_type'] = jumps_per_type
@@ -322,7 +314,12 @@ def compute_lessons_coverage_for_single_user(
     for session, sessionInfo in userInfo['sessions'].items():
         lesson = sessionInfo['lesson_id']
         # Add this session to the histogram
-        histogram[lesson] += 1
+        try:
+            histogram[lesson] += 1
+        except KeyError:
+            # This lesson has never been registered, discard it
+            # TODO find a better way to handle this
+            continue
         for interval in sessionInfo['session_coverage']:
             left_bucket = int(interval[0]) // interval_gap
             right_bucket = int(interval[1]) // interval_gap
@@ -740,7 +737,7 @@ def execute_courseInfo_extraction(
     courseInfo['last_update'] = datetime.utcnow()
 
     if not keep_user_info:
-        # Discard userInfo
+        # TODO Discard userInfo
         pass  # <------------------------------
 
 
@@ -771,7 +768,6 @@ def execute_complete_extraction(
 
     for course in courses:
         courseInfo = {}
-        # Extract features
         execute_courseInfo_extraction(
             logs_collection,
             lessons_collection,
@@ -780,10 +776,8 @@ def execute_complete_extraction(
             keep_session_data=keep_session_data,
             keep_user_info=keep_user_info,
             query_mem_opt=query_mem_opt)
-        # Add this course to the systemInfo
         systemInfo['courses'][course] = courseInfo
 
-    # Add update time
     systemInfo['last_update'] = datetime.utcnow()
 
 

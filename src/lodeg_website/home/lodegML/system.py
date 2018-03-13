@@ -338,8 +338,8 @@ class LodegSystem:
 
         """
         try:
-            if (course is not None):
-                if (user is not None):
+            if course is not None:
+                if user is not None:
                     # User level info
                     numberOfSessions = len(self._systemInfo['courses'][
                                            course]['users'][user]['sessions'])

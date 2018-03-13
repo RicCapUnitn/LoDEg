@@ -30,6 +30,7 @@ class AutoPlot:
         """
         self._target = target
         self._title_font_size = title_font_size
+        self._save_next_figure = False
 
     def _save(func):
         def func_wrapper(self, *args, **kwargs):

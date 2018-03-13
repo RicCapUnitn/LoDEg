@@ -275,7 +275,7 @@
 <p id="t91" class="pln">    <span class="str">"""A SQLite implementation of the cache"""</span><span class="strut">&nbsp;</span></p>
 <p id="t92" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t93" class="stm mis">    <span class="key">def</span> <span class="nam">collectDataFromDb</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">systemInfo</span><span class="op">:</span> <span class="nam">dict</span><span class="op">,</span> <span class="nam">user</span><span class="op">:</span> <span class="nam">str</span> <span class="op">=</span> <span class="key">None</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t94" class="stm mis">        <span class="key">if</span><span class="op">(</span><span class="nam">user</span> <span class="key">is</span> <span class="key">None</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t94" class="stm mis">        <span class="key">if</span> <span class="nam">user</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t95" class="pln">            <span class="com"># SystemLevel info</span><span class="strut">&nbsp;</span></p>
 <p id="t96" class="stm mis">            <span class="nam">user</span> <span class="op">=</span> <span class="nam">LodegUser</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="nam">lodeg_user_id</span><span class="op">=</span><span class="str">'admin'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t97" class="stm mis">            <span class="nam">data</span> <span class="op">=</span> <span class="nam">DjangoCache</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="nam">user</span><span class="op">=</span><span class="nam">user</span><span class="op">)</span><span class="op">.</span><span class="nam">data</span><span class="strut">&nbsp;</span></p>
@@ -287,7 +287,7 @@
 <p id="t103" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t104" class="stm mis">    <span class="key">def</span> <span class="nam">saveDataToDb</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">systemInfo</span><span class="op">:</span> <span class="nam">dict</span><span class="op">,</span> <span class="nam">user</span><span class="op">:</span> <span class="nam">str</span> <span class="op">=</span> <span class="key">None</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t105" class="stm mis">        <span class="nam">data</span> <span class="op">=</span> <span class="nam">pickle</span><span class="op">.</span><span class="nam">dumps</span><span class="op">(</span><span class="nam">systemInfo</span><span class="op">,</span> <span class="nam">pickle</span><span class="op">.</span><span class="nam">HIGHEST_PROTOCOL</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t106" class="stm mis">        <span class="key">if</span> <span class="op">(</span><span class="nam">user</span> <span class="key">is</span> <span class="key">None</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t106" class="stm mis">        <span class="key">if</span> <span class="nam">user</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t107" class="stm mis">            <span class="nam">user</span> <span class="op">=</span> <span class="nam">LodegUser</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="nam">lodeg_user_id</span><span class="op">=</span><span class="str">'admin'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t108" class="pln">        <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t109" class="stm mis">            <span class="nam">user</span> <span class="op">=</span> <span class="nam">LodegUser</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="nam">lodeg_user_id</span><span class="op">=</span><span class="nam">user</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
@@ -304,7 +304,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.4.2</a>,
-            created at 2018-02-26 12:07
+            created at 2018-03-13 09:11
         </p>
     </div>
 </div>

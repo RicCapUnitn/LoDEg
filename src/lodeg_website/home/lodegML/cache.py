@@ -91,7 +91,7 @@ class CacheSQLite(Cache):
     """A SQLite implementation of the cache"""
 
     def collectDataFromDb(self, systemInfo: dict, user: str = None):
-        if(user is None):
+        if user is None:
             # SystemLevel info
             user = LodegUser.objects.get(lodeg_user_id='admin')
             data = DjangoCache.objects.get(user=user).data
@@ -103,7 +103,7 @@ class CacheSQLite(Cache):
 
     def saveDataToDb(self, systemInfo: dict, user: str = None):
         data = pickle.dumps(systemInfo, pickle.HIGHEST_PROTOCOL)
-        if (user is None):
+        if user is None:
             user = LodegUser.objects.get(lodeg_user_id='admin')
         else:
             user = LodegUser.objects.get(lodeg_user_id=user)
