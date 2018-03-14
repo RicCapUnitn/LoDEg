@@ -45,21 +45,31 @@
 <span></span><span class="sd">&quot;&quot;&quot; This file contains the function connect_to_mongo, used to connect to the mongoDB instance.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        url : url to the database (optional, default=&quot;mongodb://127.0.0.1:27017&quot;).   </span>
+<span class="sd">        url : url to the database (optional, default=&quot;mongodb://127.0.0.1:27017&quot;).</span>
 <span class="sd">        db_name : the name of the MongoDb (otional, default=&quot;lodeg&quot;).</span>
-<span class="sd">        user : the username used to connect to the database (optional, not implemented yet).                  </span>
-<span class="sd">        password : the password used to connect to the database (otional, not implemented yet)  .             </span>
+<span class="sd">        user : the username used to connect to the database (optional, not implemented yet).</span>
+<span class="sd">        password : the password used to connect to the database (otional, not implemented yet)  .</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        db: the connection to the database</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">pymongo</span>
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="k">import</span> <span class="n">MongoClient</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span>
 
 
-<div class="viewcode-block" id="connect_to_mongo"><a class="viewcode-back" href="../../lodegML.html#lodegML.connection_to_mongo.connect_to_mongo">[docs]</a><span class="k">def</span> <span class="nf">connect_to_mongo</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;mongodb://127.0.0.1:27017&quot;</span><span class="p">,</span> <span class="n">db_name</span><span class="o">=</span><span class="s2">&quot;lodeg&quot;</span><span class="p">):</span>
-    <span class="n">client</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<div class="viewcode-block" id="connect_to_mongo"><a class="viewcode-back" href="../../lodegML.html#lodegML.connection_to_mongo.connect_to_mongo">[docs]</a><span class="k">def</span> <span class="nf">connect_to_mongo</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="s2">&quot;mongodb://127.0.0.1:27017&quot;</span><span class="p">,</span>
+                     <span class="n">db_name</span><span class="o">=</span><span class="s2">&quot;lodeg&quot;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">username</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">password</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote_plus</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote_plus</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;//&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;mongodb://&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">@&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span> <span class="o">+</span> <span class="n">host</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
     <span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_database</span><span class="p">(</span><span class="n">db_name</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">db</span></div>
 </pre></div>
 

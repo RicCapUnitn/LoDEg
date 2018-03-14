@@ -731,8 +731,7 @@ def execute_courseInfo_extraction(
     courseInfo['last_update'] = datetime.utcnow()
 
     if not keep_user_info:
-        # TODO Discard userInfo
-        pass  # <------------------------------
+        courseInfo['users'] = {}
 
 
 def execute_complete_extraction(

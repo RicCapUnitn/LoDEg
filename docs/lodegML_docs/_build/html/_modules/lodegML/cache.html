@@ -48,7 +48,7 @@
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">..models</span> <span class="k">import</span> <span class="n">Cache</span> <span class="k">as</span> <span class="n">DjangoCache</span><span class="p">,</span> <span class="n">LodegUser</span>
-<span class="k">except</span><span class="p">:</span>
+<span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
     <span class="k">pass</span>
 
 
@@ -135,7 +135,7 @@
     <span class="sd">&quot;&quot;&quot;A SQLite implementation of the cache&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CacheSQLite.collectDataFromDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.CacheSQLite.collectDataFromDb">[docs]</a>    <span class="k">def</span> <span class="nf">collectDataFromDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># SystemLevel info</span>
             <span class="n">user</span> <span class="o">=</span> <span class="n">LodegUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lodeg_user_id</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">DjangoCache</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
@@ -147,7 +147,7 @@
 
 <div class="viewcode-block" id="CacheSQLite.saveDataToDb"><a class="viewcode-back" href="../../lodegML.html#lodegML.cache.CacheSQLite.saveDataToDb">[docs]</a>    <span class="k">def</span> <span class="nf">saveDataToDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systemInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">systemInfo</span><span class="p">,</span> <span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">user</span> <span class="o">=</span> <span class="n">LodegUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lodeg_user_id</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">user</span> <span class="o">=</span> <span class="n">LodegUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lodeg_user_id</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>

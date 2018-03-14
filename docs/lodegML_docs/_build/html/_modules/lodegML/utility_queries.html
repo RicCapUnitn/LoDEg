@@ -45,7 +45,6 @@
 <span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">date</span>
 <span class="kn">from</span> <span class="nn">dateutil</span> <span class="k">import</span> <span class="n">tz</span>
 <span class="kn">import</span> <span class="nn">dateutil.parser</span>
-<span class="kn">from</span> <span class="nn">bson.objectid</span> <span class="k">import</span> <span class="n">ObjectId</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
 
@@ -68,25 +67,6 @@
     <span class="k">return</span> <span class="n">local_tzaware_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S %Z&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_lessons_durations_and_registration_dates"><a class="viewcode-back" href="../../lodegML.html#lodegML.utility_queries.get_lessons_durations_and_registration_dates">[docs]</a><span class="k">def</span> <span class="nf">get_lessons_durations_and_registration_dates</span><span class="p">(</span><span class="n">lessons_collection</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">courseInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set for a course the course lessons and their durations.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        lessons_collection : the MongoDB collection that contains the lessons records;</span>
-<span class="sd">        course (str): the target course;</span>
-<span class="sd">        courseInfo (dict): the dictionary to be populated.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">lessons_collection</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s1">&#39;course_id&#39;</span><span class="p">:</span> <span class="n">course</span><span class="p">})</span>
-    <span class="n">lessons_durations</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">registration_dates</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">lesson</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
-        <span class="n">lessons_durations</span><span class="p">[</span><span class="n">lesson</span><span class="p">[</span><span class="s1">&#39;lesson_id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">lesson</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span>
-        <span class="n">registration_dates</span><span class="p">[</span><span class="n">lesson</span><span class="p">[</span><span class="s1">&#39;lesson_id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ObjectId</span><span class="p">(</span>
-            <span class="n">lesson</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">generation_time</span>
-    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;lessons_durations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lessons_durations</span>
-    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;registration_dates&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">registration_dates</span></div>
-
-
 <div class="viewcode-block" id="add_interval"><a class="viewcode-back" href="../../lodegML.html#lodegML.utility_queries.add_interval">[docs]</a><span class="k">def</span> <span class="nf">add_interval</span><span class="p">(</span><span class="n">intervals</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Add an interval to a list of disjoint intervals.</span>
 
@@ -107,33 +87,33 @@
     <span class="n">end_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="n">concatenating</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">intervals</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">intervals</span> <span class="o">==</span> <span class="p">[]):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">intervals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">intervals</span> <span class="o">==</span> <span class="p">[]):</span>
         <span class="k">return</span> <span class="p">[[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]]</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">intervals</span><span class="p">)):</span>
         <span class="n">i_start</span> <span class="o">=</span> <span class="p">(</span><span class="n">intervals</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">i_end</span> <span class="o">=</span> <span class="p">(</span><span class="n">intervals</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">i_start</span> <span class="o">&lt;=</span> <span class="n">start</span> <span class="ow">and</span> <span class="n">i_end</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i_start</span> <span class="o">&lt;=</span> <span class="n">start</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i_end</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">intervals</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="n">start</span> <span class="o">&lt;</span> <span class="n">i_start</span><span class="p">):</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">end</span> <span class="o">&gt;=</span> <span class="n">i_start</span><span class="p">):</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">start_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">i_start</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;=</span> <span class="n">i_start</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">start_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                     <span class="n">start_index</span> <span class="o">=</span> <span class="n">i</span>
                     <span class="n">concatenating</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">end</span> <span class="o">&lt;</span> <span class="n">i_end</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">end</span> <span class="o">&lt;</span> <span class="n">i_end</span><span class="p">:</span>
                     <span class="n">end</span> <span class="o">=</span> <span class="n">i_end</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">concatenating</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">end</span> <span class="o">&lt;</span> <span class="n">i_end</span><span class="p">):</span>
-                <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">concatenating</span><span class="p">):</span>
-                    <span class="k">if</span><span class="p">(</span><span class="n">end_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">end</span> <span class="o">&lt;</span> <span class="n">i_end</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">concatenating</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">end_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                         <span class="n">concatenating</span> <span class="o">=</span> <span class="kc">True</span>
                         <span class="n">end_index</span> <span class="o">=</span> <span class="n">i</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">concatenating</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">concatenating</span><span class="p">:</span>
                     <span class="n">end_index</span> <span class="o">=</span> <span class="n">i</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># (start &gt;= i_start)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">&lt;=</span> <span class="n">i_end</span><span class="p">):</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">start_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">i_end</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">start_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                     <span class="n">start_index</span> <span class="o">=</span> <span class="n">i</span>
                     <span class="n">start</span> <span class="o">=</span> <span class="n">i_start</span>
                     <span class="n">concatenating</span> <span class="o">=</span> <span class="kc">True</span>
@@ -146,12 +126,12 @@
         <span class="k">return</span> <span class="n">intervals</span>
 
     <span class="c1"># disjoint_start and disjoint_middle</span>
-    <span class="k">elif</span> <span class="p">(</span><span class="n">start_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">start_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
         <span class="n">intervals</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">end_index</span><span class="p">,</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">intervals</span>
 
     <span class="c1"># strict_end and boundary_end</span>
-    <span class="k">elif</span> <span class="p">(</span><span class="n">end_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">end_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">intervals</span><span class="p">[:</span><span class="n">start_index</span><span class="p">]</span> <span class="o">+</span> <span class="p">[[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]]</span>
 
     <span class="c1"># the interval intersects some other intervals</span>
@@ -172,143 +152,6 @@
 <span class="sd">        The filtered list.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">record</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">filter_types</span><span class="p">]</span></div>
-
-
-<span class="c1">###########################</span>
-<span class="c1"># GENERAL_DATA_EXTRACTION #</span>
-<span class="c1">###########################</span>
-
-<div class="viewcode-block" id="get_all_courses"><a class="viewcode-back" href="../../lodegML.html#lodegML.utility_queries.get_all_courses">[docs]</a><span class="k">def</span> <span class="nf">get_all_courses</span><span class="p">(</span><span class="n">lessons_collection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return all the course_ids that have been registered&quot;&quot;&quot;</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">lessons_collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([{</span><span class="s1">&#39;$group&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="s1">&#39;$course_id&#39;</span><span class="p">}}])</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="get_all_users_for_course"><a class="viewcode-back" href="../../lodegML.html#lodegML.utility_queries.get_all_users_for_course">[docs]</a><span class="k">def</span> <span class="nf">get_all_users_for_course</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns the user_ids for the specified course.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        collection: the collection of log records;</span>
-<span class="sd">        course (str): the course_id.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span>
-        <span class="p">[</span>
-            <span class="p">{</span><span class="s1">&#39;$match&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;$and&#39;</span><span class="p">:</span> <span class="p">[</span>
-                    <span class="p">{</span><span class="s1">&#39;value2&#39;</span><span class="p">:</span> <span class="n">course</span><span class="p">},</span>
-                    <span class="p">{</span><span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$ne&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}</span>
-                <span class="p">]</span>
-            <span class="p">}},</span>
-            <span class="p">{</span><span class="s1">&#39;$group&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="s1">&#39;$user_id&#39;</span><span class="p">}}</span>
-        <span class="p">]</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="get_all_sessions_for_course"><a class="viewcode-back" href="../../lodegML.html#lodegML.utility_queries.get_all_sessions_for_course">[docs]</a><span class="k">def</span> <span class="nf">get_all_sessions_for_course</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns a list of the session_ids for the specified course</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        collection: the collection of log records</span>
-<span class="sd">        course (str): the course_id</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span>
-        <span class="p">[</span>
-            <span class="p">{</span><span class="s1">&#39;$match&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;$and&#39;</span><span class="p">:</span> <span class="p">[</span>
-                    <span class="p">{</span><span class="s1">&#39;value2&#39;</span><span class="p">:</span> <span class="n">course</span><span class="p">},</span>
-                    <span class="p">{</span><span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$ne&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}</span>
-                <span class="p">]</span>
-            <span class="p">}},</span>
-            <span class="p">{</span><span class="s1">&#39;$group&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="s1">&#39;$session_id&#39;</span><span class="p">}}</span>
-        <span class="p">]</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="get_all_sessions_for_user_and_course"><a class="viewcode-back" href="../../lodegML.html#lodegML.utility_queries.get_all_sessions_for_user_and_course">[docs]</a><span class="k">def</span> <span class="nf">get_all_sessions_for_user_and_course</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns the session_ids of the course for the specified user&quot;&quot;&quot;</span>
-    <span class="n">matching_sessions</span> <span class="o">=</span> <span class="n">get_all_sessions_for_course</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">course</span><span class="p">)</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span>
-        <span class="p">[</span>
-            <span class="p">{</span><span class="s1">&#39;$match&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">}},</span>
-            <span class="p">{</span><span class="s1">&#39;$group&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="s1">&#39;$session_id&#39;</span><span class="p">}},</span>
-            <span class="p">{</span><span class="s1">&#39;$match&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$in&#39;</span><span class="p">:</span> <span class="n">matching_sessions</span><span class="p">}}}</span>
-        <span class="p">]</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">)</span></div>
-
-<span class="c1">######################</span>
-<span class="c1"># RECORDS_EXTRACTION #</span>
-<span class="c1">######################</span>
-
-
-<div class="viewcode-block" id="get_all_users_records"><a class="viewcode-back" href="../../lodegML.html#lodegML.utility_queries.get_all_users_records">[docs]</a><span class="k">def</span> <span class="nf">get_all_users_records</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">courseInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Retrieve courseInfo data</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        collection: the collection of log records</span>
-<span class="sd">        course (str): the course_id we are interested in</span>
-<span class="sd">        courseInfo (str): the dictionary that will be populated with the data</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Retrieve course sessions</span>
-    <span class="n">matching_sessions</span> <span class="o">=</span> <span class="n">get_all_sessions_for_course</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">course</span><span class="p">)</span>
-    <span class="c1"># Query for data</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s1">&#39;session_id&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$in&#39;</span><span class="p">:</span> <span class="n">matching_sessions</span><span class="p">}})</span>
-
-    <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
-        <span class="n">user_id</span> <span class="o">=</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
-        <span class="n">session_id</span> <span class="o">=</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;session_id&#39;</span><span class="p">]</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user_id</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="c1"># It is the first time we find this user -&gt; initialize user</span>
-            <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user_id</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="c1"># It is the first session we insert -&gt; initialize sessions</span>
-            <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user_id</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user_id</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session_id</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="c1"># It is the first time we find this session -&gt; initialize session</span>
-            <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user_id</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[]}</span>
-
-        <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="n">user_id</span><span class="p">][</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span>
-            <span class="n">session_id</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span></div>
-
-    <span class="c1"># Probably we need to add the course_id to courseInfo here &lt;--------------</span>
-
-
-<div class="viewcode-block" id="get_all_records_for_session"><a class="viewcode-back" href="../../lodegML.html#lodegML.utility_queries.get_all_records_for_session">[docs]</a><span class="k">def</span> <span class="nf">get_all_records_for_session</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Populate the specified sessionInfo with data&quot;&quot;&quot;</span>
-    <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s1">&#39;session_id&#39;</span><span class="p">:</span> <span class="n">session</span><span class="p">}))</span></div>
-
-
-<div class="viewcode-block" id="get_all_records_for_user_and_course"><a class="viewcode-back" href="../../lodegML.html#lodegML.utility_queries.get_all_records_for_user_and_course">[docs]</a><span class="k">def</span> <span class="nf">get_all_records_for_user_and_course</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">course</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">userInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Populate the specified userInfo with data&quot;&quot;&quot;</span>
-    <span class="c1"># Retrieve course sessions</span>
-    <span class="n">matching_sessions</span> <span class="o">=</span> <span class="n">get_all_sessions_for_course</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">course</span><span class="p">)</span>
-    <span class="c1"># Query for data</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
-        <span class="p">{</span><span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s1">&#39;session_id&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$in&#39;</span><span class="p">:</span> <span class="n">matching_sessions</span><span class="p">}})</span>
-
-    <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
-        <span class="n">session_id</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;session_id&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">session_id</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">pass</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="s1">&#39;data&#39;</span> <span class="ow">in</span> <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session_id</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session_id</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">userInfo</span><span class="p">[</span><span class="s1">&#39;sessions&#39;</span><span class="p">][</span><span class="n">session_id</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span><span class="p">]</span></div>
 </pre></div>
 
           </div>

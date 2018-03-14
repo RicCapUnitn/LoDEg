@@ -52,7 +52,7 @@
 <dl class="class">
 <dt id="lodegML.auto_plot.AutoPlot">
 <em class="property">class </em><code class="descclassname">lodegML.auto_plot.</code><code class="descname">AutoPlot</code><span class="sig-paren">(</span><em>target: str = 'console'</em>, <em>title_font_size: int = 14</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A helper class that holds all the library plotting capabilities</p>
 <dl class="method">
 <dt id="lodegML.auto_plot.AutoPlot.printDaySessionDistribution">
@@ -62,7 +62,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>distribution</strong> (<em>list</em>) &#8211; a list of 24 values, i.e. the number of sessions for each time slice</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>distribution</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) &#8211; a list of 24 values, i.e. the number of sessions for each time slice</td>
 </tr>
 </tbody>
 </table>
@@ -140,15 +140,14 @@ per lesson for a given user; otherwise, the number of users per lesson for a giv
 <dl class="docutils">
 <dt>Params:</dt>
 <dd>sessionInfo (dict): the session that contains the session_coverage to be plotted.
-lesson_duration (float): the duration of the lesson to be plotted.</dd>
+lesson_duration (float): the duration of the lesson to be plotted in seconds.</dd>
 </dl>
-<div class="admonition-todo admonition" id="index-2">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>pass the session_coverage instead of the sessionInfo</li>
-</ul>
-</div>
 </dd></dl>
+
+<dl class="method">
+<dt id="lodegML.auto_plot.AutoPlot.saveNextFigure">
+<code class="descname">saveNextFigure</code><span class="sig-paren">(</span><em>filename</em>, <em>folder='./'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/auto_plot.html#AutoPlot.saveNextFigure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.auto_plot.AutoPlot.saveNextFigure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -158,7 +157,7 @@ lesson_duration (float): the duration of the lesson to be plotted.</dd>
 <dl class="class">
 <dt id="lodegML.cache.Cache">
 <em class="property">class </em><code class="descclassname">lodegML.cache.</code><code class="descname">Cache</code><a class="reference internal" href="_modules/lodegML/cache.html#Cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.cache.Cache" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>This class gives a black box for a generic caching system for the system</p>
 <p>Two implementations are provided at hte moment:
 - SQLite: the system work with the Django SQLite to cache data
@@ -178,8 +177,8 @@ the cache for the whole systemInfo.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose userInfo we are quering the db.</li>
-<li><strong>systemInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary where the information will be stored.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the user whose userInfo we are quering the db.</li>
+<li><strong>systemInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary where the information will be stored.</li>
 </ul>
 </td>
 </tr>
@@ -205,8 +204,8 @@ the whole systemInfo in the cache.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose userInfo we are saving. Defaults to None.</li>
-<li><strong>systemInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that contains the information we want to store.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the user whose userInfo we are saving. Defaults to None.</li>
+<li><strong>systemInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that contains the information we want to store.</li>
 </ul>
 </td>
 </tr>
@@ -275,7 +274,7 @@ the whole systemInfo in the cache.</p>
 </table>
 <dl class="function">
 <dt id="lodegML.connection_to_mongo.connect_to_mongo">
-<code class="descclassname">lodegML.connection_to_mongo.</code><code class="descname">connect_to_mongo</code><span class="sig-paren">(</span><em>url='mongodb://127.0.0.1:27017'</em>, <em>db_name='lodeg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/connection_to_mongo.html#connect_to_mongo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.connection_to_mongo.connect_to_mongo" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lodegML.connection_to_mongo.</code><code class="descname">connect_to_mongo</code><span class="sig-paren">(</span><em>uri='mongodb://127.0.0.1:27017'</em>, <em>db_name='lodeg'</em>, <em>username=None</em>, <em>password=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/connection_to_mongo.html#connect_to_mongo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.connection_to_mongo.connect_to_mongo" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -293,7 +292,7 @@ the whole systemInfo in the cache.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
@@ -311,16 +310,10 @@ the whole systemInfo in the cache.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="function">
-<dt id="lodegML.data_extraction.check_session_validity">
-<code class="descclassname">lodegML.data_extraction.</code><code class="descname">check_session_validity</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#check_session_validity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.check_session_validity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check if the session meets the basic requirements in order not to raise exceptions.</p>
 </dd></dl>
 
 <dl class="function">
@@ -331,7 +324,7 @@ the whole systemInfo in the cache.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
@@ -347,8 +340,8 @@ the whole systemInfo in the cache.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</li>
-<li><strong>lessons_durations</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The systemInfo dictionary {&#8216;lesson_id&#8217;:&#8217;lesson_duration&#8217;}.</li>
+<li><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</li>
+<li><strong>lessons_durations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The systemInfo dictionary {&#8216;lesson_id&#8217;:&#8217;lesson_duration&#8217;}.</li>
 </ul>
 </td>
 </tr>
@@ -364,7 +357,7 @@ the whole systemInfo in the cache.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
@@ -378,7 +371,7 @@ the whole systemInfo in the cache.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
@@ -393,7 +386,7 @@ the whole systemInfo in the cache.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
@@ -419,7 +412,7 @@ the whole systemInfo in the cache.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
@@ -433,7 +426,7 @@ the whole systemInfo in the cache.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
@@ -458,10 +451,10 @@ that there is no relevant speed improvement with big datasets (might have with s
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
 <li><strong>lessons_collection</strong> &#8211; The MongoDb collection that containes the uploaded lessons logs.</li>
-<li><strong>systemInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
-<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
-<li><strong>keep_user_info</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the statistics computed at the userInfo level. Defaults to True.</li>
-<li><strong>query_mem_opt</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Do only partial queries to keep memory usage low. Defaults to True.</li>
+<li><strong>systemInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>keep_user_info</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; Keep the statistics computed at the userInfo level. Defaults to True.</li>
+<li><strong>query_mem_opt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; Do only partial queries to keep memory usage low. Defaults to True.</li>
 </ul>
 </td>
 </tr>
@@ -486,10 +479,10 @@ that there is no relevant speed improvement with big datasets (might have with s
 <li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
 <li><strong>lessons_collection</strong> &#8211; The MongoDb collection that containes the uploaded lessons logs.</li>
 <li><strong>course</strong> &#8211; The id of the course whose information we are extracting.</li>
-<li><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
-<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
-<li><strong>keep_user_info</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the statistics computed at the userInfo level. Defaults to True.</li>
-<li><strong>query_mem_opt</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Do only partial queries to keep memory usage low. Defaults to True.</li>
+<li><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>keep_user_info</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; Keep the statistics computed at the userInfo level. Defaults to True.</li>
+<li><strong>query_mem_opt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; Do only partial queries to keep memory usage low. Defaults to True.</li>
 </ul>
 </td>
 </tr>
@@ -510,11 +503,11 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
 <li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
-<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the session we are interested in.</li>
-<li><strong>data_provided</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Set to True if the sessionInfo has already been populated with the raw data. Defaults to False.</li>
-<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the session we are interested in.</li>
+<li><strong>data_provided</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; Set to True if the sessionInfo has already been populated with the raw data. Defaults to False.</li>
+<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
 </ul>
 </td>
 </tr>
@@ -535,17 +528,23 @@ that there is no relevant speed improvement with big datasets (might have with s
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>logs_collection</strong> &#8211; The MongoDb collection that containes the logs.</li>
-<li><strong>lessons_durations</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The systemInfo dictionary {&#8216;lesson_id&#8217;:&#8217;lesson_duration&#8217;}.</li>
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Used if sessionInfo_provided = False (as default)</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose userInfo we are extracting.</li>
-<li><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
-<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
-<li><strong>sessionInfo_provided</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Set to true if the sessionInfo has already been computed. Defaults to False.</li>
+<li><strong>lessons_durations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The systemInfo dictionary {&#8216;lesson_id&#8217;:&#8217;lesson_duration&#8217;}.</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; Used if sessionInfo_provided = False (as default)</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the user whose userInfo we are extracting.</li>
+<li><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistics.</li>
+<li><strong>keep_session_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; Keep the raw session data in the system. Defaults to False.</li>
+<li><strong>sessionInfo_provided</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; Set to true if the sessionInfo has already been computed. Defaults to False.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lodegML.data_extraction.is_valid_session">
+<code class="descclassname">lodegML.data_extraction.</code><code class="descname">is_valid_session</code><span class="sig-paren">(</span><em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/data_extraction.html#is_valid_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.data_extraction.is_valid_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the session meets the basic requirements in order not to raise exceptions.</p>
 </dd></dl>
 
 <dl class="function">
@@ -591,7 +590,7 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sessionInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
@@ -665,7 +664,7 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionaty that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
@@ -692,7 +691,7 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>userInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic.</td>
 </tr>
 </tbody>
 </table>
@@ -730,7 +729,7 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic;</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic;</td>
 </tr>
 </tbody>
 </table>
@@ -745,8 +744,8 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic;</li>
-<li><strong>mem_opt</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If set, user level statistics are discarded during the migration to the dataframe.</li>
+<li><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; The dictionary that will be populated with the computed statistic;</li>
+<li><strong>mem_opt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; If set, user level statistics are discarded during the migration to the dataframe.</li>
 </ul>
 </td>
 </tr>
@@ -759,8 +758,8 @@ that there is no relevant speed improvement with big datasets (might have with s
 <span id="lodegml-system-module"></span><h2>lodegML.system module<a class="headerlink" href="#module-lodegML.system" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="lodegML.system.LodegSystem">
-<em class="property">class </em><code class="descclassname">lodegML.system.</code><code class="descname">LodegSystem</code><span class="sig-paren">(</span><em>modality: str = None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="descclassname">lodegML.system.</code><code class="descname">LodegSystem</code><span class="sig-paren">(</span><em>modality: str = 'default'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/system.html#LodegSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.system.LodegSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>The class that represents the system.</p>
 <dl class="method">
 <dt id="lodegML.system.LodegSystem.collectDataFromDb">
@@ -782,13 +781,13 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>export_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; &#8216;json&#8217; or &#8216;bytes&#8217; export types are supported;</li>
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if set the target CourseInfo is exported;</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if both course and user are set, the target UserInfo is exported;</li>
-<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if all course, user and session are set, the target SessionInfo is exported;</li>
+<li><strong>export_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; &#8216;json&#8217; or &#8216;bytes&#8217; export types are supported;</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; if set the target CourseInfo is exported;</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; if both course and user are set, the target UserInfo is exported;</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; if all course, user and session are set, the target SessionInfo is exported;</li>
 <li><strong>selected_keys</strong> (<em>list of str</em>) &#8211; the keys (stats) that you want to export. Defaults to all;</li>
 <li><strong>excluded_keys</strong> (<em>list of str</em>) &#8211; the keys (stats) that you do not want to export. Defaults to None;</li>
-<li><strong>pretty_printing</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True json will be formatted with 4-spaces indentation. Defaults to False.</li>
+<li><strong>pretty_printing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; if True json will be formatted with 4-spaces indentation. Defaults to False.</li>
 </ul>
 </td>
 </tr>
@@ -809,7 +808,7 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the course whose statistics we are exporting.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; the course whose statistics we are exporting.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An HttpResponse with content MIME text/csv</td>
 </tr>
@@ -842,9 +841,9 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if set a CourseInfo is returned</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if both course and user are set then a UserInfo is returned</li>
-<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if course, user and session are set then a SessionInfo is returned</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; if set a CourseInfo is returned</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; if both course and user are set then a UserInfo is returned</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; if course, user and session are set then a SessionInfo is returned</li>
 </ul>
 </td>
 </tr>
@@ -891,7 +890,7 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the id of the course whose information we are interested in.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; the id of the course whose information we are interested in.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The total number of lessons if the information is known by the system; otherwise, the string &#8216;Unknown&#8217;.</td>
 </tr>
@@ -908,8 +907,8 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set we are asking for courseLevel or userLevel info; otherwise, systemLevel info will be provided.</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If both course and user are set we are asking for userLevel info; otherwise, courseLevel or systemLevel.</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; If set we are asking for courseLevel or userLevel info; otherwise, systemLevel info will be provided.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; If both course and user are set we are asking for userLevel info; otherwise, courseLevel or systemLevel.</li>
 </ul>
 </td>
 </tr>
@@ -928,7 +927,7 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; if specified, we are asking for course level info; otherwise, system level.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; if specified, we are asking for course level info; otherwise, system level.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The total number of users if the information is known by the system.</td>
 </tr>
@@ -952,14 +951,14 @@ that there is no relevant speed improvement with big datasets (might have with s
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>course</strong> (<em>Str</em>) &#8211; The id of the course we are inspecting.</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose coverage percentage we are asking for.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the user whose coverage percentage we are asking for.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the coverage percentage if the information is known by the system; otherwise, the string &#8216;Unknown&#8217;.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
 </td>
 </tr>
 </tbody>
@@ -975,8 +974,8 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the course we are interested in.</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose sessions dates we are asking for.</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the course we are interested in.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the user whose sessions dates we are asking for.</li>
 </ul>
 </td>
 </tr>
@@ -998,14 +997,14 @@ that there is no relevant speed improvement with big datasets (might have with s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the course we are interested in. If none we get all the users.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the course we are interested in. If none we get all the users.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">if course is set  a list of the users ids if the course is present in the system; if not set,
 the number of users of the system; if an error occurs, the empty list.</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition-todo admonition" id="index-3">
+<div class="admonition-todo admonition" id="index-2">
 <p class="first admonition-title">Todo</p>
 <ul class="last simple">
 <li>this method should be split, or at least the return value should be of only one type;</li>
@@ -1023,8 +1022,8 @@ the number of users of the system; if an error occurs, the empty list.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the filename (filepath) that we are importing;</li>
-<li><strong>overwrite</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if the imported information is already present in the system and overwrite = False then a message is returned and the file is not imported. Defaults to False.</li>
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; the filename (filepath) that we are importing;</li>
+<li><strong>overwrite</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; if the imported information is already present in the system and overwrite = False then a message is returned and the file is not imported. Defaults to False.</li>
 </ul>
 </td>
 </tr>
@@ -1078,15 +1077,15 @@ if level = user user level info is plotted; otherwise, course level info</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The course we are considering.</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set we are plotting the user distribution; otherwise, the course distribution.</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; If set we are plotting the user distribution; otherwise, the course distribution.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the figure</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
 </td>
 </tr>
 </tbody>
@@ -1106,9 +1105,9 @@ if level = user user level info is plotted; otherwise, course level info</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lesson</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the lesson whose coverage we are asking for.</li>
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The course we are considering.</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set, we are asking for the lesson coverage of a specific user;
+<li><strong>lesson</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the lesson whose coverage we are asking for.</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; If set, we are asking for the lesson coverage of a specific user;
 otherwise, courseLevel lesson coverage will be plotted.</li>
 </ul>
 </td>
@@ -1116,7 +1115,7 @@ otherwise, courseLevel lesson coverage will be plotted.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the image representation of the session coverage</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
 </td>
 </tr>
 </tbody>
@@ -1148,15 +1147,15 @@ if level = user it plots the number of sessions that the user has spent watching
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The course we are considering.</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set we are plotting the user histogram; otherwise, the course histogram.</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; If set we are plotting the user histogram; otherwise, the course histogram.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the histogram</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
 </td>
 </tr>
 </tbody>
@@ -1176,16 +1175,16 @@ if level = user it plots the number of sessions that the user has spent watching
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The course we are considering.</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set level &lt; course (user or session)</li>
-<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If set level = session, otherwise level = user</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The course we are considering.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; If set level &lt; course (user or session)</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; If set level = session, otherwise level = user</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the pie chart of the notes types distribution</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
 </td>
 </tr>
 </tbody>
@@ -1205,16 +1204,16 @@ if level = user it plots the number of sessions that the user has spent watching
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the course whose user session coverage we are asking for.</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The id of the user whose session coverage we are asking for.</li>
-<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The demanded session.</li>
+<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the course whose user session coverage we are asking for.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The id of the user whose session coverage we are asking for.</li>
+<li><strong>session</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The demanded session.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the image representation of the session coverage</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
 </td>
 </tr>
 </tbody>
@@ -1259,106 +1258,8 @@ the order intervals[i][end] &lt; intervals[i+1][start] and itervals[i][start] &l
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>intervals</strong> (<em>list</em>) &#8211; The list of intervals to whom we have to add the interval;</li>
-<li><strong>interval</strong> (<em>list</em>) &#8211; the interval to add in the format [start,end].</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="lodegML.utility_queries.get_all_courses">
-<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_courses</code><span class="sig-paren">(</span><em>lessons_collection</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_courses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_courses" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return all the course_ids that have been registered</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="lodegML.utility_queries.get_all_records_for_session">
-<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_records_for_session</code><span class="sig-paren">(</span><em>collection</em>, <em>session: str</em>, <em>sessionInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_records_for_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_records_for_session" title="Permalink to this definition">¶</a></dt>
-<dd><p>Populate the specified sessionInfo with data</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="lodegML.utility_queries.get_all_records_for_user_and_course">
-<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_records_for_user_and_course</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em>, <em>user: str</em>, <em>userInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_records_for_user_and_course"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_records_for_user_and_course" title="Permalink to this definition">¶</a></dt>
-<dd><p>Populate the specified userInfo with data</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="lodegML.utility_queries.get_all_sessions_for_course">
-<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_sessions_for_course</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_sessions_for_course"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_sessions_for_course" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of the session_ids for the specified course</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>collection</strong> &#8211; the collection of log records</li>
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the course_id</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="lodegML.utility_queries.get_all_sessions_for_user_and_course">
-<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_sessions_for_user_and_course</code><span class="sig-paren">(</span><em>collection</em>, <em>user: str</em>, <em>course: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_sessions_for_user_and_course"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_sessions_for_user_and_course" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the session_ids of the course for the specified user</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="lodegML.utility_queries.get_all_users_for_course">
-<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_users_for_course</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_users_for_course"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_users_for_course" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the user_ids for the specified course.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>collection</strong> &#8211; the collection of log records;</li>
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the course_id.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="lodegML.utility_queries.get_all_users_records">
-<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_all_users_records</code><span class="sig-paren">(</span><em>collection</em>, <em>course: str</em>, <em>courseInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_all_users_records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_all_users_records" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve courseInfo data</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>collection</strong> &#8211; the collection of log records</li>
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the course_id we are interested in</li>
-<li><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the dictionary that will be populated with the data</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="lodegML.utility_queries.get_lessons_durations_and_registration_dates">
-<code class="descclassname">lodegML.utility_queries.</code><code class="descname">get_lessons_durations_and_registration_dates</code><span class="sig-paren">(</span><em>lessons_collection</em>, <em>course: str</em>, <em>courseInfo: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lodegML/utility_queries.html#get_lessons_durations_and_registration_dates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lodegML.utility_queries.get_lessons_durations_and_registration_dates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set for a course the course lessons and their durations.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>lessons_collection</strong> &#8211; the MongoDB collection that contains the lessons records;</li>
-<li><strong>course</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the target course;</li>
-<li><strong>courseInfo</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; the dictionary to be populated.</li>
+<li><strong>intervals</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) &#8211; The list of intervals to whom we have to add the interval;</li>
+<li><strong>interval</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) &#8211; the interval to add in the format [start,end].</li>
 </ul>
 </td>
 </tr>
@@ -1375,8 +1276,8 @@ the order intervals[i][end] &lt; intervals[i+1][start] and itervals[i][start] &l
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>data</strong> (<em>list</em>) &#8211; the raw data to filter as a list of records</li>
-<li><strong>filter_types</strong> (<em>list</em>) &#8211; the types of records we want to keep from the list</li>
+<li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) &#8211; the raw data to filter as a list of records</li>
+<li><strong>filter_types</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) &#8211; the types of records we want to keep from the list</li>
 </ul>
 </td>
 </tr>

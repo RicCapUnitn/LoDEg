@@ -1,6 +1,13 @@
 lodegML package
 ===============
 
+Subpackages
+-----------
+
+.. toctree::
+
+    lodegML.configure
+
 Submodules
 ----------
 
@@ -36,6 +43,14 @@ lodegML\.data\_extraction module
     :undoc-members:
     :show-inheritance:
 
+lodegML\.exceptions module
+--------------------------
+
+.. automodule:: lodegML.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 lodegML\.import\_export module
 ------------------------------
 
@@ -48,6 +63,14 @@ lodegML\.ml module
 ------------------
 
 .. automodule:: lodegML.ml
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+lodegML\.mongo\_queries module
+------------------------------
+
+.. automodule:: lodegML.mongo_queries
     :members:
     :undoc-members:
     :show-inheritance:

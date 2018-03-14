@@ -67,6 +67,7 @@
 <div class="viewcode-block" id="DataFrameSelector.transform"><a class="viewcode-back" href="../../lodegML.html#lodegML.ml.DataFrameSelector.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">attribute_names</span><span class="p">]</span><span class="o">.</span><span class="n">values</span></div></div>
 
+
 <span class="n">_stats_whitelist</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;number_of_notes&#39;</span><span class="p">,</span>
     <span class="s1">&#39;notes_over_session_duration&#39;</span><span class="p">,</span>
@@ -143,8 +144,8 @@
     <span class="n">dataframe</span> <span class="o">=</span> <span class="n">courseInfo</span><span class="p">[</span><span class="s1">&#39;stats_dframe&#39;</span><span class="p">]</span>
 
     <span class="c1"># Add noise for testing</span>
-    <span class="c1">#noise = np.random.normal(100,10, dataframe.shape)</span>
-    <span class="c1">#dataframe += noise</span>
+    <span class="c1"># noise = np.random.normal(100,10, dataframe.shape)</span>
+    <span class="c1"># dataframe += noise</span>
 
     <span class="c1"># Run pipeline</span>
     <span class="k">if</span> <span class="n">_num_attribs</span> <span class="o">!=</span> <span class="p">[]</span> <span class="ow">and</span> <span class="n">_cat_attribs</span> <span class="o">!=</span> <span class="p">[]:</span>
@@ -188,14 +189,19 @@
     <span class="c1">#ms = cluster.MeanShift(bandwidth=bandwidth, bin_seeding=True)</span>
     <span class="n">two_means</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">MiniBatchKMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">])</span>
     <span class="n">ward</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">AgglomerativeClustering</span><span class="p">(</span>
-        <span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span> <span class="n">linkage</span><span class="o">=</span><span class="s1">&#39;ward&#39;</span><span class="p">,</span> <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">)</span>
-    <span class="n">spectral</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">SpectralClustering</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span>
-                                          <span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span> <span class="n">eigen_solver</span><span class="o">=</span><span class="s1">&#39;arpack&#39;</span><span class="p">,</span> <span class="n">affinity</span><span class="o">=</span><span class="s2">&quot;nearest_neighbors&quot;</span><span class="p">)</span>
+        <span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span>
+        <span class="n">linkage</span><span class="o">=</span><span class="s1">&#39;ward&#39;</span><span class="p">,</span> <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">)</span>
+    <span class="n">spectral</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">SpectralClustering</span><span class="p">(</span>
+        <span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span>
+        <span class="n">eigen_solver</span><span class="o">=</span><span class="s1">&#39;arpack&#39;</span><span class="p">,</span>
+        <span class="n">affinity</span><span class="o">=</span><span class="s2">&quot;nearest_neighbors&quot;</span><span class="p">)</span>
     <span class="n">dbscan</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;eps&#39;</span><span class="p">])</span>
     <span class="n">affinity_propagation</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">AffinityPropagation</span><span class="p">(</span>
         <span class="n">damping</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;damping&#39;</span><span class="p">],</span> <span class="n">preference</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;preference&#39;</span><span class="p">])</span>
-    <span class="n">average_linkage</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">AgglomerativeClustering</span><span class="p">(</span><span class="n">linkage</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span> <span class="n">affinity</span><span class="o">=</span><span class="s2">&quot;cityblock&quot;</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span>
-                                                      <span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span>         <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">)</span>
+    <span class="n">average_linkage</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">AgglomerativeClustering</span><span class="p">(</span>
+        <span class="n">linkage</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span> <span class="n">affinity</span><span class="o">=</span><span class="s2">&quot;cityblock&quot;</span><span class="p">,</span>
+        <span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span>
+        <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">)</span>
     <span class="n">birch</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">Birch</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">])</span>
     <span class="n">gmm</span> <span class="o">=</span> <span class="n">mixture</span><span class="o">.</span><span class="n">GaussianMixture</span><span class="p">(</span>
         <span class="n">n_components</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">],</span> <span class="n">covariance_type</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>

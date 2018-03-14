@@ -22,7 +22,7 @@ class TestSystem(unittest.TestCase):
         cls._test_invalid_user = 'invalidUser'
         cls._test_invalid_session = 'invalidSession'
 
-    def test_complete_extraction_query_mem_opt_no_ml(self):
+    def test_system_extraction_query_mem_opt_no_ml(self):
         kwargs = {
             'keep_session_data': False,
             'keep_user_info': True,
@@ -31,7 +31,7 @@ class TestSystem(unittest.TestCase):
         }
         self._system.executeCompleteExtraction(**kwargs)
 
-    def test_complete_extraction_no_query_mem_opt_no_ml(self):
+    def test_system_extraction_no_query_mem_opt_no_ml(self):
         kwargs = {
             'keep_session_data': False,
             'keep_user_info': True,
@@ -40,7 +40,7 @@ class TestSystem(unittest.TestCase):
         }
         self._system.executeCompleteExtraction(**kwargs)
 
-    def test_complete_extraction_query_mem_opt_ml(self):
+    def test_system_extraction_query_mem_opt_ml(self):
         kwargs = {
             'keep_session_data': False,
             'keep_user_info': True,
@@ -48,3 +48,14 @@ class TestSystem(unittest.TestCase):
             'ml_autorun': True
         }
         self._system.executeCompleteExtraction(**kwargs)
+
+    def test_system_extraction_no_keep_user_data(self):
+        kwargs = {
+            'keep_session_data': False,
+            'keep_user_info': False,
+            'query_mem_opt': True,
+            'ml_autorun': False
+        }
+        self._system.executeCompleteExtraction(**kwargs)
+        course_users = self._system.getData(course=self._test_course)
+        self.assertDictEqual(course_users, {})

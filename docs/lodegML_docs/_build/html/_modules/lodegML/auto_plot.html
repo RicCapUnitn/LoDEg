@@ -46,6 +46,7 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
 <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="k">import</span> <span class="n">PolyCollection</span>
+<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
 <span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="nn">mdates</span>
 <span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
 <span class="kn">import</span> <span class="nn">mpld3</span>
@@ -59,6 +60,7 @@
 
 <span class="c1"># For correlation_graph test only</span>
 <span class="c1"># import test_utils  # migrate</span>
+<span class="kn">from</span> <span class="nn">exceptions</span> <span class="k">import</span> <span class="n">AutoPlotException</span>  <span class="c1"># migrate</span>
 
 
 <div class="viewcode-block" id="AutoPlot"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot">[docs]</a><span class="k">class</span> <span class="nc">AutoPlot</span><span class="p">:</span>
@@ -72,11 +74,26 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">target</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span> <span class="o">=</span> <span class="n">title_font_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_next_figure</span> <span class="o">=</span> <span class="kc">False</span>
 
+    <span class="k">def</span> <span class="nf">_save</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_next_figure</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_save_next_figure</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">figure</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">AutoPlotException</span><span class="p">(</span>
+                        <span class="s1">&#39;Error while saving figure&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func_wrapper</span>
+
+    <span class="nd">@_save</span>
     <span class="k">def</span> <span class="nf">_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figure</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">==</span> <span class="s1">&#39;console&#39;</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">==</span> <span class="s1">&#39;web&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">==</span> <span class="s1">&#39;web&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;html&#39;</span><span class="p">:</span>
                 <span class="n">html</span> <span class="o">=</span> <span class="n">mpld3</span><span class="o">.</span><span class="n">fig_to_html</span><span class="p">(</span><span class="n">figure</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">html</span>
@@ -84,32 +101,44 @@
                 <span class="n">f</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
                 <span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">)</span>
                 <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>  <span class="c1"># Might break everything when parallelizing</span>
-                <span class="k">return</span> <span class="s2">&quot;data:image/png;base64,&quot;</span> <span class="o">+</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+                <span class="k">return</span> <span class="s2">&quot;data:image/png;base64,&quot;</span> <span class="o">+</span> \
+                    <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AutoPlot.saveNextFigure"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.saveNextFigure">[docs]</a>    <span class="k">def</span> <span class="nf">saveNextFigure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_next_figure</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">+</span> <span class="n">filename</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="AutoPlot.printSessionCoverage"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printSessionCoverage">[docs]</a>    <span class="k">def</span> <span class="nf">printSessionCoverage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sessionInfo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">lesson_duration</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Print the session coverage, i.e. which parts of the video have been watched.</span>
 
 <span class="sd">        Params:</span>
 <span class="sd">            sessionInfo (dict): the session that contains the session_coverage to be plotted.</span>
-<span class="sd">            lesson_duration (float): the duration of the lesson to be plotted.</span>
-
-<span class="sd">        Todo:</span>
-<span class="sd">            * pass the session_coverage instead of the sessionInfo</span>
+<span class="sd">            lesson_duration (float): the duration of the lesson to be plotted in seconds.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">session_coverage</span> <span class="o">=</span> <span class="n">sessionInfo</span><span class="p">[</span><span class="s1">&#39;session_coverage&#39;</span><span class="p">]</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">lesson_duration</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">session_coverage</span><span class="p">:</span>
-            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="s2">&quot;g--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="s2">&quot;g--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="n">lesson_duration_in_minutes</span> <span class="o">=</span> <span class="n">lesson_duration</span> <span class="o">/</span> <span class="mf">60.</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">lesson_duration_in_minutes</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">session_coverage</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">interval_in_minutes</span> <span class="o">=</span> <span class="p">(</span><span class="n">interval</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">60.</span><span class="p">,</span> <span class="n">interval</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">interval_in_minutes</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">interval_in_minutes</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">interval_in_minutes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">interval_in_minutes</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="s2">&quot;g--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">interval_in_minutes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">interval_in_minutes</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="s2">&quot;g--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
         <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;SESSION COVERAGE: which parts of the video have been watched&#39;</span><span class="p">,</span>
-                     <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Seconds&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+            <span class="s1">&#39;SESSION COVERAGE: which parts of the video have been watched&#39;</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_font_size</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;minutes&#39;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Inteval number&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">)</span></div>
 
@@ -124,7 +153,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Seconds&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Slots (30s)&#39;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Number of users&#39;</span><span class="p">)</span>
         <span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coverage</span><span class="p">)),</span> <span class="n">coverage</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">)</span></div>
@@ -212,33 +241,46 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check if the distribution has exactly 24 hours</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span> <span class="o">==</span> <span class="mi">24</span><span class="p">:</span>
+
+            <span class="n">grid</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
             <span class="c1"># Compute pie slices</span>
-            <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">radii</span> <span class="o">=</span> <span class="n">distribution</span>
-            <span class="n">width</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">24.0</span>
-
-            <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;polar&#39;</span><span class="p">)</span>
-            <span class="n">bars</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-
-            <span class="c1"># Rotate bars</span>
-            <span class="n">ax1</span><span class="o">.</span><span class="n">set_theta_zero_location</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
-            <span class="c1"># set labels</span>
-            <span class="n">ax1</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;12&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;9&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">])</span>
-
-            <span class="c1"># Get max value of the distribution (for color scale normalization)</span>
             <span class="n">max_radio</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">12.0</span>
+
+            <span class="n">radii1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> <span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">])))</span>
+            <span class="n">radii2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">radii</span><span class="p">[</span><span class="mi">13</span><span class="p">:</span><span class="mi">24</span><span class="p">],</span> <span class="n">radii</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">13</span><span class="p">])))</span>
+
+            <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;polar&#39;</span><span class="p">)</span>
+            <span class="n">bars</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">radii1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
 
             <span class="c1"># Use custom colors and opacity</span>
-            <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">bar</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">radii</span><span class="p">,</span> <span class="n">bars</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">bar</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">radii1</span><span class="p">,</span> <span class="n">bars</span><span class="p">):</span>
                 <span class="n">bar</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="n">max_radio</span><span class="p">))</span>
 
-            <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-            <span class="n">bars</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="n">distribution</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">set_theta_zero_location</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>  <span class="c1"># Rotate bars</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;9&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">])</span>
+
+            <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;polar&#39;</span><span class="p">)</span>
+            <span class="n">bars</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">radii2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+            <span class="c1"># Use custom colors and opacity</span>
+            <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">bar</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">radii2</span><span class="p">,</span> <span class="n">bars</span><span class="p">):</span>
+                <span class="n">bar</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="n">max_radio</span><span class="p">))</span>
+
+            <span class="n">ax2</span><span class="o">.</span><span class="n">set_theta_zero_location</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>  <span class="c1"># Rotate bars</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;12&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;21&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;18&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;15&#39;</span><span class="p">])</span>
+
+            <span class="n">ax3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">grid</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">bars</span> <span class="o">=</span> <span class="n">ax3</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="n">distribution</span><span class="p">)</span>
             <span class="c1"># Add text</span>
             <span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">bars</span><span class="p">:</span>
                 <span class="n">height</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span>
                 <span class="n">bar</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">height</span> <span class="o">/</span> <span class="n">max_radio</span><span class="p">))</span>
-            <span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="n">ax3</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
             <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
             <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Sessions day distribution&quot;</span><span class="p">,</span>
@@ -246,7 +288,9 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AutoPlot.printLessonUserCorrelationGraph"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printLessonUserCorrelationGraph">[docs]</a>    <span class="k">def</span> <span class="nf">printLessonUserCorrelationGraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lessons_visualization</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">registration_dates</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">time_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;abs&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="AutoPlot.printLessonUserCorrelationGraph"><a class="viewcode-back" href="../../lodegML.html#lodegML.auto_plot.AutoPlot.printLessonUserCorrelationGraph">[docs]</a>    <span class="k">def</span> <span class="nf">printLessonUserCorrelationGraph</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">lessons_visualization</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">registration_dates</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">time_format</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;abs&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Print a 3d graph of users lesson visualization.</span>
 
 <span class="sd">        The graph plots a function of the number of users against time and lessons: for every lesson,</span>
@@ -260,99 +304,6 @@
 <span class="sd">            registration_dates (dict): the dates of registration of every lesson.</span>
 <span class="sd">            time_format (str): the time format (abs or rel). Defaults to abs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        lessons_visualization = test_utils.correlation_graph_lessons_test()</span>
-
-<span class="sd">        # Create the figure</span>
-<span class="sd">        fig = plt.figure(figsize=(10,10))</span>
-<span class="sd">        ax = fig.gca(projection=&#39;3d&#39;)</span>
-
-<span class="sd">        # Set z as lessons</span>
-<span class="sd">        y_ticks = lessons_visualization.keys()</span>
-<span class="sd">        zs = np.arange(0, len(lessons_visualization))</span>
-
-<span class="sd">        # Dates formatters</span>
-<span class="sd">        months = mdates.MonthLocator()  # every month</span>
-<span class="sd">        days = mdates.DayLocator()  # every day</span>
-<span class="sd">        # Setup the DateFormatter for the x axis</span>
-<span class="sd">        date_format = mdates.DateFormatter(&#39;%D&#39;)</span>
-
-<span class="sd">        # Min/max for x ticks</span>
-<span class="sd">        datemin = datetime.datetime.now(pytz.utc) + datetime.timedelta(days = -20) # Test</span>
-<span class="sd">        #datemin = min(registration_dates.values())</span>
-<span class="sd">        datemax = datetime.datetime.now(pytz.utc)</span>
-
-<span class="sd">        # Maxvalue for z axis</span>
-<span class="sd">        max_value = 0</span>
-
-<span class="sd">        verts = []</span>
-<span class="sd">        for lesson, dates_counter in lessons_visualization.items():</span>
-<span class="sd">            # Get the dates that are present in the counter</span>
-<span class="sd">            dates = sorted(dates_counter.keys())</span>
-
-<span class="sd">            # Compute datemin and datemax</span>
-<span class="sd">            max_date = max(dates)</span>
-<span class="sd">            # Select a relative mindate if time_format = rel</span>
-<span class="sd">            if (time_format == &#39;rel&#39;):</span>
-<span class="sd">                min_date = min(dates)</span>
-<span class="sd">                if  min_date &lt; datemin:</span>
-<span class="sd">                    datemin = min_date</span>
-<span class="sd">            else:</span>
-<span class="sd">                min_date = datemin</span>
-
-<span class="sd">            if max_date &gt; datemax:</span>
-<span class="sd">                datemax = max_date</span>
-
-<span class="sd">            # Create verts adding a 0 before the first and after the last days</span>
-<span class="sd">            xs = np.asarray([mdates.date2num(min_date + datetime.timedelta(days=-1))] + list(mdates.date2num(dates))</span>
-<span class="sd">                            + [mdates.date2num(max_date + datetime.timedelta(days=1))])</span>
-<span class="sd">            ys = [0]</span>
-<span class="sd">            for date in dates:</span>
-<span class="sd">                ys.append(dates_counter[date])</span>
-<span class="sd">            ys.append(0)</span>
-<span class="sd">            verts.append(list(zip(xs, ys)))</span>
-
-<span class="sd">            # Update max_value</span>
-<span class="sd">            tmp = max(dates_counter.values())</span>
-<span class="sd">            if (tmp &gt; max_value):</span>
-<span class="sd">                max_value = tmp</span>
-
-<span class="sd">        # Create PolyCollection</span>
-<span class="sd">        facecolors = [cm.jet(x) for x in np.linspace(0,1,5)]</span>
-<span class="sd">        #facecolors = [cm.jet(x) for x in np.linspace(0,1,len(registration_dates))]</span>
-<span class="sd">        poly = PolyCollection(verts, facecolors = facecolors, edgecolor=&#39;black&#39;, linewidth=0.6)</span>
-<span class="sd">        poly.set_alpha(0.7)</span>
-
-
-<span class="sd">        # Add the collection to the graph</span>
-<span class="sd">        ax.add_collection3d(poly, zs=zs, zdir=&#39;y&#39;)</span>
-
-<span class="sd">        # Set ticks</span>
-<span class="sd">        ax.set_yticklabels(y_ticks)</span>
-
-<span class="sd">        # format the ticks</span>
-<span class="sd">        #ax.xaxis_date()</span>
-<span class="sd">        ax.xaxis.set_major_locator(months)</span>
-<span class="sd">        ax.xaxis.set_minor_locator(days)</span>
-<span class="sd">        ax.xaxis.set_major_formatter(date_format)</span>
-
-<span class="sd">        # Set axis labels and limits</span>
-<span class="sd">        ax.set_xlim3d(datemin + datetime.timedelta(days=-1), datemax + datetime.timedelta(days=1))</span>
-<span class="sd">        ax.set_ylim3d(0, len(lessons_visualization))</span>
-<span class="sd">        ax.set_zlabel(&#39;Users&#39;)</span>
-<span class="sd">        ax.set_zlim3d(0, max_value)</span>
-
-<span class="sd">        # Convert the image to a base64 binary stream</span>
-<span class="sd">        if &#39;cStringIO&#39; in sys.modules:</span>
-<span class="sd">            f = cStringIO.StringIO()   # Python 2</span>
-<span class="sd">        else:</span>
-<span class="sd">            f = io.BytesIO()           # Python 3</span>
-<span class="sd">        plt.savefig(f, format=&quot;png&quot;)</span>
-<span class="sd">        plt.clf()</span>
-<span class="sd">        return &quot;data:image/png;base64,&quot; + base64.b64encode(f.getvalue()).decode()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># Create the figure</span>
         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
@@ -369,7 +320,7 @@
 
         <span class="c1"># Min/max for x ticks</span>
         <span class="n">datemin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">registration_dates</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">datemax</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="n">datemax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">registration_dates</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
         <span class="c1"># Maxvalue for z axis</span>
         <span class="n">max_value</span> <span class="o">=</span> <span class="mi">0</span>
@@ -392,8 +343,10 @@
                 <span class="n">datemax</span> <span class="o">=</span> <span class="n">max_date</span>
 
             <span class="c1"># Create verts adding a 0 before the first and after the last days</span>
-            <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">mdates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">min_date</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=-</span><span class="mi">1</span><span class="p">))]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">mdates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">dates</span><span class="p">))</span>
-                            <span class="o">+</span> <span class="p">[</span><span class="n">mdates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">max_date</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))])</span>
+            <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">mdates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">min_date</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=-</span><span class="mi">1</span><span class="p">))]</span> <span class="o">+</span>
+                <span class="nb">list</span><span class="p">(</span><span class="n">mdates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">dates</span><span class="p">))</span> <span class="o">+</span>
+                <span class="p">[</span><span class="n">mdates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">max_date</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))])</span>
             <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
                 <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dates_counter</span><span class="p">[</span><span class="n">date</span><span class="p">])</span>
@@ -404,12 +357,8 @@
             <span class="k">if</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">&gt;</span> <span class="n">max_value</span><span class="p">):</span>
                 <span class="n">max_value</span> <span class="o">=</span> <span class="n">tmp</span>
 
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim3d</span><span class="p">([</span><span class="n">datemin</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span>
-                           <span class="n">datemax</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)])</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim3d</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lessons_visualization</span><span class="p">)])</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_zlim3d</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="p">])</span>
-
-            <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">zs</span><span class="p">),</span> <span class="n">zdir</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+            <span class="n">current_z</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="n">current_z</span><span class="p">,</span> <span class="n">zdir</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
 
         <span class="c1"># Set ticks</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">)</span>
