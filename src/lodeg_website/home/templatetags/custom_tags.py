@@ -24,7 +24,7 @@ def getSystemSettings(context):
 
 @register.simple_tag(takes_context=True)
 def getNumberOfUsers(context, level):
-    if (level == 'course'):
+    if level == 'course':
         return context['system'].getNumberOfUsers(context['course'])
     else:
         return context['system'].getNumberOfUsers()
@@ -32,10 +32,10 @@ def getNumberOfUsers(context, level):
 
 @register.simple_tag(takes_context=True)
 def getNumberOfSessions(context, level):
-    if (level == 'user'):
+    if level == 'user':
         return context['system'].getNumberOfSessions(
             context['course'], context['user'])
-    elif (level == 'course'):
+    elif level == 'course':
         return context['system'].getNumberOfSessions(context['course'])
     else:
         return context['system'].getNumberOfSessions()
@@ -43,7 +43,7 @@ def getNumberOfSessions(context, level):
 
 @register.simple_tag(takes_context=True)
 def getNumberOfLessons(context, level):
-    if (level == 'course'):
+    if level == 'course':
         return context['system'].getNumberOfLessons(context['course'])
     else:
         return context['system'].getNumberOfLessons()
@@ -51,7 +51,7 @@ def getNumberOfLessons(context, level):
 
 @register.simple_tag(takes_context=True)
 def getUsers(context, level):
-    if (level == 'course'):
+    if level == 'course':
         return context['system'].getUsers(context['course'])
     else:
         return context['system'].getUsers()

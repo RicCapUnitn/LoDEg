@@ -1,4 +1,4 @@
-{% extends "base_user.html" %}
+{% extends "base_generic.html" %}
 
 {% block scripts_head%}
 {% load static %}
@@ -12,75 +12,6 @@
 
 {% load custom_tags %}
 {% block content %}
-<section class="row placeholders">
-    <!-- Dashboard -->
-    <a class="anchor" id="dashboard"></a>
-    <h1>Dashboard</h1>
-    <div class="col-md-4 col-sm-4 placeholder">
-        <div class="textAboveImage">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" class="img-responsive img-circle" alt="Generic placeholder thumbnail" width="200" height="200">
-            <h1>{% getNumberOfSessions %}</h1>
-        </div>
-        <h4>The number of sessions</h4>
-        <div class="text-muted">you have done</div>
-    </div>
-    <div class="col-md-4 col-sm-4 placeholder">
-        <div class="textAboveImage">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" class="img-responsive img-circle" alt="Generic placeholder thumbnail" width="200" height="200">
-            <h1>{% getUserCoveragePercentage %}</h1>
-        </div>
-        <h4>The percentage of lessons</h4>
-        <span class="text-muted">you have watched so far</span>
-    </div>
-    <div class="col-md-4 col-sm-4 placeholder">
-        <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" class="img-responsive img-circle" alt="Generic placeholder thumbnail" width="200" height="200">
-        <h4>Information</h4>
-        <span class="text-muted">Something else</span>
-    </div>
-</section>
-
-<section>
-    <!-- Sessions -->
-    <div class="row">
-        <a class="anchor" id="sessions"></a>
-        <h1>Your Sessions</h1>
-        <div class="col-md-3 col-sm-3"></div>
-        <form class="col-md-6 col-sm-6" action="{% url 'setSession' %}" method="post">
-            {% csrf_token %}
-            <div class="input-group">
-                <div class="input-group-addon">Select a session:</div>
-                <select class="form-control" name="selected_session" value="{{user}}-session1">
-                    {% getUserSessionsHeaders as list%}
-                    {% for session in list %}
-                    <option value="{{session.session_id}}">{{session.header}}</option>
-                    {% empty %}
-                    <option>No session available: try the collectData button!</option>
-                    {% endfor %}
-                </select>
-                <span class="input-group-btn">
-                    <button id ="sessionSubmitButton" class="btn btn-success" type="submit" >Submit</button>
-                    {% if not list %}
-                    <script> toggleSessionSubmit() </script>
-                    {% endif %}
-                </span>
-            </div>
-        </form>
-    </div>
-    {% if session %}
-    <div class="row text-center" id="sessionInfo">
-        <h1>Lesson title</h1>
-        {% autoescape off %}
-        <div class="col-sm-6 col-md-6">
-            {% printSessionCoverage %}
-        </div>
-        <div class="col-sm-6 col-md-6">
-            {% printNotesBarChart session %}
-        </div>
-        {% endautoescape %}
-    </div>
-    {% endif %}
-</section>
-
 {% endblock %}
 
 {% block scripts_body%}

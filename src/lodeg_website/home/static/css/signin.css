@@ -16,6 +16,9 @@ body {
   margin-top: 10px;
   margin-bottom: 10px;
   border-radius: 25px;
-  padding: 5px;
   text-align: center;
+}
+
+.signin-info strong p:not(:empty) {
+  padding: 5px
 }

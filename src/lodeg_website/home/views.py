@@ -13,7 +13,6 @@ from .lodegML.system import LodegSystem
 
 context = {
     "system": LodegSystem(modality='web', debug=False),
-    "adminPermissions": False,
     "contact_mail_address": "capraroriccardo@gmail.com"
 }
 
@@ -30,9 +29,9 @@ def set_context_user(func):
 def check_permissions(func):
     def func_wrapper(request):
         if request.user.is_superuser:
-            context['adminPermissions'] = True
+            context['template_name'] = "base_admin.html"
         else:
-            context['adminPermissions'] = False
+            context['template_name'] = "base_generic.html"
         return func(request)
     return func_wrapper
 
@@ -50,14 +49,17 @@ def course_required(func):
 @set_context_user
 @check_permissions
 def index(request):
-    template_name = "base_admin.html" if context['adminPermissions'] else "base_user.html"
-    context['template_name'] = template_name
-    return render(request, 'home/index.html', context)
+    if request.user.is_superuser:
+        return render(request, 'home/index.html', context)
+    else:
+        return render(request, 'home/user.html', context)
 
 
 @login_required
+@set_context_user
+@check_permissions
 def contact(request):
-    return render(request, 'home/contact.html')
+    return render(request, 'home/contact.html', context)
 
 
 @login_required
@@ -78,6 +80,7 @@ def sessionInfo(request):
 
 @login_required
 @set_context_user
+@check_permissions
 def user(request):
     return render(request, 'home/user.html', context)
 
@@ -85,20 +88,14 @@ def user(request):
 @login_required
 @check_permissions
 def collectDataFromDb(request):
-    if(context['adminPermissions'] == True):
-        context['system'].collectDataFromDb()
-    else:
-        context['system'].collectDataFromDb(context['user'])
+    context['system'].collectDataFromDb()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
 @check_permissions
 def saveDataToDb(request):
-    if(context['adminPermissions'] == True):
-        context['system'].saveDataToDb()
-    else:
-        context['system'].saveDataToDb(context['user'])
+    context['system'].saveDataToDb()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
@@ -108,12 +105,6 @@ def saveDataToDb(request):
 def exportToCsv(request):
     # Need to add something here to prompt the user for course if not selected
     return context['system'].getCSV(context['course'])
-
-
-@login_required
-def extractUserData(request):
-    context['system'].extractUserData(context['user'])
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required

@@ -16,11 +16,12 @@ urlpatterns = [
     url(r'^setLesson/', views.setLesson, name='setLesson'),
     url(r'^setCourse/', views.setCourse, name='setCourse'),
     url(r'^sendEmail/', views.sendEmail, name='sendEmail'),
-    url(r'^extractUserData/', views.extractUserData, name='extractUserData'),
-    url(r'^executeCompleteExtraction/', views.executeCompleteExtraction, name='executeCompleteExtraction'),
+    url(r'^executeCompleteExtraction/', views.executeCompleteExtraction,
+        name='executeCompleteExtraction'),
     url(r'^$', views.index, name='index'),
 
     url(r'^settings/', views.settings, name='settings'),
-    url(r'^modifySystemSettings/', views.modifySystemSettings, name='modifySystemSettings'),
+    url(r'^modifySystemSettings/', views.modifySystemSettings,
+        name='modifySystemSettings'),
     url(r'^debuggingConsole/', views.debuggingConsole, name='debuggingConsole')
 ]

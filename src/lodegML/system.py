@@ -154,6 +154,9 @@ class LodegSystem:
             # the system
             return {}
 
+    def getUserStatistics(self, user: str):
+        pass
+
     def getLastUpdate(self):
         """Get the local time representation of the last data extraction"""
         if (self._systemInfo['last_update'] != 'never'):
