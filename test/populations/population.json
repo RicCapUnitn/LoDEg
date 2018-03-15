@@ -5806,6 +5806,12 @@
     "value1": 6940.0
 }{
     "course_id": "course1",
+    "user_id": "user1",
+    "type": "title",
+    "value1": "lesson1",
+    "value2": "course1"
+}{
+    "course_id": "course1",
     "type": "note",
     "user_id": "user4",
     "session_id": "user4-session1",

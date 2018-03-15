@@ -412,6 +412,15 @@ def create_population():
                         record.pop('value2', None)
                     json.dump(record, out, indent=indent)
 
+        # Add malformed record for mongo_queries warnings test
+        record = {}
+        record['course_id'] = 'course1'
+        record['user_id'] = 'user1'
+        record['type'] = 'title'
+        record['value1'] = 'lesson1'
+        record['value2'] = 'course1'
+        json.dump(record, out, indent=indent)
+
         # Add notes
         record = {}
         record['course_id'] = 'course1'

@@ -1,4 +1,5 @@
 import unittest
+import warnings
 
 # Add path in order to be able to do imports
 import sys
