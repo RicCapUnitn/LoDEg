@@ -6,7 +6,7 @@ from collections import Counter
 
 from ..lodegML import utility_queries as utils  # migrate
 from ..lodegML import mongo_queries  # migrate
-from ..lodegML.exceptions import InvalidSessionException  # migrate
+from ..lodegML.exceptions import InvalidSessionException, LessonNotFoundExeption  # migrate
 
 ############################
 # Session level extraction #
@@ -78,6 +78,9 @@ def session_coverage_extraction(sessionInfo: dict):
      Args:
         sessionInfo (dict): The dictionary that will be populated with the computed statistic.
     """
+
+    MIN_INTERVALS_LENGTH_IN_SECONDS = 5.0
+
     intervals = []
     interval = []
     start_interval = 0.0
@@ -115,7 +118,7 @@ def session_coverage_extraction(sessionInfo: dict):
             elif current_action == 'pause':
                 is_paused = True
                 if is_muted and(
-                        np.abs(end_interval - start_muted_interval) > 5.0):
+                        np.abs(end_interval - start_muted_interval) > MIN_INTERVALS_LENGTH_IN_SECONDS):
                     muted_intervals = utils.add_interval(
                         muted_intervals,
                         [start_muted_interval, current_value1])
@@ -124,13 +127,13 @@ def session_coverage_extraction(sessionInfo: dict):
 
                 end_interval = current_value1
                 # Add coverage interval
-                if (np.abs(end_interval - start_interval) > 5.0):
+                if (np.abs(end_interval - start_interval) > MIN_INTERVALS_LENGTH_IN_SECONDS):
                     intervals = utils.add_interval(
                         intervals, [start_interval, end_interval])
                 # Add muted interval
                 if is_muted and(
                         not is_paused) and(
-                        np.abs(end_interval - start_muted_interval) > 5.0):
+                        np.abs(end_interval - start_muted_interval) > MIN_INTERVALS_LENGTH_IN_SECONDS):
                     muted_intervals = utils.add_interval(
                         muted_intervals, [start_muted_interval, end_interval])
                 # Update coverage start_interval
@@ -143,13 +146,13 @@ def session_coverage_extraction(sessionInfo: dict):
                 if not is_paused:
                     end_interval = current_value1
                     # Add coverage interval
-                    if (np.abs(end_interval - start_interval) > 5.0):
+                    if (np.abs(end_interval - start_interval) > MIN_INTERVALS_LENGTH_IN_SECONDS):
                         intervals = utils.add_interval(
                             intervals, [start_interval, end_interval])
                     # Add muted interval
                     if is_muted and(
                             not is_paused) and(
-                            np.abs(end_interval - start_muted_interval) > 5.0):
+                            np.abs(end_interval - start_muted_interval) > MIN_INTERVALS_LENGTH_IN_SECONDS):
                         muted_intervals = utils.add_interval(
                             muted_intervals,
                             [start_muted_interval, end_interval])
@@ -163,7 +166,7 @@ def session_coverage_extraction(sessionInfo: dict):
                 # We are unmuting the video => add a new muted interval
                 is_muted = False
                 if (not is_paused) and (
-                        np.abs(current_value1 - start_muted_interval) > 5.0):
+                        np.abs(current_value1 - start_muted_interval) > MIN_INTERVALS_LENGTH_IN_SECONDS):
                     muted_intervals = utils.add_interval(
                         muted_intervals,
                         [start_muted_interval, current_value1])
@@ -178,7 +181,7 @@ def session_coverage_extraction(sessionInfo: dict):
         # Set the session end
         end_interval = current_value1
         # Add coverage interval
-        if (np.abs(end_interval - start_interval) > 5.0):
+        if (np.abs(end_interval - start_interval) > MIN_INTERVALS_LENGTH_IN_SECONDS):
             intervals = utils.add_interval(
                 intervals, [start_interval, end_interval])
 
@@ -302,7 +305,11 @@ def compute_lessons_coverage_for_single_user(
         userInfo (dict): The dictionary that will be populated with the computed statistic.
         lessons_durations (dict) : The systemInfo dictionary {'lesson_id':'lesson_duration'}.
     """
+
     interval_gap_in_seconds = 30
+    DEFAULT_LESSON_DURATION_IN_SECONDS = 7200
+    DEFAULT_NUMBER_OF_BUCKETS = DEFAULT_LESSON_DURATION_IN_SECONDS // interval_gap_in_seconds
+
     lessons_coverage = {}
     histogram = {}
 
@@ -313,22 +320,27 @@ def compute_lessons_coverage_for_single_user(
         histogram[lesson_id] = 0
 
     for session, sessionInfo in userInfo['sessions'].items():
-        lesson = sessionInfo['lesson_id']
+        lesson_id = sessionInfo['lesson_id']
         # Add this session to the histogram
         try:
-            histogram[lesson] += 1
-        except KeyError:
-            # This lesson has never been registered, discard it
-            # TODO find a better way to handle this
-            continue
+            histogram[lesson_id] += 1
+        except KeyError as exc:
+            # Initialize and save the new lesson
+            lessons_coverage[lesson_id] = [0] * DEFAULT_NUMBER_OF_BUCKETS
+            histogram[lesson_id] = 1
+            timestamp = sessionInfo['date']
+            # Raise the exception to let the upper levels know that a new lesson
+            # has been detected
+            raise LessonNotFoundExeption(lesson_id, timestamp) from exc
+
         for interval in sessionInfo['session_coverage']:
             left_bucket = int(interval[0]) // interval_gap_in_seconds
             right_bucket = int(interval[1]) // interval_gap_in_seconds
             if(right_bucket == left_bucket):
-                lessons_coverage[lesson][right_bucket] += 1
+                lessons_coverage[lesson_id][right_bucket] += 1
             else:
                 for bucket in range(left_bucket, right_bucket):
-                    lessons_coverage[lesson][bucket] += 1
+                    lessons_coverage[lesson_id][bucket] += 1
 
     userInfo['lessons_coverage'] = lessons_coverage
     userInfo['coverage_histogram'] = histogram
@@ -598,6 +610,9 @@ def execute_userInfo_extraction(
         userInfo (dict): The dictionary that will be populated with the computed statistics.
         keep_session_data (bool): Keep the raw session data in the system. Defaults to False.
         sessionInfo_provided (bool): Set to true if the sessionInfo has already been computed. Defaults to False.
+
+    Raises:
+        LessonNotFoundExeption: A not previously registered lesson has been detected;
     """
     if not sessionInfo_provided:
         # Get the raw data from the database
@@ -628,8 +643,6 @@ def execute_userInfo_extraction(
             del userInfo['sessions'][session]
 
     # Extract userInfo level statistics
-    # user_lessons_coverage
-    compute_lessons_coverage_for_single_user(userInfo, lessons_durations)
     # notes info extraction
     user_notes_info_extraction(userInfo)
     # jumps info extraction
@@ -638,6 +651,11 @@ def execute_userInfo_extraction(
     user_lessons_visualization_extraction(userInfo)
     # Get sessions day distribution
     day_session_distribution_extraction(userInfo)
+
+    try:
+        compute_lessons_coverage_for_single_user(userInfo, lessons_durations)
+    except LessonNotFoundExeption as exc:
+        raise exc
 
 
 def execute_courseInfo_extraction(
@@ -688,16 +706,23 @@ def execute_courseInfo_extraction(
             for session in invalid_sessions:
                 del userInfo['sessions'][session]
 
-            execute_userInfo_extraction(
-                logs_collection,
-                courseInfo['lessons_durations'],
-                course,
-                user,
-                userInfo,
-                keep_session_data=keep_session_data,
-                sessionInfo_provided=True)
-            # Add this user sessions to the total counter
-            total_number_of_sessions += len(userInfo['sessions'])
+            try:
+                execute_userInfo_extraction(
+                    logs_collection,
+                    courseInfo['lessons_durations'],
+                    course,
+                    user,
+                    userInfo,
+                    keep_session_data=keep_session_data,
+                    sessionInfo_provided=True)
+            except LessonNotFoundExeption as exc:
+                lesson_id = str(exc)
+                timestamp = exc.timestamp
+                mongo_queries.register_lesson(
+                    lessons_collection, course, lesson_id, timestamp)
+                courseInfo['lessons_durations'][lesson_id] = 7200
+            finally:
+                total_number_of_sessions += len(userInfo['sessions'])
     else:
         courseInfo['users'] = {}
         # Collect user ids
@@ -705,17 +730,24 @@ def execute_courseInfo_extraction(
         # Extract features
         for user in users:
             userInfo = {}
-            execute_userInfo_extraction(
-                logs_collection,
-                courseInfo['lessons_durations'],
-                course,
-                user,
-                userInfo,
-                keep_session_data=keep_session_data,
-                sessionInfo_provided=False)
-
-            total_number_of_sessions += len(userInfo['sessions'])
-            courseInfo['users'][user] = userInfo
+            try:
+                execute_userInfo_extraction(
+                    logs_collection,
+                    courseInfo['lessons_durations'],
+                    course,
+                    user,
+                    userInfo,
+                    keep_session_data=keep_session_data,
+                    sessionInfo_provided=False)
+            except LessonNotFoundExeption as exc:
+                lesson_id = str(exc)
+                timestamp = exc.timestamp
+                mongo_queries.register_lesson(
+                    lessons_collection, course, lesson_id, timestamp)
+                courseInfo['lessons_durations'][lesson_id] = 7200
+            finally:
+                total_number_of_sessions += len(userInfo['sessions'])
+                courseInfo['users'][user] = userInfo
 
     # Save the total number of sessions
     courseInfo['number_of_sessions'] = total_number_of_sessions
@@ -757,7 +789,10 @@ def execute_complete_extraction(
     """
 
     # Get courses headers
-    courses = mongo_queries.get_all_courses(lessons_collection)
+    # TODO this is how missing courses are added; a better way should be found
+    registered_courses = mongo_queries.get_all_courses(lessons_collection)
+    logged_courses = mongo_queries.get_all_courses(logs_collection)
+    courses = list(set(registered_courses) | set(logged_courses))
 
     for course in courses:
         courseInfo = {}

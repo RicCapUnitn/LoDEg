@@ -2,30 +2,30 @@
 "course_id": "course1",
 "lesson_id": "lesson1",
 "duration": 7200.0,
-"timestamp": "2017-10-26T14:45:07.023986Z"
+"timestamp": "2018-03-31T13:14:40.505085Z"
 }{
 "course_id": "course1",
 "lesson_id": "lesson2",
 "duration": 7200.0,
-"timestamp": "2017-10-26T14:45:07.023986Z"
+"timestamp": "2018-03-31T13:14:40.505085Z"
 }{
 "course_id": "course1",
 "lesson_id": "lesson3",
 "duration": 7200.0,
-"timestamp": "2017-10-26T14:45:07.023986Z"
+"timestamp": "2018-03-31T13:14:40.505085Z"
 }{
 "course_id": "course2",
 "lesson_id": "lesson1",
 "duration": 7200.0,
-"timestamp": "2017-10-26T14:45:07.023986Z"
+"timestamp": "2018-03-31T13:14:40.505085Z"
 }{
 "course_id": "course2",
 "lesson_id": "lesson2",
 "duration": 7200.0,
-"timestamp": "2017-10-26T14:45:07.023986Z"
+"timestamp": "2018-03-31T13:14:40.505085Z"
 }{
 "course_id": "course2",
 "lesson_id": "lesson3",
 "duration": 7200.0,
-"timestamp": "2017-10-26T14:45:07.023986Z"
+"timestamp": "2018-03-31T13:14:40.505085Z"
 }

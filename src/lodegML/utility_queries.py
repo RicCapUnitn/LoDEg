@@ -36,7 +36,7 @@ def add_interval(intervals: list, interval: list):
 
     start = interval[0]
     end = interval[1]
-    if (start > end):
+    if start > end:
         start, end = end, start
 
     start_index = -1

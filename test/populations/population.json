@@ -1,5 +1,6 @@
 {
     "type": "title",
+    "course_id": "course1",
     "user_id": "play_pause_test",
     "session_id": "play_pause_test",
     "value2": "course1"
@@ -35,6 +36,7 @@
     "value2": 19.0
 }{
     "type": "title",
+    "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test1",
     "value2": "course1"
@@ -70,6 +72,7 @@
     "value1": 50.0
 }{
     "type": "title",
+    "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test2",
     "value2": "course1"
@@ -117,6 +120,7 @@
     "value1": 180.0
 }{
     "type": "title",
+    "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test3",
     "value2": "course1"
@@ -172,6 +176,7 @@
     "value1": 120.0
 }{
     "type": "title",
+    "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test4",
     "value2": "course1"
@@ -227,6 +232,7 @@
     "value1": 60.0
 }{
     "type": "title",
+    "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test5",
     "value2": "course1"
@@ -288,6 +294,7 @@
     "value1": 60.0
 }{
     "type": "title",
+    "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test6",
     "value2": "course1"
@@ -357,6 +364,7 @@
     "value1": 40.0
 }{
     "type": "title",
+    "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test7",
     "value2": "course1"
@@ -432,6 +440,7 @@
     "value1": 60.0
 }{
     "type": "title",
+    "course_id": "course1",
     "user_id": "session_coverage_test",
     "session_id": "test8",
     "value2": "course1"
@@ -507,6 +516,7 @@
     "value1": 60.0
 }{
     "type": "title",
+    "course_id": "course1",
     "user_id": "jumps_info_test",
     "session_id": "jumps_info_test",
     "value2": "course1"

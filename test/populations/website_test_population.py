@@ -93,6 +93,33 @@ def create_population():
                     record['value1'] = note[0]
                     json.dump(record, out, indent=indent)
 
+        # Add missing_lesson_duration_test
+        record = {}
+        record['course_id'] = 'missing_lesson_duration_test'
+        record['user_id'] = 'missing_lesson_duration_test'
+        record['session_id'] = 'missing_lesson_duration_test'
+
+        json.dump({
+            'type': 'title',
+            'course_id': record['course_id'],
+            'user_id': 'missing_lesson_duration_test',
+            'session_id': 'missing_lesson_duration_test',
+            'value1': 'missing_lesson_duration_test',
+            'value2': record['course_id']
+        }, out, indent=indent)
+
+        for j in range(0, 7000, 1500):
+            for item in test_records:
+                noise = np.random.normal(0, 20)
+                record['type'] = item[0]
+                record['value1'] = item[1] + j + noise
+                record['value2'] = item[2] + j + noise
+                if(item[0] == 'jump'):
+                    record['value3'] = item[3]
+                else:
+                    record.pop('value3', None)
+                json.dump(record, out, indent=indent)
+
 
 if __name__ == '__main__':
     create_population()

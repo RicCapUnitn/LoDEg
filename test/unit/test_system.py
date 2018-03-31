@@ -58,7 +58,7 @@ class TestSystem(unittest.TestCase):
     def test_getUsers_with_course_param_not_set(self):
         """Get the number of users of the system"""
         users = self._system.getUsers()
-        self.assertEqual(users, 3)
+        self.assertEqual(users, 4)
 
     def test_getUsers_with_valid_course_param_set(self):
         users = self._system.getUsers(self._test_valid_course)
@@ -94,7 +94,8 @@ class TestSystem(unittest.TestCase):
     # getCourses
     def test_getCourses(self):
         courses = self._system.getCourses()
-        self.assertEqual(sorted(courses), ['course1', 'course2'])
+        self.assertEqual(sorted(courses), [
+                         'course1', 'course2', 'missing_lesson_duration_test'])
 
 
 if __name__ == '__main__':

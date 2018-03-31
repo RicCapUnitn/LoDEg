@@ -208,7 +208,7 @@ class LodegSystem:
             self._logs, self._lessons, systemInfo, keep_session_data,
             keep_user_info, query_mem_opt)
         self._systemInfo = systemInfo
-        # If ml_autorun is run the ml algorithms
+
         if ml_autorun:
             self.runMl()
 
@@ -460,8 +460,8 @@ class LodegSystem:
             list of str: the headers of the session if known by the system; otherwise, the empty list
         """
         try:
-            return self._systemInfo['courses'][course]['lessons_durations'].keys(
-            )
+            return list(self._systemInfo['courses'][course]['lessons_durations'].keys(
+            ))
         except KeyError:
             # We don't have this information in the system
             return []
@@ -472,7 +472,7 @@ class LodegSystem:
         Returns:
             list of str: the courses.
         """
-        return self._systemInfo['courses'].keys()
+        return list(self._systemInfo['courses'].keys())
 
 
 ###############################################################################

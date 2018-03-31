@@ -1,5 +1,5 @@
 import unittest
-import warnings
+from datetime import datetime
 
 # Add path in order to be able to do imports
 import sys
@@ -376,6 +376,29 @@ class TestQueries(unittest.TestCase):
         mongo_queries.get_all_records_for_user_and_course(
             logs_collection, 'course1', 'user1', userInfo)
         self.assertNotEqual(userInfo, {})
+
+    def test_queries_7_register_lesson(self):
+        course_id = 'test_register_lesson'
+        lesson_id = 'test_register_lesson'
+        timestamp = datetime.utcnow().isoformat() + 'Z'
+        mongo_queries.register_lesson(
+            lessons_collection, course_id, lesson_id, timestamp)
+
+        courses = mongo_queries.get_all_courses(lessons_collection)
+
+        courseInfo = {}
+        mongo_queries.get_lessons_durations_and_registration_dates(
+            lessons_collection, course_id, courseInfo)
+        lessons_durations = courseInfo['lessons_durations']
+        lessons_ids = list(lessons_durations.keys())
+
+        self.assertIn(course_id, courses)
+        self.assertIn(lesson_id, lessons_ids)
+
+        lessons_collection.delete_one({
+            "course_id": course_id,
+            "lesson_id": lesson_id
+        })
 
 
 class TestJumpsInfoExtraction(unittest.TestCase):

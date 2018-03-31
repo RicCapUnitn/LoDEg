@@ -26,9 +26,12 @@ def get_lessons_durations_and_registration_dates(
 ###########################
 
 
-def get_all_courses(lessons_collection):
+def get_all_courses(collection):
     """Return all the course_ids that have been registered"""
-    cursor = lessons_collection.aggregate([{'$group': {'_id': '$course_id'}}])
+    cursor = collection.aggregate([
+        {'$match': {'course_id': {'$ne': None}}},
+        {'$group': {'_id': '$course_id'}}
+    ])
     return list(record['_id'] for record in cursor)
 
 
@@ -142,3 +145,13 @@ def get_all_records_for_user_and_course(
             userInfo['sessions'][session_id]['data'].append(record)
         else:
             userInfo['sessions'][session_id]['data'] = [record]
+
+
+def register_lesson(lessons_collection, course_id: str, lesson_id: str, timestamp):
+    DEFAULT_LESSON_DURATION_IN_SECONDS = 7200
+    lessons_collection.insert_one({
+        "course_id": course_id,
+        "lesson_id": lesson_id,
+        "duration": DEFAULT_LESSON_DURATION_IN_SECONDS,
+        "timestamp": timestamp
+    })

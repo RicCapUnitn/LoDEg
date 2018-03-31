@@ -27,7 +27,7 @@ fi
 
 
 echo ">>> Creating mockup populations..."
-cd ./test/populations; python sample_population.py
+cd ./test/populations; python sample_population.py; python website_test_population.py
 cd ../../
 echo '>>> Done!'
 echo '#######################################################################################'
@@ -35,6 +35,8 @@ echo '##########################################################################
 echo ">>> Import mockup populations..."
 mongoimport --db lodeg --collection mockup_population --drop --maintainInsertionOrder --file ./test/populations/population.json
 mongoimport --db lodeg --collection mockup_lessons --drop --maintainInsertionOrder --file ./test/populations/lessons.json
+mongoimport --db lodeg --collection web_mockup_population --drop --maintainInsertionOrder --file ./test/populations/web_population.json
+mongoimport --db lodeg --collection web_mockup_lessons --drop --maintainInsertionOrder --file ./test/populations/web_lessons.json
 echo '>>> Done!'
 echo '#######################################################################################'
 

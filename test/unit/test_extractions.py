@@ -13,7 +13,8 @@ class TestSystem(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._system = system.LodegSystem()
+        cls._system = system.LodegSystem(debug=True)
+
         cls._test_course = 'course1'
         cls._test_valid_user = 'user0'
         cls._test_valid_session = 'user0-session0'
@@ -57,5 +58,11 @@ class TestSystem(unittest.TestCase):
             'ml_autorun': False
         }
         self._system.executeCompleteExtraction(**kwargs)
-        course_users = self._system.getData(course=self._test_course)
+        course_users = self._system.getData(course=self._test_course)['users']
         self.assertDictEqual(course_users, {})
+
+    def test_missing_lesson_duration(self):
+        missing_course = missing_lesson = 'missing_lesson_duration_test'
+        self._system.executeCompleteExtraction()
+        lessons_ids = self._system.getLessonsHeaders(course=missing_course)
+        self.assertEqual(lessons_ids, [missing_lesson])
